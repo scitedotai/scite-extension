@@ -1,10 +1,17 @@
+/* global chrome, browser:true */
+
 /*
-/* Adapted from: https://github.com/Impactstory/unpaywall
+ * Adapted from: https://github.com/Impactstory/unpaywall
  */
 
-const devLog = function () {
+if (chrome) {
+  browser = chrome
 }
 
+const IS_DEV = typeof process !== 'undefined' && process.NODE_ENV === 'development'
+let devLog = IS_DEV ? console.log.bind(window) : function () {}
+
+let poppedUp = false
 let docAsStr = document.documentElement.innerHTML
 let myHost = window.location.hostname
 
@@ -172,9 +179,69 @@ function findDoi () {
   }
 }
 
-function main () {
-  const doi = findDoi()
-  window.alert("Hey here's ur DOI bro: " + doi)
+function popupTally (tally, url) {
+  const popup = document.createElement('div')
+  const content = document.createElement('pre')
+  popup.appendChild(content)
+  content.textContent = JSON.stringify(tally, null, 4)
+
+  // make sure we are not inserting iframe again and again
+  if (poppedUp) {
+    return false
+  }
+
+  popup.style.position = 'fixed'
+  popup.style.right = '1rem'
+  popup.style.top = '1rem'
+  popup.scrolling = 'no'
+  popup.style.border = '0'
+  popup.style.zIndex = '9999999999'
+  popup.style.backgroundColor = 'rgba(0,0,0,0.65)'
+  popup.style.color = 'white'
+  popup.style.padding = '1rem'
+  popup.style.cursor = 'pointer'
+  popup.id = 'scite-popup'
+
+  popup.addEventListener('click', function () {
+    window.open(url)
+  })
+
+  document.documentElement.appendChild(popup)
+  poppedUp = true
 }
 
-main()
+async function main () {
+  const doi = findDoi()
+
+  if (!doi) {
+    return
+  }
+
+  try {
+    const response = await window.fetch('https://api.scite.ai/tallies/' + doi)
+    const tally = await response.json()
+    popupTally(tally, 'https://scite.ai/reports/' + doi)
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+function runWithDelay () {
+  var delay = 200
+
+  // Single-page apps take a while to fully load all the HTML,
+  // and until they do we can't find the DOI
+  var longDelayHosts = [
+    'psycnet.apa.org'
+  ]
+
+  // it would be better to poll, but that is more complicated and we don't
+  // have many reports of SPAs like this yet.
+  if (longDelayHosts.includes(myHost)) {
+    delay = 3000
+  }
+
+  setTimeout(main, delay)
+}
+
+runWithDelay()
