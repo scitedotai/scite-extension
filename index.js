@@ -78,27 +78,32 @@ function findDoiFromMetaTags () {
 
 // sniff DOIs from the altmetric.com widget.
 function findDoiFromDataDoiAttributes () {
-  let dataDoiValues = $('*[data-doi]').map(function () {
-    return this.getAttribute('data-doi')
-  }).get()
+  const dataDoiValues = []
+  const dataDoiNodes = document.querySelectorAll('*[data-doi]')
+  dataDoiNodes.forEach(function (node) {
+    dataDoiValues.push(node.dataset['doi'])
+  })
 
   // if there are multiple unique DOIs, we're on some kind of TOC page,
   // we don't want none of that noise.
-  let numUniqueDois = new Set(dataDoiValues).size
+  const numUniqueDois = new Set(dataDoiValues).size
   if (numUniqueDois === 1) {
     devLog('found a DOI from a [data-doi] attribute')
     return dataDoiValues[0]
   }
+
+  return null
 }
 
 // ScienceDirect
 // eg: http://www.sciencedirect.com/science/article/pii/S1751157709000881 (green)
 // eg: http://www.sciencedirect.com/science/article/pii/S0742051X16306692
 function findDoiFromScienceDirect () {
-  if (myHost.indexOf('sciencedirect') < 0) {
-    return
-  }
   let doi
+
+  if (myHost.indexOf('sciencedirect') < 0) {
+    return null
+  }
 
   // the old version of ScienceDirect requires a hack to read DOI from js var
   doi = runRegexOnDoc(/SDM.doi\s*=\s*'([^']+)'/)
@@ -107,7 +112,7 @@ function findDoiFromScienceDirect () {
   }
 
   // the new React-based version of ScienceDirect pages
-  let doiLinkElem = $("a[class='doi']")
+  const doiLinkElem = document.querySelectorAll('a.doi')
   if (doiLinkElem.length) {
     let m = doiLinkElem[0].innerHTML.match(/doi\.org\/(.+)/)
     if (m && m.length > 1) {
@@ -131,10 +136,10 @@ function findDoiFromPubmed () {
   // gold:   https://www.ncbi.nlm.nih.gov/pubmed/17375194
 
   if (myHost.indexOf('www.ncbi.nlm.nih.gov') < 0) {
-    return
+    return null
   }
 
-  let doiLinkElem = $("a[ref='aid_type=doi']")
+  const doiLinkElem = document.querySelectorAll("a[ref='aid_type=doi']")
   if (doiLinkElem.length) {
     return doiLinkElem[0].innerHTML
   }
@@ -166,3 +171,10 @@ function findDoi () {
     }
   }
 }
+
+function main () {
+  const doi = findDoi()
+  console.info("Hey here's ur DOI bro", doi)
+}
+
+main()
