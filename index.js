@@ -39,7 +39,7 @@ function findDoiFromMetaTags () {
   const metas = document.querySelectorAll('meta')
   let doi
 
-  metas.forEach(function (i, myMeta) {
+  metas.forEach(function (myMeta) {
     if (!myMeta.name) {
       return true // keep iterating
     }
@@ -174,7 +174,7 @@ function findDoi () {
 
 function main () {
   const doi = findDoi()
-  console.info("Hey here's ur DOI bro", doi)
+  window.alert("Hey here's ur DOI bro: " + doi)
 }
 
 main()
