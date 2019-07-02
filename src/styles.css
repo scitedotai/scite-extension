@@ -2,10 +2,11 @@
     z-index: 9999999999;
     
     position: fixed;
-    right: 0;
+    right: -4px;
     top: 45%;
     
-    padding: 0.5rem;
+    padding: 8px;
+    padding-right: 12px;
     line-height: 1.5;
 
     color: #0E1D1A;
@@ -13,8 +14,15 @@
     font-family: "Circular";
     border: 2px solid #ebebeb;
     border-radius: 12px 0 0 12px;
+    box-sizing: border-box;
 
     cursor: pointer;
+
+    transition: transform 200ms ease-in-out;
+}
+
+#scite-popup-app:hover {
+    transform: translate3d(-4px, 0, 0);
 }
 
 .scite-tally {
