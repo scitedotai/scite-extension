@@ -1,7 +1,6 @@
 {
   "name": "Scite",
   "version": "1.0.0",
-  "version_name":"Scite 1.0.0",
   "manifest_version": 2,
   "description": "Seamlessly pull scite info while you surf the information superhighway",
   "icons": {
@@ -16,7 +15,6 @@
       "strict_min_version": "53.0"
     }
   },
-  "content_security_policy": "script-src 'self' object-src 'self'",
   "content_scripts": [
     {
       "matches": [
