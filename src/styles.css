@@ -1,8 +1,13 @@
+.scite-tally * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 .scite-tally {
     z-index: 9999999999;
     
     position: fixed;
-    right: -4px;
+    right: 2rem;
     top: 45%;
     
     padding: 8px;
@@ -13,20 +18,16 @@
     background-color: white;
     font-family: "Circular";
     border: 2px solid #ebebeb;
-    border-right: none;
-    border-radius: 12px 0 0 12px;
+    border-radius: 12px;
     box-sizing: border-box;
 
     cursor: pointer;
 
-    transition: transform 200ms ease-in-out;
+    transition: background-color 200ms ease-in-out;
 }
 
 .scite-tally:hover {
-    transform: translate3d(-4px, 0, 0);
-}
-
-.scite-tally {
+    background-color: #F4F4F4;
 }
 
 .scite-tally > .title {
