@@ -1,4 +1,4 @@
-#scite-popup-app {
+.scite-tally {
     z-index: 9999999999;
     
     position: fixed;
@@ -13,6 +13,7 @@
     background-color: white;
     font-family: "Circular";
     border: 2px solid #ebebeb;
+    border-right: none;
     border-radius: 12px 0 0 12px;
     box-sizing: border-box;
 
@@ -21,7 +22,7 @@
     transition: transform 200ms ease-in-out;
 }
 
-#scite-popup-app:hover {
+.scite-tally:hover {
     transform: translate3d(-4px, 0, 0);
 }
 

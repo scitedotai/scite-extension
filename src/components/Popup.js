@@ -32,6 +32,10 @@ class Popup extends Component {
   render () {
     const { tally } = this.state
 
+    if (!tally) {
+      return null
+    }
+
     return (
       <div className='scite-popup' onClick={this.openReport}>
         {tally && <Tally {...tally} />}
