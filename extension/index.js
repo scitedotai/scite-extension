@@ -181,11 +181,10 @@ function findDoi () {
 
 function popupTally (tally, url) {
   const popup = document.createElement('div')
-  const content = document.createElement('pre')
-  popup.appendChild(content)
-  content.textContent = JSON.stringify(tally, null, 4)
+  const script = document.createElement('script')
+  script.type = 'application/javascript'
+  script.src = browser.runtime.getURL('tally-popup.js')
 
-  // make sure we are not inserting iframe again and again
   if (poppedUp) {
     return false
   }
@@ -197,6 +196,7 @@ function popupTally (tally, url) {
   })
 
   document.documentElement.appendChild(popup)
+  document.body.appendChild(script)
   poppedUp = true
 }
 

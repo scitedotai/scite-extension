@@ -32,5 +32,8 @@
     "https://api.scite.ai/*",
     "activeTab",
     "storage"
+  ],
+  "web_accessible_resources": [
+      "tally-popup.js"
   ]
 }

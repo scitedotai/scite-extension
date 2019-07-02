@@ -15,10 +15,33 @@
     top: 1rem;
     
     padding: 1rem;
+    line-height: 1.5;
 
-    color: white;
-    background-color: rgba(0,0,0,0.65);
+    color: #0E1D1A;
+    background-color: white;
     font-family: "Circular";
+    border: 1px solid #ebebeb;
 
     cursor: pointer;
+}
+
+.scite-tally {
+    min-width: 10rem;
+}
+
+.scite-tally > .title {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+
+.scite-tally-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.scite-tally-row > .count {
+    font-weight: bold;
 }
