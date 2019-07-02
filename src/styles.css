@@ -17,9 +17,9 @@
     color: #0E1D1A;
     background-color: white;
     font-family: "Circular";
-    border: 2px solid #ebebeb;
     border-radius: 12px;
     box-sizing: border-box;
+    border: 1px solid #ccc;
 
     cursor: pointer;
 
