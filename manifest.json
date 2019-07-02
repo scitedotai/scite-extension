@@ -22,6 +22,9 @@
       ],
       "js": [
         "index.js"
+      ],
+      "css": [
+        "styles.css"
       ]
     }
   ],

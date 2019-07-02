@@ -189,17 +189,7 @@ function popupTally (tally, url) {
   if (poppedUp) {
     return false
   }
-
-  popup.style.position = 'fixed'
-  popup.style.right = '1rem'
-  popup.style.top = '1rem'
   popup.scrolling = 'no'
-  popup.style.border = '0'
-  popup.style.zIndex = '9999999999'
-  popup.style.backgroundColor = 'rgba(0,0,0,0.65)'
-  popup.style.color = 'white'
-  popup.style.padding = '1rem'
-  popup.style.cursor = 'pointer'
   popup.id = 'scite-popup'
 
   popup.addEventListener('click', function () {
