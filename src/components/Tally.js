@@ -1,6 +1,6 @@
 import { h } from 'preact'
 
-const rowClasses = type => `icon icon-${type}`
+const rowClasses = type => `scite-icon scite-icon-${type}`
 
 const Row = ({ type, count }) => (
   <div className='scite-tally-row'>

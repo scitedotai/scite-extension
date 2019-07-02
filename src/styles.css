@@ -48,7 +48,6 @@
 }
 
 /* Typography/icon font */
-
 @font-face {
     font-family: "Circular";
 
@@ -70,7 +69,7 @@
     font-style: normal;
 }
 
-.icon {
+.scite-icon {
     font-family: 'scite-icons' !important;
     speak: none;
     font-style: normal;
@@ -80,22 +79,22 @@
     line-height: 1;
 }
 
-.icon-unclassified:before {
+.scite-icon-unclassified:before {
     content: "\e900";
     color: #d1d1d1;
 }
 
-.icon-contradicting:before {
+.scite-icon-contradicting:before {
     content: "\e901";
     color: #ff3b30;
 }
 
-.icon-mentioning:before {
+.scite-icon-mentioning:before {
     content: "\e902";
     color: #c7c7cc;
 }
 
-.icon-supporting:before {
+.scite-icon-supporting:before {
     content: "\e903";
     color: #4cd964;
 }
