@@ -17,7 +17,9 @@ class Popup extends Component {
     fetch('https://api.scite.ai/tallies/' + doi)
       .then(response => response.json())
       .then(tally => {
-        this.setState({ tally })
+        if (tally.total) {
+          this.setState({ tally })
+        }
       })
       .catch(e => {
         console.error(e)
