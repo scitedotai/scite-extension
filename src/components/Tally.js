@@ -1,6 +1,4 @@
-import { h, render } from 'preact'
-
-const popup = document.querySelector('#scite-popup')
+import { h } from 'preact'
 
 const rowClasses = type => `icon icon-${type}`
 
@@ -21,8 +19,4 @@ const Tally = ({ doi, total, supporting, contradicting, mentioning }) => (
   </div>
 )
 
-if (window.__SCITE) {
-} else {
-  console.log(window.__SCITE)
-}
-
+export default Tally

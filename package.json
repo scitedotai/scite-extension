@@ -4,8 +4,8 @@
   "description": "scite inc web extension",
   "main": "index.js",
   "scripts": {
-    "dev": "parcel tally-popup.js",
-    "build": "parcel build tally-popup.js && cp dist/tally-popup.js extension",
+    "dev": "parcel src/test.js",
+    "build": "parcel build src/index.js && cp dist/index.js extension && cp src/styles.css extension",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
