@@ -23,11 +23,11 @@
 
     cursor: pointer;
 
-    transition: background-color 200ms ease-in-out;
+    transition: transform 300ms ease-in-out;
 }
 
 .scite-tally:hover {
-    background-color: #F4F4F4;
+    transform: perspective(1px) scale(1.05);
 }
 
 .scite-tally > .title {
