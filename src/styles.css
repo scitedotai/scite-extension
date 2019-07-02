@@ -7,7 +7,7 @@
     z-index: 9999999999;
     
     position: fixed;
-    right: 1rem;
+    right: 0;
     top: 45%;
     
     padding: 8px;
@@ -17,17 +17,17 @@
     color: #0E1D1A;
     background-color: white;
     font-family: "Circular";
-    border-radius: 12px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
+    border-radius: 8px 0 0 8px;
+    border: 1px solid #cfcfcf;
+    border-right: none;
 
     cursor: pointer;
 
-    transition: transform 300ms ease-in-out;
+    transition: background-color 200ms ease-in-out;
 }
 
 .scite-tally:hover {
-    transform: perspective(1px) scale(1.05);
+    background-color: #F4F4F4;
 }
 
 .scite-tally > .title {
