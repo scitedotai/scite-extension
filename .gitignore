@@ -1,6 +1,6 @@
 dist
-extenstion/index.js
-extenstion/styles.css
+extension/index.js
+extension/styles.css
 node_modules
 .cache
 npm-debug.log
