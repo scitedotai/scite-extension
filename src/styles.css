@@ -1,10 +1,9 @@
-#scite-popup {
+#scite-popup-app {
     z-index: 9999999999;
     
     position: fixed;
-    right: 1rem;
-    top: 1rem;
-    width: 4rem;
+    right: 0;
+    top: 45%;
     
     padding: 0.5rem;
     line-height: 1.5;
@@ -12,7 +11,8 @@
     color: #0E1D1A;
     background-color: white;
     font-family: "Circular";
-    border: 1px solid #ebebeb;
+    border: 2px solid #ebebeb;
+    border-radius: 12px 0 0 12px;
 
     cursor: pointer;
 }
@@ -24,7 +24,7 @@
     display: block;
     font-weight: bold;
     margin-bottom: 0.5rem;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
 }
 
 .scite-tally-row {
@@ -35,10 +35,6 @@
 
 .scite-tally-row {
     font-size: 0.9rem;
-}
-
-.scite-tally-row > .count {
-    font-weight: bold;
 }
 
 /* Typography/icon font */

@@ -189,7 +189,7 @@ function popupDoi (doi, url) {
     return false
   }
   popup.scrolling = 'no'
-  popup.id = 'scite-popup'
+  popup.id = 'scite-popup-app'
 
   popup.addEventListener('click', function () {
     window.open(url)

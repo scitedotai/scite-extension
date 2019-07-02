@@ -1,4 +1,6 @@
 dist
-extenstion/tally-popup.js
+extenstion/index.js
+extenstion/styles.css
 node_modules
 .cache
+npm-debug.log
