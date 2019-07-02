@@ -1,3 +1,12 @@
+@font-face {
+    font-family: "Circular";
+
+    src: url("https://scite-production.azureedge.net/assets/fonts/circular/circular-book.eot?#iefix") format("embedded-opentype"),
+         url("https://scite-production.azureedge.net/assets/fonts/circular/circular-book.woff2") format("woff2"),
+         url("https://scite-production.azureedge.net/assets/fonts/circular/circular-book.woff") format("woff"),
+         url("https://scite-production.azureedge.net/assets/fonts/circular/circular-book.ttf") format("truetype");
+}
+
 #scite-popup {
     z-index: 9999999999;
     
@@ -9,6 +18,7 @@
 
     color: white;
     background-color: rgba(0,0,0,0.65);
+    font-family: "Circular";
 
     cursor: pointer;
 }

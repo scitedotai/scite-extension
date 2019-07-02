@@ -4,6 +4,8 @@
   "description": "scite inc web extension",
   "main": "index.js",
   "scripts": {
+    "dev": "parcel test.js",
+    "build": "parcel build test.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -14,5 +16,14 @@
     "citations"
   ],
   "author": "Milo Mordaunt <milo@scite.ai>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-transform-react-jsx": "^7.3.0",
+    "parcel-bundler": "^1.12.3"
+  },
+  "dependencies": {
+    "preact": "^8.4.2"
+  }
 }
