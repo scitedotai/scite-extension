@@ -5,7 +5,7 @@
  */
 
 import { h, render } from 'preact'
-import Tally from './components/Tally'
+import Popup from './components/Popup'
 
 if (chrome) {
   browser = chrome
@@ -182,11 +182,8 @@ function findDoi () {
   }
 }
 
-function popupTally (tally, url) {
+function popupDoi (doi, url) {
   const popup = document.createElement('div')
-  const script = document.createElement('script')
-  script.type = 'application/javascript'
-  script.src = browser.runtime.getURL('tally-popup.js')
 
   if (poppedUp) {
     return false
@@ -199,7 +196,7 @@ function popupTally (tally, url) {
   })
 
   document.documentElement.appendChild(popup)
-  render(<Tally {...tally} />, popup)
+  render(<Popup doi={doi} />, popup)
   poppedUp = true
 }
 
@@ -210,15 +207,7 @@ function main () {
     return
   }
 
-  window
-    .fetch('https://api.scite.ai/tallies/' + doi)
-    .then(response => response.json())
-    .then(tally => {
-      popupTally(tally, 'https://scite.ai/reports/' + doi)
-    })
-    .catch(e => {
-      console.error(e)
-    }) 
+  popupDoi(doi)
 }
 
 function runWithDelay () {
