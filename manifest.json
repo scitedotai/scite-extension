@@ -4,6 +4,13 @@
   "version_name":"Scite 1.0.0",
   "manifest_version": 2,
   "description": "Seamlessly pull scite info while you surf the information superhighway",
+  "icons": {
+    "16": "images/icons/16.png",
+    "32": "images/icons/32.png",
+    "48": "images/icons/48.png",
+    "64": "images/icons/64.png",
+    "128": "images/icons/128.png"
+  },
   "applications": {
     "gecko": {
       "strict_min_version": "53.0"
@@ -24,8 +31,5 @@
     "https://api.scite.ai/*",
     "activeTab",
     "storage"
-  ],
-  "web_accessible_resources": [
-      "scite-widget.html"
   ]
 }
