@@ -33,8 +33,8 @@
 .scite-tally > .title {
     display: block;
     font-weight: bold;
-    margin-bottom: 0.5rem;
-    font-size: 1.3rem;
+    margin-bottom: 8px;
+    font-size: 20.8px;
 }
 
 .scite-tally-row {
@@ -44,7 +44,7 @@
 }
 
 .scite-tally-row {
-    font-size: 0.9rem;
+    font-size: 14.5px;
 }
 
 /* Typography/icon font */
