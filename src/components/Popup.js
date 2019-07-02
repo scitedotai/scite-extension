@@ -8,6 +8,7 @@ class Popup extends Component {
     super(props)
 
     this.state = {}
+    this.openReport = this.openReport.bind(this)
   }
 
   componentDidMount () {
@@ -23,11 +24,16 @@ class Popup extends Component {
       }) 
   }
 
+  openReport () {
+    const { doi } = this.props
+    window.open(`https://scite.ai/reports/${doi}`)
+  }
+
   render () {
     const { tally } = this.state
 
     return (
-      <div className='scite-popup'>
+      <div className='scite-popup' onClick={this.openReport}>
         {tally && <Tally {...tally} />}
       </div>
     )

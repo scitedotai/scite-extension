@@ -182,7 +182,7 @@ function findDoi () {
   }
 }
 
-function popupDoi (doi, url) {
+function popupDoi (doi) {
   const popup = document.createElement('div')
 
   if (poppedUp) {
@@ -190,10 +190,6 @@ function popupDoi (doi, url) {
   }
   popup.scrolling = 'no'
   popup.id = 'scite-popup-app'
-
-  popup.addEventListener('click', function () {
-    window.open(url)
-  })
 
   document.documentElement.appendChild(popup)
   render(<Popup doi={doi} />, popup)
