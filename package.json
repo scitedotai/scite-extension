@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "parcel src/test.js",
-    "build": "parcel build src/index.js && cp dist/index.js extension && cp src/styles.css extension",
+    "build": "./build.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

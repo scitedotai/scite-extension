@@ -28,6 +28,9 @@
       ]
     }
   ],
+  "background" : {
+    "scripts" : ["background.js"]
+  },
   "permissions": [
     "https://api.scite.ai/*",
     "activeTab",

@@ -1,15 +1,9 @@
-/* global chrome, browser:true */
-
 /*
  * Adapted from: https://github.com/Impactstory/unpaywall
  */
 
 import { h, render } from 'preact'
 import Popup from './components/Popup'
-
-if (chrome) {
-  browser = chrome
-}
 
 const IS_DEV = typeof process !== 'undefined' && process.NODE_ENV === 'development'
 let devLog = IS_DEV ? console.log.bind(window) : function () {}
