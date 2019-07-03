@@ -33,8 +33,7 @@
   },
   "permissions": [
     "https://api.scite.ai/*",
-    "activeTab",
-    "storage"
+    "activeTab"
   ],
   "web_accessible_resources": [
       "tally-popup.js"
