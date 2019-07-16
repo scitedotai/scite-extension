@@ -155,6 +155,10 @@ function findDoiFromPsycnet () {
   return runRegexOnDoc(re, 'psycnet.apa.org')
 }
 
+function findDoiFromSciHub () {
+  return runRegexOnDoc(/\<title\>Sci-Hub \|(?:.)*\| (10\.[^<]+)\<\/title\>/)
+}
+
 function findDoi () {
   // we try each of these functions, in order, to get a DOI from the page.
   let doiFinderFunctions = [
@@ -164,7 +168,8 @@ function findDoi () {
     findDoiFromIeee,
     findDoiFromNumber,
     findDoiFromPsycnet,
-    findDoiFromPubmed
+    findDoiFromPubmed,
+    findDoiFromSciHub
   ]
 
   for (let i = 0; i < doiFinderFunctions.length; i++) {
