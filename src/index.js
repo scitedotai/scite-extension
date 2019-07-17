@@ -10,6 +10,7 @@ let devLog = IS_DEV ? console.log.bind(window) : function () {}
 
 let poppedUp = false
 let docAsStr = document.documentElement.innerHTML
+let docTitle = document.title
 let myHost = window.location.hostname
 
 function runRegexOnDoc (re, host) {
@@ -155,8 +156,11 @@ function findDoiFromPsycnet () {
   return runRegexOnDoc(re, 'psycnet.apa.org')
 }
 
-function findDoiFromSciHub () {
-  return runRegexOnDoc(/\<title\>Sci-Hub \|(?:.)*\| (10\.[^<]+)\<\/title\>/)
+function findDoiFromTitle () {
+  // Crossref DOI regex. See https://www.crossref.org/blog/dois-and-matching-regular-expressions/
+  let re = /(10.\d{4,9}\/[-._;()\/:A-Z0-9]+)/ig
+  let doi = docTitle.match(re)
+  return doi ? doi[0] : null
 }
 
 function findDoi () {
@@ -169,7 +173,7 @@ function findDoi () {
     findDoiFromNumber,
     findDoiFromPsycnet,
     findDoiFromPubmed,
-    findDoiFromSciHub
+    findDoiFromTitle
   ]
 
   for (let i = 0; i < doiFinderFunctions.length; i++) {
