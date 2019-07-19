@@ -1,25 +1,29 @@
+#scite-popup-app {
+    z-index: 9999999999;
+
+    position: fixed;
+    right: 0;
+    top: 45%;
+
+    border-radius: 8px 0 0 8px;
+    border: 1px solid #cfcfcf;
+    border-right: none;
+    overflow: hidden;
+}
+
 .scite-tally * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 .scite-tally {
-    z-index: 9999999999;
-    
-    position: fixed;
-    right: 0;
-    top: 45%;
-    
+    line-height: 1.5;
     padding: 8px;
     padding-right: 12px;
-    line-height: 1.5;
 
     color: #0E1D1A;
     background-color: white;
     font-family: "Circular";
-    border-radius: 8px 0 0 8px;
-    border: 1px solid #cfcfcf;
-    border-right: none;
 
     cursor: pointer;
 

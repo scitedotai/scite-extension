@@ -3,7 +3,7 @@
  */
 
 import { h, render } from 'preact'
-import Popup from './components/Popup'
+import Tally from './components/Tally'
 
 const IS_DEV = typeof process !== 'undefined' && process.NODE_ENV === 'development'
 let devLog = IS_DEV ? console.log.bind(window) : function () {}
@@ -186,7 +186,7 @@ function popupDoi (doi) {
   popup.id = 'scite-popup-app'
 
   document.documentElement.appendChild(popup)
-  render(<Popup doi={doi} />, popup)
+  render(<Tally doi={doi} />, popup)
   poppedUp = true
 }
 
