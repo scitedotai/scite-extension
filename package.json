@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "parcel src/test.js",
     "build": "./build.sh",
+    "build:module": "babel src/components/Tally.js --out-dir lib",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -18,6 +19,7 @@
   "author": "Milo Mordaunt <milo@scite.ai>",
   "license": "MIT",
   "devDependencies": {
+    "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.4",
     "@babel/plugin-transform-react-jsx": "^7.3.0",
     "parcel-bundler": "^1.12.3"
