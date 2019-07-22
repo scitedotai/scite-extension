@@ -56,18 +56,18 @@ class Tally extends Component {
 
   render () {
     const { tally } = this.state
-
-    if (!tally) {
-      return null
-    }
+    const showClass = tally ? '-show' : ''
+    const supporting = tally && tally.supporting || 0
+    const contradicting = tally && tally.contradicting || 0
+    const mentioning = tally && tally.mentioning || 0
 
     return (
-      <div className='scite-tally' onClick={this.openReport}>
+      <div className={`scite-tally ${showClass}`} onClick={this.openReport}>
         <span className='title'>scite_</span>
 
-        <Row type='supporting' count={tally.supporting} />
-        <Row type='contradicting' count={tally.contradicting} />
-        <Row type='mentioning' count={tally.mentioning} />
+        <Row type='supporting' count={supporting} />
+        <Row type='contradicting' count={contradicting} />
+        <Row type='mentioning' count={mentioning} />
       </div>
     )
   }

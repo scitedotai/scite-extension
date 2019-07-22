@@ -27,7 +27,15 @@
 
     cursor: pointer;
 
-    transition: background-color 200ms ease-in-out;
+    transition: all 200ms ease-in-out;
+
+    opacity: 0;
+    pointer-events: none;
+}
+
+.scite-tally.-show {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .scite-tally:hover {
