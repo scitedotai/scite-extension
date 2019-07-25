@@ -25,6 +25,7 @@
     "parcel-bundler": "^1.12.3"
   },
   "dependencies": {
-    "preact": "^8.4.2"
+    "preact": "^8.4.2",
+    "whatwg-fetch": "^3.0.0"
   }
 }

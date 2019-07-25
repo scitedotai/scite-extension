@@ -2,6 +2,8 @@
  * Adapted from: https://github.com/Impactstory/unpaywall
  */
 
+import 'whatwg-fetch'
+
 import { h, render } from 'preact'
 import Tally from './components/Tally'
 
