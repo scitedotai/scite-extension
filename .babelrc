@@ -1,6 +1,13 @@
 {
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": "> 0.25%, not dead"
+      }
+    ]
+  ],
   "plugins": [
-    ["@babel/plugin-transform-react-jsx", { "pragma": "h" }],
-    "@babel/plugin-transform-destructuring"
+    ["@babel/plugin-transform-react-jsx", { "pragma": "h" }]
   ]
 }
