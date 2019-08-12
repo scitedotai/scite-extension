@@ -66,8 +66,8 @@ class Tally extends Component {
         <span className='title'>scite_</span>
 
         <Row type='supporting' count={supporting} />
-        <Row type='contradicting' count={contradicting} />
         <Row type='mentioning' count={mentioning} />
+        <Row type='contradicting' count={contradicting} />
       </div>
     )
   }
