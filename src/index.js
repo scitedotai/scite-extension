@@ -5,6 +5,7 @@
 import 'whatwg-fetch'
 
 import { h, render } from 'preact'
+import { getDois } from 'get-dois'
 import Tally from './components/Tally'
 
 const IS_DEV = typeof process !== 'undefined' && process.NODE_ENV === 'development'
@@ -31,56 +32,10 @@ function runRegexOnDoc (re, host) {
 // most scholarly articles have some kind of DOI meta
 // tag in the head of the document. Check these.
 function findDoiFromMetaTags () {
-  // collection of the various ways different publishers may
-  // indicate a given meta tag has the DOI.
-  const doiMetaNames = [
-    'citation_doi',
-    'doi',
-    'dc.doi',
-    'dc.identifier',
-    'dc.identifier.doi',
-    'bepress_citation_doi',
-    'rft_id',
-    'dcsext.wt_doi'
-  ]
-  const metas = document.querySelectorAll('meta')
-  let doi
+  const head = document.getElementsByTagName('head').item(0)
+  const dois = getDois(head)
 
-  metas.forEach(function (myMeta) {
-    if (!myMeta.name) {
-      return true // keep iterating
-    }
-
-    // has to be a meta name likely to contain a DOI
-    if (doiMetaNames.indexOf(myMeta.name.toLowerCase()) < 0) {
-      return true // continue iterating
-    }
-
-    // SAGE journals have weird meta tags with scheme='publisher-id'
-    // those DOIs have strange character replacements in them, so ignore.
-    // making universal rule cos i bet will help some other places too.
-    // eg:
-    //      http://journals.sagepub.com/doi/10.1207/s15327957pspr0203_4
-    //      http://journals.sagepub.com/doi/abs/10.1177/00034894991080S423
-    if (myMeta.scheme && myMeta.scheme !== 'doi') {
-      return true // continue iterating
-    }
-
-    // content has to look like a  DOI.
-    // much room for improvement here.
-    let doiCandidate = myMeta.content.replace('doi:', '').trim()
-    if (doiCandidate.indexOf('10.') === 0) {
-      doi = doiCandidate
-    }
-  })
-
-  if (!doi) {
-    return null
-  }
-  devLog('found a DOI from a meta tag', doi)
-
-  // all done.
-  return doi
+  return dois[0] || null
 }
 
 // sniff DOIs from the altmetric.com widget.
