@@ -1,4 +1,5 @@
 import { h, Component } from 'preact'
+import qs from 'query-string'
 const { fetch } = window
 
 const rowClasses = type => `scite-icon scite-icon-${type}`
@@ -49,9 +50,17 @@ class Tally extends Component {
       })
   }
 
+  get queryString () {
+    const params = {
+      fromBadge: true
+    }
+
+    return qs.stringify(params)
+  }
+
   openReport () {
     const { doi } = this.props
-    window.open(`https://scite.ai/reports/${doi}`)
+    window.open(`https://scite.ai/reports/${doi}?${this.queryString}`)
   }
 
   render () {
