@@ -31,6 +31,14 @@
 
     opacity: 0;
     pointer-events: none;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.scite-tally.-horizontal {
+    padding: 0 8px;
+    flex-direction: row;
 }
 
 .scite-tally.-show {
@@ -49,14 +57,24 @@
     font-size: 20.8px;
 }
 
-.scite-tally-row {
+.scite-tally-count {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-size: 14.5px;
 }
 
-.scite-tally-row {
-    font-size: 14.5px;
+.scite-tally-count.-horizontal {
+    border-left: 1px solid #cfcfcf;;
+    padding: 4px 8px;
+}
+
+.scite-tally-count.-horizontal:first-child {
+    border-left: none;
+}
+
+.scite-tally-count.-horizontal > .number {
+    margin-left: 8px;
 }
 
 /* Typography/icon font */

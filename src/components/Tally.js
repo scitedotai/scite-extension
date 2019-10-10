@@ -1,13 +1,20 @@
 import { h, Component } from 'preact'
 import qs from 'query-string'
+import classNames from 'classnames'
 const { fetch } = window
 
-const rowClasses = type => `scite-icon scite-icon-${type}`
+const iconClasses = type => `scite-icon scite-icon-${type}`
 
-const Row = ({ type, count }) => (
-  <div className='scite-tally-row'>
-    <i className={rowClasses(type)} />
-    <span className='count'>{count}</span>
+const Count = ({ horizontal, type, count }) => (
+  <div
+    className={
+      classNames('scite-tally-count', {
+        '-horizontal': horizontal
+      })
+    }
+  >
+    <i className={iconClasses(type)} />
+    <span className='number'>{count}</span>
   </div>
 )
 
@@ -16,7 +23,7 @@ class Tally extends Component {
     super(props)
 
     this.state = {}
-    this.openReport = this.openReport.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   componentDidMount () {
@@ -58,28 +65,36 @@ class Tally extends Component {
     return qs.stringify(params)
   }
 
-  openReport () {
+  handleClick () {
     const { doi } = this.props
     window.open(`https://scite.ai/reports/${doi}?${this.queryString}`)
   }
 
   render () {
+    const { horizontal } = this.props
     const { tally } = this.state
-    const showClass = tally ? '-show' : ''
-    const supporting = tally && tally.supporting || 0
-    const contradicting = tally && tally.contradicting || 0
-    const mentioning = tally && tally.mentioning || 0
+    const classes = classNames('scite-tally', {
+      '-horizontal': horizontal,
+      '-show': tally
+    })
+    const supporting = (tally && tally.supporting) || 0
+    const contradicting = (tally && tally.contradicting) || 0
+    const mentioning = (tally && tally.mentioning) || 0
 
     return (
-      <div className={`scite-tally ${showClass}`} onClick={this.openReport}>
-        <span className='title'>scite_</span>
+      <div className={classes} onClick={this.handleClick}>
+        {!horizontal && <span className='title'>scite_</span>}
 
-        <Row type='supporting' count={supporting} />
-        <Row type='mentioning' count={mentioning} />
-        <Row type='contradicting' count={contradicting} />
+        <Count type='supporting' count={supporting} horizontal={horizontal} />
+        <Count type='mentioning' count={mentioning} horizontal={horizontal} />
+        <Count type='contradicting' count={contradicting} horizontal={horizontal} />
       </div>
     )
   }
+}
+
+Tally.defaultProps = {
+  horizontal: true
 }
 
 export default Tally
