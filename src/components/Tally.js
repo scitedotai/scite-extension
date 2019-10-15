@@ -94,7 +94,7 @@ class Tally extends Component {
 }
 
 Tally.defaultProps = {
-  horizontal: true
+  horizontal: false
 }
 
 export default Tally

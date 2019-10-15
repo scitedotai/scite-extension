@@ -39,6 +39,7 @@
 .scite-tally.-horizontal {
     padding: 0 8px;
     flex-direction: row;
+    height: 100%;
 }
 
 .scite-tally.-show {
