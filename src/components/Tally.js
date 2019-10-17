@@ -58,8 +58,12 @@ class Tally extends Component {
   }
 
   get queryString () {
+    const { source, isBadge, campaign } = this.props
+
     const params = {
-      fromBadge: true
+      utm_medium: isBadge ? 'badge' : 'plugin',
+      utm_source: source || 'generic',
+      utm_campaign: campaign || 'badge_generic'
     }
 
     return qs.stringify(params)
@@ -94,7 +98,8 @@ class Tally extends Component {
 }
 
 Tally.defaultProps = {
-  horizontal: false
+  horizontal: false,
+  isBadge: false
 }
 
 export default Tally
