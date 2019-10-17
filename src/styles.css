@@ -112,6 +112,12 @@
     line-height: 1 !important;
 }
 
+/* Hack to override even more specific website styles
+ * than above */
+.scite-tally-count > .scite-icon {
+    font-family: 'scite-icons' !important;
+}
+
 .scite-icon-unclassified:before {
     content: "\e80a";
     color: #828179;
