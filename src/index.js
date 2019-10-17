@@ -8,12 +8,13 @@ import { h, render } from 'preact'
 import Tally from './components/Tally'
 
 const IS_DEV = typeof process !== 'undefined' && process.NODE_ENV === 'development'
-let devLog = IS_DEV ? console.log.bind(window) : function () {}
+const devLog = IS_DEV ? console.log.bind(window) : function () {}
+
+const docAsStr = document.documentElement.innerHTML
+const docTitle = document.title
+const myHost = window.location.hostname
 
 let poppedUp = false
-let docAsStr = document.documentElement.innerHTML
-let docTitle = document.title
-let myHost = window.location.hostname
 
 function runRegexOnDoc (re, host) {
   // @re regex that has a submatch in it that we're searching for, like /foo(.+?)bar/
@@ -68,7 +69,7 @@ function findDoiFromMetaTags () {
 
     // content has to look like a  DOI.
     // much room for improvement here.
-    let doiCandidate = myMeta.content.replace('doi:', '').trim()
+    const doiCandidate = myMeta.content.replace('doi:', '').trim()
     if (doiCandidate.indexOf('10.') === 0) {
       doi = doiCandidate
     }
@@ -88,7 +89,7 @@ function findDoiFromDataDoiAttributes () {
   const dataDoiValues = []
   const dataDoiNodes = document.querySelectorAll('*[data-doi]')
   dataDoiNodes.forEach(function (node) {
-    dataDoiValues.push(node.dataset['doi'])
+    dataDoiValues.push(node.dataset.doi)
   })
 
   // if there are multiple unique DOIs, we're on some kind of TOC page,
@@ -106,14 +107,12 @@ function findDoiFromDataDoiAttributes () {
 // eg: http://www.sciencedirect.com/science/article/pii/S1751157709000881 (green)
 // eg: http://www.sciencedirect.com/science/article/pii/S0742051X16306692
 function findDoiFromScienceDirect () {
-  let doi
-
   if (myHost.indexOf('sciencedirect') < 0) {
     return null
   }
 
   // the old version of ScienceDirect requires a hack to read DOI from js var
-  doi = runRegexOnDoc(/SDM.doi\s*=\s*'([^']+)'/)
+  const doi = runRegexOnDoc(/SDM.doi\s*=\s*'([^']+)'/)
   if (doi) {
     return doi
   }
@@ -121,7 +120,7 @@ function findDoiFromScienceDirect () {
   // the new React-based version of ScienceDirect pages
   const doiLinkElem = document.querySelectorAll('a.doi')
   if (doiLinkElem.length) {
-    let m = doiLinkElem[0].innerHTML.match(/doi\.org\/(.+)/)
+    const m = doiLinkElem[0].innerHTML.match(/doi\.org\/(.+)/)
     if (m && m.length > 1) {
       return m[1]
     }
@@ -154,20 +153,20 @@ function findDoiFromPubmed () {
 
 function findDoiFromPsycnet () {
   // gray: http://psycnet.apa.org/record/2000-13328-008
-  let re = /href='\/doi\/10\.(.+)/
+  const re = /href='\/doi\/10\.(.+)/
   return runRegexOnDoc(re, 'psycnet.apa.org')
 }
 
 function findDoiFromTitle () {
   // Crossref DOI regex. See https://www.crossref.org/blog/dois-and-matching-regular-expressions/
-  let re = /(10.\d{4,9}\/[-._;()\/:A-Z0-9]+)/ig
-  let doi = docTitle.match(re)
+  const re = /(10.\d{4,9}\/[-._;()/:A-Z0-9]+)/ig
+  const doi = docTitle.match(re)
   return doi ? doi[0] : null
 }
 
 function findDoi () {
   // we try each of these functions, in order, to get a DOI from the page.
-  let doiFinderFunctions = [
+  const doiFinderFunctions = [
     findDoiFromMetaTags,
     findDoiFromDataDoiAttributes,
     findDoiFromScienceDirect,
@@ -179,7 +178,7 @@ function findDoi () {
   ]
 
   for (let i = 0; i < doiFinderFunctions.length; i++) {
-    let myDoi = doiFinderFunctions[i]()
+    const myDoi = doiFinderFunctions[i]()
     if (myDoi) {
       // if we find a good DOI, stop looking
       return myDoi
