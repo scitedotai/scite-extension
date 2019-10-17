@@ -56,6 +56,7 @@
     font-weight: bold;
     margin-bottom: 8px;
     font-size: 20.8px;
+    white-space: nowrap;
 }
 
 .scite-tally-count {
