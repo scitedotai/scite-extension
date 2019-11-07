@@ -88,11 +88,11 @@ class Tally extends Component {
   }
 
   render () {
-    const { horizontal } = this.props
+    const { horizontal, showZero } = this.props
     const { tally } = this.state
     const classes = classNames('scite-tally', {
       '-horizontal': horizontal,
-      '-show': tally
+      '-show': showZero ? tally : tally && tally.total > 0
     })
     const supporting = (tally && tally.supporting) || 0
     const contradicting = (tally && tally.contradicting) || 0
@@ -112,7 +112,8 @@ class Tally extends Component {
 
 Tally.defaultProps = {
   horizontal: false,
-  isBadge: false
+  isBadge: false,
+  showZero: true
 }
 
 export default Tally
