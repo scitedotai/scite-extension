@@ -47,6 +47,7 @@ class Tally extends Component {
               total: 0
             }
           })
+          return {}
         }
 
         if (!response.ok) {
