@@ -22,7 +22,9 @@ class Tally extends Component {
   constructor (props) {
     super(props)
 
-    this.state = {}
+    this.state = {
+      tally: null
+    }
     this.handleClick = this.handleClick.bind(this)
   }
 
@@ -37,6 +39,16 @@ class Tally extends Component {
 
     fetch(`https://api.scite.ai/tallies/${doi}`)
       .then(response => {
+        if (response.status === 404) {
+          // Then we will set a 0 tally
+          this.setState({
+            tally: {
+              doi,
+              total: 0
+            }
+          })
+        }
+
         if (!response.ok) {
           throw fetchFailed
         }
