@@ -116,7 +116,8 @@ class Tally extends Component {
       })
       .then(tally => {
         if (typeof tally.total === 'number') {
-          this.setState({ tally })
+          /* scheduleUpdate hack needed to get the position right for me */
+          this.setState({ tally }, () => this.scheduleUpdate && this.scheduleUpdate())
         }
       })
       .catch(e => {
@@ -182,12 +183,16 @@ class Tally extends Component {
         </Reference>
 
         <Popper placement='top'>
-          {({ ref, style, placement, arrowProps }) => (
-            <div className={classes.tooltip} ref={ref} style={style} data-placement={placement} onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
-              <TooltipContent tally={tally} />
-              <div className='scite-tooltip-arrow' ref={arrowProps.ref} style={arrowProps.style} />
-            </div>
-          )}
+          {({ ref, style, placement, arrowProps, scheduleUpdate }) => {
+            /* Hack needed to get the position right for me */
+            this.scheduleUpdate = scheduleUpdate
+
+            return (
+              <div className={classes.tooltip} ref={ref} style={style} data-placement={placement} onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
+                <TooltipContent tally={tally} />
+                <div className='scite-tooltip-arrow' ref={arrowProps.ref} style={arrowProps.style} />
+              </div>
+            )}}
         </Popper>
       </Manager>
     )
