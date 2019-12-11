@@ -7,8 +7,6 @@
 
     border-radius: 8px 0 0 8px;
     border: 1px solid #cfcfcf;
-    border-right: none;
-    overflow: hidden;
 }
 
 .scite-tally * {
@@ -25,8 +23,15 @@
     background-color: white;
     font-family: "Circular";
 
+    /* Something of a hack so we can avoid
+       setting overflow: 'hidden' on the
+       outer div whilst having a tooltip
+       translated outside of it */
+    border-radius: 8px 0 0 8px;
+
     cursor: pointer;
 
+    will-change: opacity, background-color;
     transition: all 200ms ease-in-out;
 
     opacity: 0;
@@ -77,6 +82,42 @@
 
 .scite-tally-count.-horizontal > .number {
     margin-left: 8px;
+}
+
+.scite-tooltip {
+    opacity: 0;
+    will-change: opacity;
+    transition: opacity 200ms ease-in-out;
+}
+
+.scite-tooltip.-show {
+    opacity: 1;
+}
+
+.scite-tooltip-arrow {
+    border-width: 5px 5px 0 5px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    position: absolute;
+    margin: 5px;
+    border-color: black;
+    border-color: rgba(0, 0 , 0, 0.9);
+}
+
+
+.scite-tooltip[data-placement="top"] {
+    margin-bottom: 8px;
+}
+
+.scite-tooltip[data-placement="top"] > .scite-tooltip-arrow {
+    border-width: 5px 5px 0 5px;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    bottom: -5px;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 /* Typography/icon font */
