@@ -4,8 +4,10 @@
 
 import 'whatwg-fetch'
 
-import { h, render } from 'preact'
+import React from 'react'
+import { render } from 'react-dom'
 import Tally from './components/Tally'
+import './styles/index.css'
 
 const IS_DEV = typeof process !== 'undefined' && process.NODE_ENV === 'development'
 const devLog = IS_DEV ? console.log.bind(window) : function () {}

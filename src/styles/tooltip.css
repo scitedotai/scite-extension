@@ -1,0 +1,97 @@
+.scite-tooltip {
+    font-family: "Circular";
+
+    opacity: 0;
+    pointer-events: none;
+    will-change: opacity;
+    transition: opacity 200ms ease-in-out;
+
+    padding: 12px;
+
+    border: 1px solid #ebebeb;
+    background-color: white;
+    box-shadow: 0px 0px 37px 0px rgba(0,0,0,0.15);
+
+    z-index: 9999;
+
+    max-width: 400px;
+}
+
+.scite-tooltip.-show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.scite-tooltip-arrow {
+    border-width: 10px 10px 0 10px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    position: absolute;
+    margin: 10px;
+    border-color: white;
+}
+
+
+.scite-tooltip[data-placement="top"] {
+    margin-bottom: 4px;
+}
+
+.scite-tooltip[data-placement="top"] > .scite-tooltip-arrow {
+    border-width: 10px 10px 0 10px;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    bottom: -10px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.scite-tooltip[data-placement="bottom"] {
+    margin-top: 4px;
+}
+
+.scite-tooltip[data-placement="bottom"] > .scite-tooltip-arrow {
+    border-width: 0 10px 10px 10px;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-top-color: transparent;
+    top: -10px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.scite-tooltip-content {
+    font-size: 14px;
+}
+
+.scite-tooltip-content > .slogan {
+    margin-left: 8px;
+}
+
+.scite-tooltip-content > .tally {
+    margin-top: 12px;
+}
+
+.scite-tooltip-tally > .tally {
+    display: inline-block;
+    width: 50px;
+}
+
+.scite-tooltip-tally > .labels {
+    display: inline-block;
+}
+
+.scite-tally-labels > .label {
+    display: block;
+    margin-left: 8px;
+}
+
+.scite-tooltip-content > .button {
+    margin-top: 12px;
+    font-weight: bold;
+}
+
+.scite-tooltip-message {
+    color: #828179;
+}

@@ -1,0 +1,57 @@
+@font-face {
+    font-family: "Circular";
+
+    src: url("https://scite-production.azureedge.net/assets/fonts/circular/circular-book.eot?#iefix") format("embedded-opentype"),
+         url("https://scite-production.azureedge.net/assets/fonts/circular/circular-book.woff2") format("woff2"),
+         url("https://scite-production.azureedge.net/assets/fonts/circular/circular-book.woff") format("woff"),
+         url("https://scite-production.azureedge.net/assets/fonts/circular/circular-book.ttf") format("truetype");
+}
+
+
+@font-face {
+  font-family: 'scite-icons';
+  src: url('https://scite-production.azureedge.net/assets/fonts/scite-icons/scite-icons.eot?68837754');
+  src: url('https://scite-production.azureedge.net/assets/fonts/scite-icons/scite-icons.eot?68837754#iefix') format('embedded-opentype'),
+       url('https://scite-production.azureedge.net/assets/fonts/scite-icons/scite-icons.woff2?68837754') format('woff2'),
+       url('https://scite-production.azureedge.net/assets/fonts/scite-icons/scite-icons.woff?68837754') format('woff'),
+       url('https://scite-production.azureedge.net/assets/fonts/scite-icons/scite-icons.ttf?68837754') format('truetype'),
+       url('https://scite-production.azureedge.net/assets/fonts/scite-icons/scite-icons.svg?68837754#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.scite-icon {
+    font-family: 'scite-icons' !important;
+    speak: none;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-variant: normal !important;
+    text-transform: none !important;
+    line-height: 1 !important;
+}
+
+/* Hack to override even more specific website styles
+ * than above */
+.scite-tally-count > .scite-icon {
+    font-family: 'scite-icons' !important;
+}
+
+.scite-icon-unclassified:before {
+    content: "\e80a";
+    color: #828179;
+}
+
+.scite-icon-contradicting:before {
+    content: "\e80a";
+    color: #F39C12;
+}
+
+.scite-icon-mentioning:before {
+    content: "\e902";
+    color: #393F43;
+}
+
+.scite-icon-supporting:before {
+    content: "\e903";
+    color: #2ECC71;
+}

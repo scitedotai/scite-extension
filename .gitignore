@@ -1,7 +1,7 @@
 dist
 extension/index.js
 extension/background.js
-extension/styles.css
+extension/index.css
 node_modules
 .cache
 npm-debug.log
