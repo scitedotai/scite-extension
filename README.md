@@ -26,3 +26,8 @@ $ npm run dev
 Go to `http://localhost:8001`
 
 Note you will probabaly want to disable the 'real' extension if you have it installed! Otherwise they can conflict...
+
+
+## Scite API Terms ##
+
+https://scite.ai/apiterms
