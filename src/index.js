@@ -1,9 +1,6 @@
 /*
  * Adapted from: https://github.com/Impactstory/unpaywall
  */
-
-import 'whatwg-fetch'
-
 import React from 'react'
 import { render } from 'react-dom'
 import { Tally } from 'scite-widget'
