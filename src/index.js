@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import { render } from 'react-dom'
-import { Tally } from 'scite-widget'
+import { Tally, TallyLoader } from 'scite-widget'
 import './styles/index.css'
 import 'scite-widget/lib/main.css'
 
@@ -196,7 +196,14 @@ function popupDoi (doi) {
   popup.id = 'scite-popup-app'
 
   document.documentElement.appendChild(popup)
-  render(<Tally doi={doi} />, popup)
+  render(
+    (
+      <TallyLoader doi={doi}>
+        {({ tally }) => (
+          <Tally tally={tally} />
+        )}
+      </TallyLoader>
+    ), popup)
   poppedUp = true
 }
 
