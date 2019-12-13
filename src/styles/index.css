@@ -1,7 +1,3 @@
-@import './tally.css';
-@import './tooltip.css';
-@import './typography.css';
-
 #scite-popup-app {
     z-index: 9999999999;
 
@@ -12,28 +8,3 @@
     border-radius: 8px 0 0 8px;
     border: 1px solid #cfcfcf;
 }
-
-.scite-title {
-    font-weight: bold;
-    font-size: 20.8px;
-    white-space: nowrap;
-}
-
-.scite-button {
-    display: inline-block;
-    background-color: #007aff;;
-
-    border-radius: 20px;
-
-    padding: 4px 8px;
-
-    color: white;
-    text-decoration: none;
-
-    transition: background-color 200ms ease-in-out;
-}
-
-.scite-button:hover {
-    background-color: #4da3ff;
-}
-
