@@ -19,10 +19,10 @@
   "author": "Milo Mordaunt <milo@scite.ai>",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.8.3",
-    "@babel/core": "^7.8.3",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.4",
     "@babel/plugin-transform-react-jsx": "^7.8.3",
-    "@babel/preset-env": "^7.8.3",
+    "@babel/preset-env": "^7.8.4",
     "parcel-bundler": "^1.12.4"
   },
   "dependencies": {
