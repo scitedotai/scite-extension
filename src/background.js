@@ -10,3 +10,14 @@ browser.runtime.onInstalled.addListener(function (details) {
     })
   }
 })
+
+browser.runtime.onMessageExternal.addListener((message, _sender, sendResponse) => {
+  if (message === 'version') {
+    const manifest = browser.runtime.getManifest()
+    sendResponse({
+      type: 'success',
+      version: manifest.version
+    })
+  }
+  return true
+})

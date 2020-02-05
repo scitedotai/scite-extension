@@ -1,7 +1,7 @@
 {
   "name": "Scite",
   "author": "Scite Inc.",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "manifest_version": 2,
   "description": "See scite info around the web",
   "icons": {
@@ -10,11 +10,6 @@
     "48": "images/icons/48.png",
     "64": "images/icons/64.png",
     "128": "images/icons/128.png"
-  },
-  "applications": {
-    "gecko": {
-      "strict_min_version": "53.0"
-    }
   },
   "content_scripts": [
     {
@@ -31,6 +26,12 @@
   ],
   "background" : {
     "scripts" : ["background.js"]
+  },
+  "externally_connectable": {
+    "matches": [
+      "*://*.scite.ai/*",
+      "*://localhost/*"
+    ]
   },
   "permissions": [
     "https://api.scite.ai/*",
