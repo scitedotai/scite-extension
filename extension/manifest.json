@@ -34,7 +34,6 @@
     ]
   },
   "permissions": [
-    "https://api.scite.ai/*",
-    "activeTab"
+    "https://api.scite.ai/*"
   ]
 }
