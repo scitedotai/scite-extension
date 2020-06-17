@@ -4,8 +4,11 @@
 
 import 'whatwg-fetch'
 
-import { h, render } from 'preact'
-import Tally from './components/Tally'
+import React from 'react'
+import { render } from 'react-dom'
+import { Tally, TallyLoader } from 'scite-widget'
+import 'scite-widget/lib/main.css'
+import styles from './styles.css'
 
 const IS_DEV = typeof process !== 'undefined' && process.NODE_ENV === 'development'
 const devLog = IS_DEV ? console.log.bind(window) : function () {}
@@ -193,10 +196,19 @@ function popupDoi (doi) {
     return false
   }
   popup.scrolling = 'no'
-  popup.id = 'scite-popup-app'
+  popup.className = styles.sciteApp
 
   document.documentElement.appendChild(popup)
-  render(<Tally doi={doi} />, popup)
+  render(
+    (
+      <TallyLoader doi={doi}>
+        {({ tally }) => (
+          <Tally tally={tally} />
+        )}
+      </TallyLoader>
+    ),
+    popup
+  )
   poppedUp = true
 }
 
