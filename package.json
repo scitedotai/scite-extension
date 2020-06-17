@@ -1,6 +1,6 @@
 {
   "name": "scite-extension",
-  "version": "1.5.1",
+  "version": "1.7.0",
   "description": "scite inc web extension",
   "main": "index.js",
   "scripts": {
