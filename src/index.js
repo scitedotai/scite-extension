@@ -213,6 +213,10 @@ function popupDoi (doi) {
 }
 
 function main () {
+  if (window.location.host === 'scite.ai') {
+    return
+  }
+
   const doi = findDoi()
 
   if (!doi) {

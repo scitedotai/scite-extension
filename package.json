@@ -28,10 +28,11 @@
   },
   "dependencies": {
     "classnames": "^2.2.6",
+    "preact": "^10.4.8",
     "query-string": "^5.1.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "scite-widget": "github:scitedotai/scite-widget#GH1095",
+    "scite-widget": "github:scitedotai/scite-widget#master",
     "whatwg-fetch": "^3.0.0"
   }
 }

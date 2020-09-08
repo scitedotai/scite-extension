@@ -1,7 +1,16 @@
 import { h, render } from 'preact'
-import Tally from './components/Tally'
+import { Tally, TallyLoader } from 'scite-widget'
 
 const doi = '10.1016/j.biopsych.2005.08.012'
 const popup = document.querySelector('#scite-popup-app')
 
-render(<Tally doi={doi} />, popup)
+render(
+  (
+    <TallyLoader doi={doi}>
+      {({ tally }) => (
+        <Tally tally={tally} />
+      )}
+    </TallyLoader>
+  ),
+  popup
+)
