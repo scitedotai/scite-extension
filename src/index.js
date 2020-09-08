@@ -13,6 +13,13 @@ import styles from './styles.css'
 const IS_DEV = typeof process !== 'undefined' && process.NODE_ENV === 'development'
 const devLog = IS_DEV ? console.log.bind(window) : function () {}
 
+
+const BLACKLISTED_HOSTS = [
+  'scite.ai',
+  'staging.scite.ai'
+]
+
+
 const docAsStr = document.documentElement.innerHTML
 const docTitle = document.title
 const myHost = window.location.hostname
@@ -213,7 +220,7 @@ function popupDoi (doi) {
 }
 
 function main () {
-  if (window.location.host === 'scite.ai') {
+  if (BLACKLISTED_HOSTS.includes(myHost)) {
     return
   }
 
