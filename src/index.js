@@ -14,9 +14,10 @@ const IS_DEV = typeof process !== 'undefined' && process.NODE_ENV === 'developme
 const devLog = IS_DEV ? console.log.bind(window) : function () {}
 
 
-const BLACKLISTED_HOSTS = [
+const SCITE_HOSTS = [
   'scite.ai',
-  'staging.scite.ai'
+  'staging.scite.ai',
+  'localhost'
 ]
 
 
@@ -219,8 +220,18 @@ function popupDoi (doi) {
   poppedUp = true
 }
 
+function markPage () {
+  const marker = document.createElement('div')
+  marker.id = 'scite-extension-marker'
+  document.body.appendChild(marker)
+
+  const extensionLoadEvent = new Event('scite-extension/loaded');
+  window.dispatchEvent(extensionLoadEvent)
+}
+
 function main () {
-  if (BLACKLISTED_HOSTS.includes(myHost)) {
+  if (SCITE_HOSTS.includes(myHost)) {
+    markPage()
     return
   }
 
