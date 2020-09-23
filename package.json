@@ -4,7 +4,6 @@
   "description": "scite inc web extension",
   "main": "index.js",
   "scripts": {
-    "dev": "parcel src/test.js",
     "build": "./build.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
