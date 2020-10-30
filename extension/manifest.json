@@ -3,7 +3,7 @@
   "author": "Scite Inc.",
   "version": "1.10.0",
   "manifest_version": 2,
-  "description": "scite allow users to see how a scientific paper has been cited by providing the context of the citation and a classification describing whether it provides supporting or disputing evidence for the cited claim",
+  "description": "scite allows users to see how a scientific paper has been cited, providing the citation context and accompanying classification",
   "icons": {
     "16": "images/icons/16.png",
     "32": "images/icons/32.png",
