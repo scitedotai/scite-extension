@@ -15,8 +15,7 @@ Use the build you have run to sideload into firefox and chrome to test the exten
 
 ## Releasing ##
 
-1. Bump the version in `package.json` and `manifest.json`
-
+1. Bump the version in `package.json` and `manifest.json` and commit
 2. Tag the release (e.g.):
 
 ```bash
