@@ -210,8 +210,8 @@ function popupDoi (doi) {
   render(
     (
       <TallyLoader doi={doi}>
-        {({ tally }) => (
-          <Tally tally={tally} />
+        {({ tally, notices }) => (
+          <Tally tally={tally} notices={notices} />
         )}
       </TallyLoader>
     ),
