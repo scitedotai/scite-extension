@@ -11,7 +11,18 @@ Then the extension is in `extension`
 
 ## Developing ##
 
-Use the build you have run to sideload into firefox and chrome to test the extension
+For local development you can use [web-ext](https://github.com/mozilla/web-ext) which will run the extension in a browser and reload any change to the build. You can manually build like above or use `npm run watch build` to automatically build any changes you make to src.
+```
+$ npm run dev # run web-ext
+$ npm run watch build # build any changes you make to src.
+```
+
+Use web-ext lint to lint your changes
+```
+$ npm run lint
+```
+
+Once you are ready to deploy you may use the build you have run to sideload into firefox and chrome to test the extension to check that works.
 
 ## Releasing ##
 
