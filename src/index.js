@@ -268,7 +268,7 @@ function insertBadges() {
   }
 
   for (let el of els) {
-    el.citeEl.insertAdjacentHTML('afterend', `<div class="scite-badge" data-doi="${el.doi}" data-layout="horizontal" />`)
+    el.citeEl.insertAdjacentHTML('afterend', `<div class="scite-badge" data-doi="${el.doi}" data-layout="horizontal" data-small="true"/>`)
   }
 
   // if we have dois then add badge to them.

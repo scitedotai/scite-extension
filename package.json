@@ -8,7 +8,7 @@
   },
   "scripts": {
     "lint": "web-ext lint",
-    "dev": "web-ext run",
+    "dev": "web-ext run -s ./extension",
     "build": "./build.sh",
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "npm-watch"
