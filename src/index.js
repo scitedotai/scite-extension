@@ -9,6 +9,7 @@ import { render } from 'react-dom'
 import { Tally, TallyLoader } from 'scite-widget'
 import 'scite-widget/lib/main.css'
 import styles from './styles.css'
+import insertBadges from './badges'
 
 const IS_DEV = typeof process !== 'undefined' && process.NODE_ENV === 'development'
 const devLog = IS_DEV ? console.log.bind(window) : function () {}
@@ -19,17 +20,6 @@ const SCITE_HOSTS = [
   'staging.scite.ai',
   'localhost'
 ]
-
-const BADGE_SCRIPT = `
-<style>
-.scite-badge {
-  margin-left: 0.25rem;
-}
-</style>
-<link rel="stylesheet" type="text/css" href="https://cdn.scite.ai/badge/scite-badge-latest.min.css">
-<script async type="application/javascript" src="https://cdn.scite.ai/badge/scite-badge-latest.min.js">
-</script>`
-
 
 const docAsStr = document.documentElement.innerHTML
 const docTitle = document.title
@@ -237,47 +227,6 @@ function markPage () {
 
   const extensionLoadEvent = new Event('scite-extension/loaded');
   window.dispatchEvent(extensionLoadEvent)
-}
-
-// findWikipediaDOIEls looks in cite tags for anchors that link to doi.org and have a doi.
-function findWikipediaDOIEls() {
-  els = []
-  const cites = document.body.querySelectorAll('cite')
-  for (let cite of cites) {
-    const anchors = cite.querySelectorAll('a')
-    for (let anchor of anchors) {
-      if(anchor.href.match(/doi\.org\/(.+)/) && anchor.textContent.match(/10\.(.+)/)) {
-        els.push({
-          citeEl: cite,
-          doi: anchor.textContent
-        })
-      }
-    }
-  }
-  return els
-}
-
-function insertBadges() {
-  if (!myHost.includes('wikipedia.org')) {
-    return
-  }
-
-  const els = findWikipediaDOIEls()
-  if (els.length <= 0) {
-    return
-  }
-
-  for (let el of els) {
-    el.citeEl.insertAdjacentHTML('afterend', `<div class="scite-badge" data-doi="${el.doi}" data-layout="horizontal" data-small="true"/>`)
-  }
-
-  // if we have dois then add badge to them.
-  // use range and contextual fragment so the script gets executed.
-  const range = document.createRange()
-  range.setStart(document.documentElement, 0)
-  document.documentElement.appendChild(
-    range.createContextualFragment(BADGE_SCRIPT)
-  )
 }
 
 function main () {
