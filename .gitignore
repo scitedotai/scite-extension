@@ -5,3 +5,4 @@ extension/styles.css
 node_modules
 .cache
 npm-debug.log
+web-ext-artifacts
