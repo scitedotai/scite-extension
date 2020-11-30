@@ -24,6 +24,7 @@ const BADGE_SCRIPT = `
 <style>
 .scite-badge {
   margin-left: 0.25rem;
+  text-indent: 0;
 }
 </style>
 <link rel="stylesheet" type="text/css" href="https://cdn.scite.ai/badge/scite-badge-latest.min.css">
