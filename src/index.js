@@ -262,7 +262,8 @@ function runWithDelay () {
   // Single-page apps take a while to fully load all the HTML,
   // and until they do we can't find the DOI
   var longDelayHosts = [
-    'psycnet.apa.org'
+    'psycnet.apa.org',
+    'www.sciencedirect.com'
   ]
 
   // it would be better to poll, but that is more complicated and we don't

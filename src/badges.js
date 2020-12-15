@@ -56,10 +56,12 @@ function removeElementsByClass(className){
  */
 function addPMSeeAllReferencesListener() {
   const showAll = document.body.querySelector('.show-all')
-  showAll.addEventListener("click", () => {
-    removeElementsByClass('scite-badge')
-    setTimeout(() => insertBadges(), 1000)
-  });
+  if (showAll) {
+    showAll.addEventListener("click", () => {
+      removeElementsByClass('scite-badge')
+      setTimeout(() => insertBadges(), 1000)
+    });
+  }
 }
 
 /**
@@ -136,6 +138,34 @@ function findWikipediaDOIEls() {
   return els
 }
 
+
+/**
+ * findScienceDirectDOIs looks in reference tags for anchors that link to doi.org and have a doi.
+ * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ */
+function findScienceDirectDOIs() {
+
+  const els = []
+  const cites = document.body.querySelectorAll('.reference')
+
+  for (let cite of cites) {
+  
+    const anchors = cite.querySelectorAll('a')
+    for (let anchor of anchors) {
+      const doi = anchor.href.match(/doi\.org\/(.+)/)
+
+      if (doi && doi.length > 1) {
+        els.push({
+          citeEl: cite,
+          doi: doi[1]
+        })
+      }
+    }
+  }
+  return els
+}
+
+
 const BADGE_SITES = [
   {
     name: 'wikipedia.org',
@@ -168,6 +198,11 @@ const BADGE_SITES = [
 }
 </style>    
 `
+  },
+  {
+    name: 'sciencedirect.com',
+    findDoiEls: findScienceDirectDOIs,
+    position: 'beforeend',
   }
 ]
 
@@ -183,6 +218,7 @@ export default function insertBadges() {
   }
 
   const els = badgeSite.findDoiEls()
+  console.log(els.length)
   if (!els || els.length <= 0) {
     return
   }
