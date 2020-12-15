@@ -166,6 +166,92 @@ function findScienceDirectDOIs() {
 }
 
 
+
+/**
+ * findELifeSciencesDOIs looks in doi tags that link to doi.org.
+ * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ */
+function findELifeSciencesDOIs() {
+  const els = []
+  const cites = document.body.querySelectorAll('.doi')
+  for (let cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (let anchor of anchors) {
+      const doi = anchor.href.match(/doi\.org\/(.+)/)
+      if (doi && doi.length > 1) {
+        els.push({
+          citeEl: cite,
+          doi: doi[1]
+        })
+      }
+    }
+  }
+  return els
+}
+
+
+/**
+ * findNatureDOIs looks in reference tags that link to doi.org.
+ * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ */
+function findNatureDOIs() {
+  const els = []
+  let cites = document.body.querySelectorAll('.c-article-references__links')
+  for (let cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (let anchor of anchors) {
+      const doi = anchor.href.match(/doi\.org\/(.+)/)
+      if (doi && doi.length > 1) {
+        els.push({
+          citeEl: cite,
+          doi: decodeURIComponent(doi[1])
+        })
+      }
+    }
+  }
+  cites = document.body.querySelectorAll('.c-reading-companion__reference-item')
+  for (let cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (let anchor of anchors) {
+      const doi = anchor.href.match(/doi\.org\/(.+)/)
+      if (doi && doi.length > 1) {
+        els.push({
+          citeEl: cite,
+          doi: decodeURIComponent(doi[1])
+        })
+      }
+    }
+  }
+  return els
+}
+
+
+/**
+ * findGoogleScholarDOIs looks in reference tags that link to doi.org.
+ * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ */
+function findGoogleScholarDOIs() {
+  const els = []
+  let cites = document.body.querySelectorAll('.gs_r')
+  for (let cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (let anchor of anchors) {
+      const doi = anchor.href.match(/10\.(.+)/)
+      if (doi && doi.length > 1) {
+        els.push({
+          citeEl: cite,
+          doi: decodeURIComponent(doi[0])
+        })
+        break
+      }
+    }
+  }
+  return els
+}
+
+
+
+
 const BADGE_SITES = [
   {
     name: 'wikipedia.org',
@@ -203,6 +289,49 @@ const BADGE_SITES = [
     name: 'sciencedirect.com',
     findDoiEls: findScienceDirectDOIs,
     position: 'beforeend',
+  },
+  {
+    name: 'elifesciences.org',
+    findDoiEls: findELifeSciencesDOIs,
+    position: 'afterend',
+    style: `
+    <style>
+    .scite-badge {
+      display: block;
+      width: min-content;
+      margin: 0.25rem 0;
+    }
+    </style>
+`
+  },
+  {
+    name: 'nature.com',
+    findDoiEls: findNatureDOIs,
+    position: 'afterend',
+    style: `
+    <style>
+    .scite-badge {
+      display: block;
+      width: min-content;
+      margin: 0.5rem 0;
+      margin-left: auto;
+    }
+    </style>
+`
+  },
+  {
+    name: 'scholar.google.com',
+    findDoiEls: findGoogleScholarDOIs,
+    position: 'afterend',
+    style: `
+    <style>
+    .scite-badge {
+      display: block;
+      width: min-content;
+      margin: 0.25rem 0;
+    }
+    </style>
+`
   }
 ]
 
