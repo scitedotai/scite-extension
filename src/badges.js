@@ -1,6 +1,6 @@
 const BADGE_SCRIPT = `
-<link rel="stylesheet" type="text/css" href="https://cdn.scite.ai/badge/scite-badge-v4.0.0.min.css">
-<script async type="application/javascript" src="https://cdn.scite.ai/badge/scite-badge-v4.0.0.min.js">
+<link rel="stylesheet" type="text/css" href="https://cdn.scite.ai/badge/scite-badge-latest.min.css">
+<script async type="application/javascript" src="https://cdn.scite.ai/badge/scite-badge-latest.min.js">
 </script>`
 
 function createBadge(doi) {
