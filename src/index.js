@@ -243,7 +243,6 @@ function main () {
   for (let site of DONT_POPUP_HOST) {
     // Incase the host has a sub domain like en.wikipedia or fr.wikipedia
     // we check a lesser substring with includes.
-    console.log(site, window.location.href)
     if (window.location.href.includes(site)) {
       return
     }
