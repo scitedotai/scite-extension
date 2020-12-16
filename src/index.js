@@ -269,12 +269,13 @@ function runWithDelay () {
     'onlinelibrary.wiley.com',
     'webofknowledge',
     'scopus',
+    'karger.com',
     'journals.plos.org'
   ]
 
   // it would be better to poll, but that is more complicated and we don't
   // have many reports of SPAs like this yet.
-  for (let host of longDelayHosts) {
+  for (const host of longDelayHosts) {
     if (myHost.includes(host)) {
       delay = 3000
     }

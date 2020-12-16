@@ -10,7 +10,7 @@
     "lint": "standard --verbose | snazzy && stylelint '**/*.css'",
     "lint:fix": "standard --fix | snazzy && stylelint --fix '**/*.css'",
     "lint:ext": "web-ext lint",
-    "dev": "web-ext run -s ./extension",
+    "dev": "web-ext run -s ./extension -t chromium",
     "build": "./build.sh",
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "npm-watch"

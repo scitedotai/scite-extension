@@ -80,18 +80,18 @@ function findPubMedCentralDOIEls () {
   for (const reference of references) {
     const re = /(10.\d{4,9}\/[-._;()/:A-Z0-9]+)/ig
     try {
-    const text = reference.textContent.match(re)
-    if (text && text.length > 0) {
-      els.push({
-        citeEl: reference,
-        // Pubmed puts a period at the end of their dois for biblographic display reasons.
-        // We must slice it.
-        doi: text[0].slice(0, -1)
-      })
+      const text = reference.textContent.match(re)
+      if (text && text.length > 0) {
+        els.push({
+          citeEl: reference,
+          // Pubmed puts a period at the end of their dois for biblographic display reasons.
+          // We must slice it.
+          doi: text[0].slice(0, -1)
+        })
+      }
+    } catch (e) {
+      console.error(e)
     }
-  }  catch (e) {
-    console.error(e)
-  }
   }
   return els
 }
@@ -386,7 +386,7 @@ function findSageDOIs () {
  */
 function findTandFDOIs () {
   const els = []
-  let cites = document.body.querySelectorAll("li")
+  let cites = document.body.querySelectorAll('li')
   for (const cite of cites) {
     const anchors = cite.querySelectorAll('a')
     for (const anchor of anchors) {
@@ -577,7 +577,7 @@ function findBioArxivDOIs () {
  */
 function findScienceDOIs () {
   const els = []
-  let cites = document.body.querySelectorAll('.ref-cit')
+  const cites = document.body.querySelectorAll('.ref-cit')
   for (const cite of cites) {
     const doi = cite.dataset.doi
     if (doi) {
@@ -596,7 +596,7 @@ function findScienceDOIs () {
  */
 function findWebOfKnowledgeDOIs () {
   const els = []
-  let cites = document.body.querySelectorAll('.search-results-content')
+  const cites = document.body.querySelectorAll('.search-results-content')
   for (const cite of cites) {
     const doi = cite.querySelector("[name='doi']")
     if (doi) {
@@ -618,7 +618,7 @@ function findScopusDOIs () {
   let cites = document.body.querySelectorAll('.searchArea')
   for (const cite of cites) {
     const doiEl = cite.querySelector('[data-doi]')
-    if (doiEl && doiEl.dataset &&  doiEl.dataset.doi) {
+    if (doiEl && doiEl.dataset && doiEl.dataset.doi) {
       els.push({
         citeEl: cite,
         doi: doiEl.dataset.doi
@@ -769,7 +769,7 @@ const BADGE_SITES = [
     <style>
     .scite-badge {
       display: block;
-      width: min-content;
+      width: max-content;
       margin: 0.5rem 0;
     }
     </style>
@@ -954,7 +954,7 @@ const BADGE_SITES = [
     }
     </style>
 `
-  },
+  }
 ]
 
 export default function insertBadges () {

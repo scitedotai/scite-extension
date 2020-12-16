@@ -160,6 +160,6 @@ Search: https://apps.webofknowledge.com/Search.do?product=WOS&SID=7FBJBRDYirSDUS
 
 #### Scopus
 
-Search: https://www-scopus-com.ezproxy.library.dal.ca/record/display.uri?eid=2-s2.0-33646397592&origin=resultslist&sort=cp-f&src=s&st1=metabolic+engineering&nlo=&nlr=&nls=&sid=78da5142899dfbe53b047930ef587457&sot=b&sdt=b&sl=36&s=TITLE-ABS-KEY%28metabolic+engineering%29&relpos=1&citeCnt=3356&searchTerm=
+Search: https://www-scopus-com.ezproxy.library.dal.ca/results/results.uri?cc=10&sort=cp-f&src=s&st1=metabolic+engineering&nlo=&nlr=&nls=&sid=256280b50670bb6505db827097fbdb2b&sot=b&sdt=b&sl=36&s=TITLE-ABS-KEY%28metabolic+engineering%29&ss=cp-f&ps=r-f&editSaveSearch=&origin=resultslist&zone=resultslist
 Result: https://www-scopus-com.ezproxy.library.dal.ca/record/display.uri?eid=2-s2.0-33646397592&origin=resultslist&sort=cp-f&src=s&st1=metabolic+engineering&nlo=&nlr=&nls=&sid=78da5142899dfbe53b047930ef587457&sot=b&sdt=b&sl=36&s=TITLE-ABS-KEY%28metabolic+engineering%29&relpos=1&citeCnt=3356&searchTerm=
 
