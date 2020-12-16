@@ -14,7 +14,6 @@ import insertBadges from './badges'
 const IS_DEV = typeof process !== 'undefined' && process.NODE_ENV === 'development'
 const devLog = IS_DEV ? console.log.bind(window) : function () {}
 
-
 const SCITE_HOSTS = [
   'scite.ai',
   'staging.scite.ai',
@@ -231,7 +230,7 @@ function markPage () {
   marker.id = 'scite-extension-marker'
   document.body.appendChild(marker)
 
-  const extensionLoadEvent = new Event('scite-extension/loaded');
+  const extensionLoadEvent = new Event('scite-extension/loaded')
   window.dispatchEvent(extensionLoadEvent)
 }
 
@@ -242,7 +241,7 @@ function main () {
   }
   insertBadges()
 
-  for (let site of DONT_POPUP_HOST) {
+  for (const site of DONT_POPUP_HOST) {
     // Incase the host has a sub domain like en.wikipedia or fr.wikipedia
     // we check a lesser substring with includes.
     if (window.location.href.includes(site)) {
@@ -259,11 +258,11 @@ function main () {
 }
 
 function runWithDelay () {
-  var delay = 200
+  let delay = 200
 
   // Single-page apps take a while to fully load all the HTML,
   // and until they do we can't find the DOI
-  var longDelayHosts = [
+  const longDelayHosts = [
     'psycnet.apa.org',
     'www.sciencedirect.com',
     'mdpi.com',
