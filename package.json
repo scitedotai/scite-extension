@@ -1,6 +1,6 @@
 {
   "name": "scite-extension",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "description": "scite allow users to see how a scientific paper has been cited by providing the context of the citation and a classification describing whether it provides supporting or disputing evidence for the cited claim",
   "main": "index.js",
   "watch": {
