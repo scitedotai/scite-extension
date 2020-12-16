@@ -266,13 +266,18 @@ function runWithDelay () {
     'psycnet.apa.org',
     'www.sciencedirect.com',
     'mdpi.com',
-    'onlinelibrary.wiley.com'
+    'onlinelibrary.wiley.com',
+    'webofknowledge',
+    'scopus',
+    'journals.plos.org'
   ]
 
   // it would be better to poll, but that is more complicated and we don't
   // have many reports of SPAs like this yet.
-  if (longDelayHosts.includes(myHost)) {
-    delay = 3000
+  for (let host of longDelayHosts) {
+    if (myHost.includes(host)) {
+      delay = 3000
+    }
   }
   setTimeout(main, delay)
 }

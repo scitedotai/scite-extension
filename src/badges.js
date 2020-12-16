@@ -79,6 +79,7 @@ function findPubMedCentralDOIEls () {
   const references = [...document.body.querySelectorAll('.element-citation'), document.body.querySelectorAll('.mixed-citation')]
   for (const reference of references) {
     const re = /(10.\d{4,9}\/[-._;()/:A-Z0-9]+)/ig
+    try {
     const text = reference.textContent.match(re)
     if (text && text.length > 0) {
       els.push({
@@ -88,6 +89,9 @@ function findPubMedCentralDOIEls () {
         doi: text[0].slice(0, -1)
       })
     }
+  }  catch (e) {
+    console.error(e)
+  }
   }
   return els
 }
@@ -203,35 +207,12 @@ function findSpringerDOIs () {
 }
 
 /**
- * findGoogleScholarDOIs looks in reference tags that has doi.
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
- */
-function findGoogleScholarDOIs () {
-  const els = []
-  const cites = document.body.querySelectorAll('.gs_r')
-  for (const cite of cites) {
-    const anchors = cite.querySelectorAll('a')
-    for (const anchor of anchors) {
-      const doi = anchor.href.match(/10\.(.+)/)
-      if (doi && doi.length > 1) {
-        els.push({
-          citeEl: cite,
-          doi: decodeURIComponent(doi[0])
-        })
-        break
-      }
-    }
-  }
-  return els
-}
-
-/**
  * findGoogleDOIs looks in reference tags that link has doi.
  * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
  */
 function findGoogleDOIs () {
   const els = []
-  const cites = document.body.querySelectorAll('.rc')
+  const cites = [...document.body.querySelectorAll('.rc'), ...document.body.querySelectorAll('.gs_r')]
   for (const cite of cites) {
     const anchors = cite.querySelectorAll('a')
     for (const anchor of anchors) {
@@ -339,7 +320,7 @@ function findACSDOIs () {
  */
 function findMDPIDOIs () {
   const els = []
-  const cites = document.body.querySelectorAll('.article-item')
+  const cites = [...document.body.querySelectorAll('.article-item'), ...document.body.querySelectorAll('.html-x')]
   for (const cite of cites) {
     const anchors = cite.querySelectorAll('a')
     for (const anchor of anchors) {
@@ -405,7 +386,7 @@ function findSageDOIs () {
  */
 function findTandFDOIs () {
   const els = []
-  let cites = document.body.querySelectorAll("li[id*='CIT']")
+  let cites = document.body.querySelectorAll("li")
   for (const cite of cites) {
     const anchors = cite.querySelectorAll('a')
     for (const anchor of anchors) {
@@ -415,6 +396,7 @@ function findTandFDOIs () {
           citeEl: cite,
           doi: qs.key
         })
+        break
       }
     }
   }
@@ -590,28 +572,67 @@ function findBioArxivDOIs () {
 }
 
 /**
- * findSPIEDOIs looks in reference tags that link to doi.org.
+ * findScienceDOIs looks in reference tags that link to doi.org.
  * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
  */
-function findPsyArxivDOIs () {
+function findScienceDOIs () {
   const els = []
-  let cites = document.body.querySelectorAll('.highwire-cite-metadata-doi')
-  for (const cite of cites) {
-    const text = cite.textContent.match(/doi\.org\/(.+)/)
-    if (text && text.length > 0) {
-      els.push({
-        citeEl: cite,
-        doi: text[1].trim()
-      })
-    }
-  }
-  cites = document.body.querySelectorAll('.ref-cit')
+  let cites = document.body.querySelectorAll('.ref-cit')
   for (const cite of cites) {
     const doi = cite.dataset.doi
     if (doi) {
       els.push({
         citeEl: cite,
         doi
+      })
+    }
+  }
+  return els
+}
+
+/**
+ * findWebOfKnowledgeDOIs looks in reference tags that link to doi.org.
+ * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ */
+function findWebOfKnowledgeDOIs () {
+  const els = []
+  let cites = document.body.querySelectorAll('.search-results-content')
+  for (const cite of cites) {
+    const doi = cite.querySelector("[name='doi']")
+    if (doi) {
+      els.push({
+        citeEl: cite,
+        doi: doi.textContent
+      })
+    }
+  }
+  return els
+}
+
+/**
+ * findScopusDOIs looks in reference tags that link to doi.org.
+ * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ */
+function findScopusDOIs () {
+  const els = []
+  let cites = document.body.querySelectorAll('.searchArea')
+  for (const cite of cites) {
+    const doiEl = cite.querySelector('[data-doi]')
+    if (doiEl && doiEl.dataset &&  doiEl.dataset.doi) {
+      els.push({
+        citeEl: cite,
+        doi: doiEl.dataset.doi
+      })
+    }
+  }
+  cites = document.body.querySelectorAll('.refCont')
+  for (const cite of cites) {
+    const re = /(10.\d{4,9}\/[-._;()/:A-Z0-9]+)/ig
+    const text = cite.textContent.match(re)
+    if (text && text.length > 0 && text[0]) {
+      els.push({
+        citeEl: cite,
+        doi: text[0].trim()
       })
     }
   }
@@ -648,7 +669,7 @@ const BADGE_SITES = [
   width: min-content;
   margin-top: 0.25rem;
 }
-</style>    
+</style>
 `
   },
   {
@@ -687,7 +708,7 @@ const BADGE_SITES = [
   },
   {
     name: 'scholar.google.com',
-    findDoiEls: findGoogleScholarDOIs,
+    findDoiEls: findGoogleDOIs,
     position: 'afterend',
     style: `
     <style>
@@ -889,8 +910,8 @@ const BADGE_SITES = [
 `
   },
   {
-    name: 'psyarxiv.org',
-    findDoiEls: findPsyArxivDOIs,
+    name: 'sciencemag.org',
+    findDoiEls: findScienceDOIs,
     position: 'afterend',
     style: `
     <style>
@@ -905,7 +926,35 @@ const BADGE_SITES = [
     }
     </style>
 `
-  }
+  },
+  {
+    name: 'webofknowledge',
+    findDoiEls: findWebOfKnowledgeDOIs,
+    position: 'afterend',
+    style: `
+    <style>
+    .scite-badge {
+      display: block !important;
+      margin: 0.25rem 0 !important;
+      width: max-content !important;
+    }
+    </style>
+`
+  },
+  {
+    name: 'scopus',
+    findDoiEls: findScopusDOIs,
+    position: 'afterend',
+    style: `
+    <style>
+    .scite-badge {
+      display: block !important;
+      margin: 0.25rem 0 !important;
+      width: max-content !important;
+    }
+    </style>
+`
+  },
 ]
 
 export default function insertBadges () {
