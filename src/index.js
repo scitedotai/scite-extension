@@ -22,7 +22,9 @@ const SCITE_HOSTS = [
 ]
 
 const DONT_POPUP_HOST = [
-  'wikipedia.org'
+  'wikipedia.org',
+  'scholar.google.com',
+  'google'
 ]
 
 const docAsStr = document.documentElement.innerHTML
@@ -263,7 +265,8 @@ function runWithDelay () {
   // and until they do we can't find the DOI
   var longDelayHosts = [
     'psycnet.apa.org',
-    'www.sciencedirect.com'
+    'www.sciencedirect.com',
+    'mdpi.com'
   ]
 
   // it would be better to poll, but that is more complicated and we don't
