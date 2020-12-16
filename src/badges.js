@@ -463,6 +463,258 @@ function findSageDOIs() {
   return els
 }
 
+/**
+ * findTandFDOIs looks in reference tags that link to doi.org.
+ * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ */
+function findTandFDOIs() {
+  const els = []
+  let cites = document.body.querySelectorAll("li[id*='CIT']")
+  console.log(cites)
+  for (let cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (let anchor of anchors) {
+      const qs = queryString.parse(anchor.href)
+      console.log(qs)
+      if (qs && qs.key) {
+        els.push({
+          citeEl: cite,
+          doi: qs.key
+        })
+      }
+    }
+  }
+  cites = document.body.querySelectorAll(".citedByEntry")
+  for (let cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (let anchor of anchors) {
+      const doi = anchor.href.match(/doi\.org\/(.+)/)
+      if (doi && doi.length > 1) {
+        els.push({
+          citeEl: cite,
+          doi: decodeURIComponent(doi[1])
+        })
+      }
+    }
+  }
+  cites = document.body.querySelectorAll(".searchResultItem")
+  for (let cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (let anchor of anchors) {
+      let doi = anchor.href.match(/doi\/full\/(.+)/)
+      console.log(doi)
+      if (doi && doi.length > 1) {
+        els.push({
+          citeEl: cite,
+          doi: decodeURIComponent(doi[1])
+        })
+        break
+      }
+      doi = anchor.href.match(/doi\/pdf\/(.+)/)
+      console.log(doi)
+      if (doi && doi.length > 1) {
+        els.push({
+          citeEl: cite,
+          doi: decodeURIComponent(doi[1])
+        })
+        break
+      }
+    }
+  }
+  return els
+}
+
+/**
+ * findSPIEDOIs looks in reference tags that link to doi.org.
+ * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ */
+function findSPIEDOIs() {
+  const els = []
+  let cites = document.body.querySelectorAll(".ref-content")
+  console.log(cites)
+  for (let cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (let anchor of anchors) {
+      const doi = anchor.href.match(/doi\.org\/(.+)/)
+      if (doi && doi.length > 1) {
+        els.push({
+          citeEl: cite,
+          doi: decodeURIComponent(doi[1])
+        })
+      }
+    }
+  }
+  cites = document.body.querySelectorAll(".ArticleContentAnchorRow")
+  for (let cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (let anchor of anchors) {
+      const doi = anchor.href.match(/doi\.org\/(.+)/)
+      if (doi && doi.length > 1) {
+        els.push({
+          citeEl: cite,
+          doi: decodeURIComponent(doi[1])
+        })
+      }
+    }
+  }
+  cites = document.body.querySelectorAll(".TOCLineItemRow2")
+  for (let cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (let anchor of anchors) {
+      const qs = queryString.parse(anchor.href)
+      console.log(qs)
+      if (qs && qs.DOI) {
+        els.push({
+          citeEl: cite,
+          doi: qs.DOI
+        })
+      }
+    }
+  }
+  return els
+}
+
+/**
+ * findSPIEDOIs looks in reference tags that link to doi.org.
+ * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ */
+function findWileyDOIs() {
+  const els = []
+  let cites = document.body.querySelectorAll(".item__body")
+  for (let cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (let anchor of anchors) {
+      const doi = anchor.href.match(/doi\/(.+)/)
+      if (doi && doi.length > 1) {
+        els.push({
+          citeEl: cite,
+          doi: decodeURIComponent(doi[1])
+        })
+      }
+    }
+  }
+  cites = document.body.querySelectorAll(".citedByEntry")
+  for (let cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (let anchor of anchors) {
+      const doi = anchor.href.match(/doi\.org\/(.+)/)
+      if (doi && doi.length > 1) {
+        els.push({
+          citeEl: cite,
+          doi: decodeURIComponent(doi[1])
+        })
+      }
+    }
+  }
+  cites = document.body.querySelectorAll("li[data-bib-id*='bib']")
+  for (let cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (let anchor of anchors) {
+      const qs = queryString.parse(anchor.href)
+      if (qs && qs.key) {
+        els.push({
+          citeEl: cite,
+          doi: qs.key
+        })
+      }
+    }
+  }
+  return els
+}
+
+/**
+ * findSPIEDOIs looks in reference tags that link to doi.org.
+ * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ */
+function findKargerDOIs() {
+  const els = []
+  let cites = document.body.querySelectorAll(".ref")
+  for (let cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (let anchor of anchors) {
+      const doi = anchor.href.match(/doi\.org\/(.+)/)
+      if (doi && doi.length > 1) {
+        els.push({
+          citeEl: cite,
+          doi: decodeURIComponent(doi[1])
+        })
+        break
+      }
+    }
+  }
+  cites = document.body.querySelectorAll(".hit-item-date")
+  for (let cite of cites) {
+    const re = /(10.\d{4,9}\/[-._;()/:A-Z0-9]+)/ig
+    const text = cite.textContent.match(re)
+    if (text && text.length > 0) {
+      els.push({
+        citeEl: cite,
+        doi: text[0]
+      })
+    }
+  }
+  return els
+}
+
+/**
+ * findSPIEDOIs looks in reference tags that link to doi.org.
+ * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ */
+function findBioArxivDOIs() {
+  const els = []
+  let cites = document.body.querySelectorAll(".highwire-cite-metadata-doi")
+  for (let cite of cites) {
+    const text = cite.textContent.match(/doi\.org\/(.+)/)
+    if (text && text.length > 0) {
+      els.push({
+        citeEl: cite,
+        doi: text[1].trim()
+      })
+    }
+  }
+  cites = document.body.querySelectorAll(".ref-cit")
+  for (let cite of cites) {
+    const doi = cite.dataset.doi
+    if (doi) {
+      els.push({
+        citeEl: cite,
+        doi
+      })
+    }
+  }
+  return els
+}
+
+
+/**
+ * findSPIEDOIs looks in reference tags that link to doi.org.
+ * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ */
+function findPsyArxivDOIs() {
+  const els = []
+  let cites = document.body.querySelectorAll(".highwire-cite-metadata-doi")
+  for (let cite of cites) {
+    const text = cite.textContent.match(/doi\.org\/(.+)/)
+    if (text && text.length > 0) {
+      els.push({
+        citeEl: cite,
+        doi: text[1].trim()
+      })
+    }
+  }
+  cites = document.body.querySelectorAll(".ref-cit")
+  for (let cite of cites) {
+    const doi = cite.dataset.doi
+    if (doi) {
+      els.push({
+        citeEl: cite,
+        doi
+      })
+    }
+  }
+  return els
+}
+
 const BADGE_SITES = [
   {
     name: 'wikipedia.org',
@@ -638,6 +890,115 @@ const BADGE_SITES = [
       display: block;
       width: min-content;
       margin: 0.5rem 0;
+    }
+    </style>
+`
+  },
+  {
+    name: 'tandfonline.com',
+    findDoiEls: findTandFDOIs,
+    position: 'beforeend',
+    style: `
+    <style>
+    .scite-badge {
+      display: block;
+      width: min-content;
+      margin: 0.25rem 0;
+    }
+    </style>
+`
+  },
+  {
+    name: 'spiedigitallibrary.org',
+    findDoiEls: findSPIEDOIs,
+    position: 'beforeend',
+    style: `
+    <style>
+    .scite-badge {
+      display: inline-block;
+      margin-left: 0.25rem;
+    }
+    </style>
+`
+  },
+  {
+    name: 'onlinelibrary.wiley.com',
+    findDoiEls: findWileyDOIs,
+    position: 'beforeend',
+    style: `
+    <style>
+    .scite-badge {
+      display: block;
+      margin: 0.25rem 0;
+      width: min-content;
+    }
+    </style>
+`
+  },
+  {
+    name: 'karger.com',
+    findDoiEls: findKargerDOIs,
+    position: 'beforeend',
+    style: `
+    <style>
+    .scite-badge {
+      display: block;
+      margin: 0.25rem 0;
+      width: max-content;
+    }
+    </style>
+`
+  },
+  {
+    name: 'biorxiv.org',
+    findDoiEls: findBioArxivDOIs,
+    position: 'beforeend',
+    style: `
+    <style>
+    .scite-badge {
+      display: block !important;
+      margin: 0.25rem 0 !important;
+      width: max-content !important;
+    }
+    .scite-badge div {
+      margin: revert !important;
+      padding: 0 0.125rem !important
+    }
+    </style>
+`
+  },
+  {
+    name: 'medrxiv.org',
+    findDoiEls: findBioArxivDOIs,
+    position: 'afterend',
+    style: `
+    <style>
+    .scite-badge {
+      display: block !important;
+      margin: 0.25rem 0 !important;
+      width: max-content !important;
+    }
+    .scite-badge div {
+      margin: revert !important;
+      padding: 0 0.125rem !important
+    }
+    </style>
+`
+  },
+  {
+    name: 'psyarxiv.org',
+    findDoiEls: findPsyArxivDOIs,
+    position: 'afterend',
+    style: `
+    <style>
+    .scite-badge {
+      display: block !important;
+      margin: 0.25rem 0 !important;
+      width: max-content !important;
+    }
+    .scite-badge div {
+      margin: revert !important;
+      padding: 0 0.125rem !important
     }
     </style>
 `
