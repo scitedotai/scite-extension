@@ -270,7 +270,8 @@ function runWithDelay () {
     'webofknowledge',
     'scopus',
     'karger.com',
-    'journals.plos.org'
+    'journals.plos.org',
+    'europepmc.org'
   ]
 
   // it would be better to poll, but that is more complicated and we don't
