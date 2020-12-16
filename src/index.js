@@ -9,10 +9,10 @@ import { render } from 'react-dom'
 import { Tally, TallyLoader } from 'scite-widget'
 import 'scite-widget/lib/main.css'
 import styles from './styles.css'
+import insertBadges from './badges'
 
 const IS_DEV = typeof process !== 'undefined' && process.NODE_ENV === 'development'
 const devLog = IS_DEV ? console.log.bind(window) : function () {}
-
 
 const SCITE_HOSTS = [
   'scite.ai',
@@ -20,17 +20,11 @@ const SCITE_HOSTS = [
   'localhost'
 ]
 
-const BADGE_SCRIPT = `
-<style>
-.scite-badge {
-  margin-left: 0.25rem;
-  text-indent: 0;
-}
-</style>
-<link rel="stylesheet" type="text/css" href="https://cdn.scite.ai/badge/scite-badge-latest.min.css">
-<script async type="application/javascript" src="https://cdn.scite.ai/badge/scite-badge-latest.min.js">
-</script>`
-
+const DONT_POPUP_HOST = [
+  'wikipedia.org',
+  'scholar.google.com',
+  'google'
+]
 
 const docAsStr = document.documentElement.innerHTML
 const docTitle = document.title
@@ -236,49 +230,8 @@ function markPage () {
   marker.id = 'scite-extension-marker'
   document.body.appendChild(marker)
 
-  const extensionLoadEvent = new Event('scite-extension/loaded');
+  const extensionLoadEvent = new Event('scite-extension/loaded')
   window.dispatchEvent(extensionLoadEvent)
-}
-
-// findWikipediaDOIEls looks in cite tags for anchors that link to doi.org and have a doi.
-function findWikipediaDOIEls() {
-  els = []
-  const cites = document.body.querySelectorAll('cite')
-  for (let cite of cites) {
-    const anchors = cite.querySelectorAll('a')
-    for (let anchor of anchors) {
-      if(anchor.href.match(/doi\.org\/(.+)/) && anchor.textContent.match(/10\.(.+)/)) {
-        els.push({
-          citeEl: cite,
-          doi: anchor.textContent
-        })
-      }
-    }
-  }
-  return els
-}
-
-function insertBadges() {
-  if (!myHost.includes('wikipedia.org')) {
-    return
-  }
-
-  const els = findWikipediaDOIEls()
-  if (els.length <= 0) {
-    return
-  }
-
-  for (let el of els) {
-    el.citeEl.insertAdjacentHTML('afterend', `<div class="scite-badge" data-doi="${el.doi}" data-layout="horizontal" data-small="true"/>`)
-  }
-
-  // if we have dois then add badge to them.
-  // use range and contextual fragment so the script gets executed.
-  const range = document.createRange()
-  range.setStart(document.documentElement, 0)
-  document.documentElement.appendChild(
-    range.createContextualFragment(BADGE_SCRIPT)
-  )
 }
 
 function main () {
@@ -288,6 +241,13 @@ function main () {
   }
   insertBadges()
 
+  for (const site of DONT_POPUP_HOST) {
+    // Incase the host has a sub domain like en.wikipedia or fr.wikipedia
+    // we check a lesser substring with includes.
+    if (window.location.href.includes(site)) {
+      return
+    }
+  }
   const doi = findDoi()
 
   if (!doi) {
@@ -298,18 +258,27 @@ function main () {
 }
 
 function runWithDelay () {
-  var delay = 200
+  let delay = 200
 
   // Single-page apps take a while to fully load all the HTML,
   // and until they do we can't find the DOI
-  var longDelayHosts = [
-    'psycnet.apa.org'
+  const longDelayHosts = [
+    'psycnet.apa.org',
+    'www.sciencedirect.com',
+    'mdpi.com',
+    'onlinelibrary.wiley.com',
+    'webofknowledge',
+    'scopus',
+    'karger.com',
+    'journals.plos.org'
   ]
 
   // it would be better to poll, but that is more complicated and we don't
   // have many reports of SPAs like this yet.
-  if (longDelayHosts.includes(myHost)) {
-    delay = 3000
+  for (const host of longDelayHosts) {
+    if (myHost.includes(host)) {
+      delay = 3000
+    }
   }
   setTimeout(main, delay)
 }

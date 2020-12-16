@@ -69,3 +69,97 @@ $ zip -r ../extension.zip .
 ## Scite API Terms ##
 
 https://scite.ai/apiterms
+
+## Testing Badge Pages ##
+
+These are the sites we offical support for our badge insertion.
+
+When making changes test on the folling sites (examples suggested):
+
+#### wikipedia.org
+
+ https://en.wikipedia.org/wiki/Messenger_RNA
+
+#### pubmed.ncbi.nlm.nih.gov
+
+Search: https://pubmed.ncbi.nlm.nih.gov/?term=metabolic+engineering
+Result: https://pubmed.ncbi.nlm.nih.gov/29704654/
+
+#### ncbi.nlm.nih.gov/pmc
+
+Search: https://www.ncbi.nlm.nih.gov/pmc/?term=metabolic+engineering
+Result: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4258820/
+#### sciencedirect.com
+
+Result: https://www.sciencedirect.com/science/article/pii/S0960982298702982
+#### elifesciences.org
+
+Search: https://elifesciences.org/articles/62456#references
+#### nature.com
+
+Result: https://www.nature.com/articles/s41467-020-19171-4
+#### scholar.google.com
+
+Search: https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=Citation+contexts&btnG=
+#### google
+
+Search: https://www.google.com/search?source=hp&ei=3nDaX5LEF_Kw5NoP8fiAwAk&q=%22Comparing+citation+contexts+for+information+retrieval%22&oq=%22Comparing+citation+contexts+for+information+retrieval%22&gs_lcp=CgZwc3ktYWIQAzIICCEQFhAdEB5QhQpYlBBgpRJoAHAAeACAAZ4BiAGfA5IBAzAuM5gBAKABAaABAqoBB2d3cy13aXo&sclient=psy-ab&ved=0ahUKEwiSq_WlrtPtAhVyGFkFHXE8AJgQ4dUDCAg&uact=5
+#### journals.plos.org
+
+Search: https://journals.plos.org/plosone/search?q=ocean+warming&filterJournals=PLoSONE
+Result: https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0242331#references
+#### orcid.org
+
+Result: https://orcid.org/0000-0002-2869-6383
+#### pubs.acs.org
+
+Search: https://pubs.acs.org/action/doSearch?AllField=yeast
+Result: https://pubs.acs.org/doi/10.1021/jf903660a
+#### springer.com
+
+Result: https://link.springer.com/article/10.1007/s11192-020-03789-8
+#### mdpi.com
+
+Search: https://www.mdpi.com/search?sort=article_citedby&page_count=50&year_from=1996&year_to=2020&q=robotics&volume=1&view=default
+Result: https://www.mdpi.com/2504-4990/1/1/10/htm
+#### journals.sagepub.com
+
+Search: https://journals.sagepub.com/action/doSearch?filterOption=thisJournal&SeriesKey=orma&AllField=Citation+Context
+Result: https://journals.sagepub.com/doi/10.1177/1094428120969905
+#### tandfonline.com
+
+Search: https://www.tandfonline.com/action/doSearch?AllField=citation+contexts
+Result: https://www.tandfonline.com/doi/citedby/10.4161/bioe.29935?scroll=top&needAccess=true
+#### spiedigitallibrary.org
+
+Result: https://www.spiedigitallibrary.org/journals/journal-of-photonics-for-energy/volume-9/issue-04/040901/Review-on-methods-for-improving-the-thermal-and-ambient-stability/10.1117/1.JPE.9.040901.full?tab=ArticleLinkReference&SSO=1
+#### onlinelibrary.wiley.com
+
+Search: https://onlinelibrary.wiley.com/action/doSearch?AllField=yeast
+Result: https://onlinelibrary.wiley.com/doi/10.1002/pmic.200900273
+#### karger.com
+
+Search: https://www.karger.com/Search/?q=yeast&q_Submit=
+Result: https://www.karger.com/Article/Abstract/268129
+#### biorxiv.org
+
+Search: https://www.biorxiv.org/search/metabolic%252Bengineering%20numresults%3A10%20sort%3Apublication-date%20direction%3Aascending
+Result: https://www.biorxiv.org/content/10.1101/000067v1.full
+#### medrxiv.org
+
+Search: https://www.medrxiv.org/search/polio
+Result: https://www.medrxiv.org/content/10.1101/19004358v1.full
+
+#### sciencemag.org
+
+Result: https://science.sciencemag.org/content/370/6522/1339
+
+#### Web of Science
+
+Search: https://apps.webofknowledge.com/Search.do?product=WOS&SID=7FBJBRDYirSDUSgFy8Y&search_mode=GeneralSearch&prID=21affb63-584d-4925-afaf-ef1c14952f33
+
+#### Scopus
+
+Search: https://www-scopus-com.ezproxy.library.dal.ca/results/results.uri?cc=10&sort=cp-f&src=s&st1=metabolic+engineering&nlo=&nlr=&nls=&sid=256280b50670bb6505db827097fbdb2b&sot=b&sdt=b&sl=36&s=TITLE-ABS-KEY%28metabolic+engineering%29&ss=cp-f&ps=r-f&editSaveSearch=&origin=resultslist&zone=resultslist
+Result: https://www-scopus-com.ezproxy.library.dal.ca/record/display.uri?eid=2-s2.0-33646397592&origin=resultslist&sort=cp-f&src=s&st1=metabolic+engineering&nlo=&nlr=&nls=&sid=78da5142899dfbe53b047930ef587457&sot=b&sdt=b&sl=36&s=TITLE-ABS-KEY%28metabolic+engineering%29&relpos=1&citeCnt=3356&searchTerm=
+

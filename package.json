@@ -1,14 +1,16 @@
 {
   "name": "scite-extension",
-  "version": "1.11.0",
+  "version": "1.13.0",
   "description": "scite allow users to see how a scientific paper has been cited by providing the context of the citation and a classification describing whether it provides supporting or disputing evidence for the cited claim",
   "main": "index.js",
   "watch": {
     "build": "src/**/*.*"
   },
   "scripts": {
-    "lint": "web-ext lint",
-    "dev": "web-ext run -s ./extension",
+    "lint": "standard --verbose | snazzy && stylelint '**/*.css'",
+    "lint:fix": "standard --fix | snazzy && stylelint --fix '**/*.css'",
+    "lint:ext": "web-ext lint",
+    "dev": "web-ext run -s ./extension -t chromium",
     "build": "./build.sh",
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "npm-watch"
@@ -30,6 +32,8 @@
     "autoprefixer": "^9.8.0",
     "parcel-bundler": "^1.12.4",
     "postcss-modules": "^1.5.0",
+    "snazzy": "^9.0.0",
+    "standard": "^16.0.3",
     "web-ext": "^5.4.0"
   },
   "dependencies": {
