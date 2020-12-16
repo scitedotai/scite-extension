@@ -1,3 +1,4 @@
+// TODO: (dom) look into deduplicating common extractors and loops.
 const queryString = require('query-string')
 
 const BADGE_SCRIPT = `
@@ -7,41 +8,6 @@ const BADGE_SCRIPT = `
 
 function createBadge (doi) {
   return `<div class="scite-badge" data-doi="${doi}" data-layout="horizontal" data-small="true"/>`
-}
-
-/**
- * findPubMedDOIEls looks in cite tags for text beginning with DOI and captures it as a doi
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
- */
-function findPubMedDOIEls () {
-  const els = []
-  const cites = document.body.querySelectorAll('.docsum-content')
-  for (const cite of cites) {
-    const re = /(10.\d{4,9}\/[-._;()/:A-Z0-9]+)/ig
-    const text = cite.textContent.match(re)
-    if (text && text.length > 0) {
-      els.push({
-        citeEl: cite,
-        // Pubmed puts a period at the end of their dois for biblographic display reasons.
-        // We must slice it.
-        doi: text[0].slice(0, -1)
-      })
-    }
-  }
-  const references = document.body.querySelectorAll('.references-and-notes-list')
-  for (const reference of references) {
-    const re = /(10.\d{4,9}\/[-._;()/:A-Z0-9]+)/ig
-    const text = reference.textContent.match(re)
-    if (text && text.length > 0) {
-      els.push({
-        citeEl: reference,
-        // Pubmed puts a period at the end of their dois for biblographic display reasons.
-        // We must slice it.
-        doi: text[0].slice(0, -1)
-      })
-    }
-  }
-  return els
 }
 
 function removeElementsByClass (className) {
@@ -69,6 +35,28 @@ function addPMSeeAllReferencesListener () {
  * findPubMedDOIEls looks in cite tags for text beginning with DOI and captures it as a doi
  * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
  */
+function findPubMedDOIEls () {
+  const els = []
+  const cites = [...document.body.querySelectorAll('.docsum-content'), ...document.body.querySelectorAll('.references-and-notes-list')]
+  for (const cite of cites) {
+    const re = /(10.\d{4,9}\/[-._;()/:A-Z0-9]+)/ig
+    const text = cite.textContent.match(re)
+    if (text && text.length > 0) {
+      els.push({
+        citeEl: cite,
+        // Pubmed puts a period at the end of their dois for biblographic display reasons.
+        // We must slice it.
+        doi: text[0].slice(0, -1)
+      })
+    }
+  }
+  return els
+}
+
+/**
+ * findPubMedDOIEls looks in cite tags for text beginning with DOI and captures it as a doi
+ * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ */
 function findPubMedCentralDOIEls () {
   const els = []
   const cites = document.body.querySelectorAll('.rslt')
@@ -88,21 +76,7 @@ function findPubMedCentralDOIEls () {
     }
   }
 
-  let references = document.body.querySelectorAll('.element-citation')
-  for (const reference of references) {
-    const re = /(10.\d{4,9}\/[-._;()/:A-Z0-9]+)/ig
-    const text = reference.textContent.match(re)
-    if (text && text.length > 0) {
-      els.push({
-        citeEl: reference,
-        // Pubmed puts a period at the end of their dois for biblographic display reasons.
-        // We must slice it.
-        doi: text[0].slice(0, -1)
-      })
-    }
-  }
-
-  references = document.body.querySelectorAll('.mixed-citation')
+  const references = [...document.body.querySelectorAll('.element-citation'), document.body.querySelectorAll('.mixed-citation')]
   for (const reference of references) {
     const re = /(10.\d{4,9}\/[-._;()/:A-Z0-9]+)/ig
     const text = reference.textContent.match(re)
@@ -146,12 +120,10 @@ function findWikipediaDOIEls () {
 function findScienceDirectDOIs () {
   const els = []
   const cites = document.body.querySelectorAll('.reference')
-
   for (const cite of cites) {
     const anchors = cite.querySelectorAll('a')
     for (const anchor of anchors) {
       const doi = anchor.href.match(/doi\.org\/(.+)/)
-
       if (doi && doi.length > 1) {
         els.push({
           citeEl: cite,
@@ -191,20 +163,7 @@ function findELifeSciencesDOIs () {
  */
 function findNatureDOIs () {
   const els = []
-  let cites = document.body.querySelectorAll('.c-article-references__links')
-  for (const cite of cites) {
-    const anchors = cite.querySelectorAll('a')
-    for (const anchor of anchors) {
-      const doi = anchor.href.match(/doi\.org\/(.+)/)
-      if (doi && doi.length > 1) {
-        els.push({
-          citeEl: cite,
-          doi: decodeURIComponent(doi[1])
-        })
-      }
-    }
-  }
-  cites = document.body.querySelectorAll('.c-reading-companion__reference-item')
+  const cites = [...document.body.querySelectorAll('.c-article-references__links'), ...document.body.querySelectorAll('.c-reading-companion__reference-item')]
   for (const cite of cites) {
     const anchors = cite.querySelectorAll('a')
     for (const anchor of anchors) {
@@ -227,7 +186,7 @@ function findNatureDOIs () {
  */
 function findSpringerDOIs () {
   const els = []
-  let cites = document.body.querySelectorAll('.c-article-references__links')
+  const cites = [...document.body.querySelectorAll('.c-article-references__links'), ...document.body.querySelectorAll('.c-reading-companion__reference-item')]
   for (const cite of cites) {
     const anchors = cite.querySelectorAll('a')
     for (const anchor of anchors) {
@@ -237,20 +196,6 @@ function findSpringerDOIs () {
           citeEl: cite,
           doi: decodeURIComponent(doi[1])
         })
-      }
-    }
-  }
-  cites = document.body.querySelectorAll('.c-reading-companion__reference-item')
-  for (const cite of cites) {
-    const anchors = cite.querySelectorAll('a')
-    for (const anchor of anchors) {
-      const doi = anchor.href.match(/doi\.org\/(.+)/)
-      if (doi && doi.length > 1) {
-        els.push({
-          citeEl: cite,
-          doi: decodeURIComponent(doi[1])
-        })
-        break
       }
     }
   }
@@ -517,20 +462,7 @@ function findTandFDOIs () {
  */
 function findSPIEDOIs () {
   const els = []
-  let cites = document.body.querySelectorAll('.ref-content')
-  for (const cite of cites) {
-    const anchors = cite.querySelectorAll('a')
-    for (const anchor of anchors) {
-      const doi = anchor.href.match(/doi\.org\/(.+)/)
-      if (doi && doi.length > 1) {
-        els.push({
-          citeEl: cite,
-          doi: decodeURIComponent(doi[1])
-        })
-      }
-    }
-  }
-  cites = document.body.querySelectorAll('.ArticleContentAnchorRow')
+  let cites = [...document.body.querySelectorAll('.ref-content'), ...document.body.querySelectorAll('.ArticleContentAnchorRow')]
   for (const cite of cites) {
     const anchors = cite.querySelectorAll('a')
     for (const anchor of anchors) {
@@ -565,24 +497,11 @@ function findSPIEDOIs () {
  */
 function findWileyDOIs () {
   const els = []
-  let cites = document.body.querySelectorAll('.item__body')
+  let cites = [...document.body.querySelectorAll('.item__body'), ...document.body.querySelectorAll('.citedByEntry')]
   for (const cite of cites) {
     const anchors = cite.querySelectorAll('a')
     for (const anchor of anchors) {
       const doi = anchor.href.match(/doi\/(.+)/)
-      if (doi && doi.length > 1) {
-        els.push({
-          citeEl: cite,
-          doi: decodeURIComponent(doi[1])
-        })
-      }
-    }
-  }
-  cites = document.body.querySelectorAll('.citedByEntry')
-  for (const cite of cites) {
-    const anchors = cite.querySelectorAll('a')
-    for (const anchor of anchors) {
-      const doi = anchor.href.match(/doi\.org\/(.+)/)
       if (doi && doi.length > 1) {
         els.push({
           citeEl: cite,
