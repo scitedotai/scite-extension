@@ -18,16 +18,18 @@ function removeElementsByClass (className) {
 }
 
 /**
- * addPMSeeAllReferencesListener adds an event listener on seeing all references so we can
+ * addRefreshListener adds an event listener on seeing all references so we can
  * reload badges.
  */
-function addPMSeeAllReferencesListener () {
-  const showAll = document.body.querySelector('.show-all')
-  if (showAll) {
-    showAll.addEventListener('click', () => {
-      removeElementsByClass('scite-badge')
-      setTimeout(() => insertBadges(), 1000)
-    })
+function addRefereshListener (refreshSelector, timeout = 1000) {
+  return () => {
+    const showAll = document.body.querySelector(refreshSelector)
+    if (showAll) {
+      showAll.addEventListener('click', () => {
+        removeElementsByClass('scite-badge')
+        setTimeout(() => insertBadges(), timeout)
+      })
+    }
   }
 }
 
@@ -543,7 +545,7 @@ function findKargerDOIs () {
 }
 
 /**
- * findSPIEDOIs looks in reference tags that link to doi.org.
+ * findBioArxivDOIs looks in reference tags that link to doi.org.
  * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
  */
 function findBioArxivDOIs () {
@@ -639,6 +641,58 @@ function findScopusDOIs () {
   return els
 }
 
+/**
+ * findEuropePMCDOIs looks in reference tags that link to doi.org.
+ * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ */
+function findEuropePMCDOIs () {
+  const els = []
+  const cites = [...document.body.querySelectorAll('.element-citation'), ...document.body.querySelectorAll('.mixed-citation')]
+  for (const cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (const anchor of anchors) {
+      const doi = anchor.href.match(/doi\.org\/(.+)/)
+      if (doi && doi.length > 1) {
+        els.push({
+          citeEl: cite,
+          doi: decodeURIComponent(doi[1])
+        })
+        break
+      }
+    }
+  }
+  return els
+}
+
+/**
+ * findPNASDOIs looks in reference tags that link to doi.org.
+ * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ */
+function findPNASDOIs () {
+  const els = []
+  let cites = document.body.querySelectorAll('.highwire-cite-metadata-doi')
+  for (const cite of cites) {
+    const text = cite.textContent.match(/doi\.org\/(.+)/)
+    if (text && text.length > 0) {
+      els.push({
+        citeEl: cite,
+        doi: text[1].trim()
+      })
+    }
+  }
+  cites = document.body.querySelectorAll('.ref-cit')
+  for (const cite of cites) {
+    const doi = cite.dataset.doi
+    if (doi) {
+      els.push({
+        citeEl: cite,
+        doi
+      })
+    }
+  }
+  return els
+}
+
 const BADGE_SITES = [
   {
     name: 'wikipedia.org',
@@ -656,7 +710,7 @@ const BADGE_SITES = [
     name: 'pubmed.ncbi.nlm.nih.gov',
     findDoiEls: findPubMedDOIEls,
     position: 'beforeend',
-    initFunc: addPMSeeAllReferencesListener
+    initFunc: addRefereshListener('.show-all')
   },
   {
     name: 'ncbi.nlm.nih.gov/pmc',
@@ -945,6 +999,35 @@ const BADGE_SITES = [
     name: 'scopus',
     findDoiEls: findScopusDOIs,
     position: 'afterend',
+    style: `
+    <style>
+    .scite-badge {
+      display: block !important;
+      margin: 0.25rem 0 !important;
+      width: max-content !important;
+    }
+    </style>
+`
+  },
+  {
+    name: 'pnas.org',
+    findDoiEls: findPNASDOIs,
+    position: 'afterend',
+    style: `
+    <style>
+    .scite-badge {
+      display: block !important;
+      margin: 0.25rem 0 !important;
+      width: max-content !important;
+    }
+    </style>
+`
+  },
+  {
+    name: 'europepmc.org',
+    findDoiEls: findEuropePMCDOIs,
+    position: 'afterend',
+    initFunc: addRefereshListener('#free-full-text', 3000),
     style: `
     <style>
     .scite-badge {
