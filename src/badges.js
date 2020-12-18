@@ -1072,7 +1072,7 @@ export default function insertBadges () {
   }
 
   for (const el of els) {
-    el.citeEl.insertAdjacentHTML(badgeSite.position, createBadge(el.doi))
+    el.citeEl.insertAdjacentHTML(badgeSite.position, createBadge(el?.doi?.toLowerCase()))
   }
 
   // if we have dois then add badge to them.
