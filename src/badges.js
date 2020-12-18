@@ -571,7 +571,7 @@ function findBioArxivDOIs () {
     if (text && text.length > 0) {
       els.push({
         citeEl: cite,
-        doi: text[1].trim()
+        doi: text[1]
       })
     }
   }
@@ -649,7 +649,7 @@ function findScopusDOIs () {
     if (text && text.length > 0 && text[0]) {
       els.push({
         citeEl: cite,
-        doi: text[0].trim()
+        doi: text[0]
       })
     }
   }
@@ -691,7 +691,7 @@ function findPNASDOIs () {
     if (text && text.length > 0) {
       els.push({
         citeEl: cite,
-        doi: text[1].trim()
+        doi: text[1]
       })
     }
   }
@@ -1072,7 +1072,7 @@ export default function insertBadges () {
   }
 
   for (const el of els) {
-    el.citeEl.insertAdjacentHTML(badgeSite.position, createBadge(el?.doi?.toLowerCase()))
+    el.citeEl.insertAdjacentHTML(badgeSite.position, createBadge(el?.doi?.toLowerCase()?.trim()))
   }
 
   // if we have dois then add badge to them.
