@@ -169,9 +169,13 @@ function findELifeSciencesDOIs () {
  */
 function findNatureDOIs () {
   const els = []
-  const cites = [...document.body.querySelectorAll('.c-article-references__links'), ...document.body.querySelectorAll('.c-reading-companion__reference-item')]
+  const cites = [
+    ...document.body.querySelectorAll('.c-reading-companion__reference-item'),
+    ...document.body.querySelectorAll('[itemprop="citation"]')
+  ]
   for (const cite of cites) {
     const anchors = cite.querySelectorAll('a')
+    let elementFound = false
     for (const anchor of anchors) {
       const doi = anchor?.href?.match(/doi\.org\/(.+)/)
       if (doi && doi.length > 1) {
@@ -179,7 +183,18 @@ function findNatureDOIs () {
           citeEl: cite,
           doi: decodeURIComponent(doi[1])
         })
+        elementFound = true
         break
+      }
+    }
+    if (!elementFound) {
+      const doi = cite?.textContent?.match(/doi\.org\/(.+)\s/)
+      console.log(doi)
+      if (doi) {
+        els.push({
+          citeEl: cite,
+          doi: doi[1]
+        })
       }
     }
   }
@@ -748,7 +763,7 @@ const BADGE_SITES = [
   {
     name: 'nature.com',
     findDoiEls: findNatureDOIs,
-    position: 'afterend',
+    position: 'beforeend',
     style: `
     <style>
     .scite-badge {
