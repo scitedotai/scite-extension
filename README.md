@@ -40,19 +40,21 @@ $ git push origin v1.10.0
 $ npm run build
 ```
 
-Then for Chrome:
+4. run the following:
+
+### Chrome ###
 
 ```bash
 $ zip -r extension.zip extension/*
 ```
 
 1. Go to the [developer dashboard](https://chrome.google.com/webstore/developer/dashboard)
-1. Click on the extension (if you do not see it check you are looking at the right `scite` publisher in the top right)
-1. Click `package` on the left
-1. Click upload new package
-1. Click submit for review
+2. Click on the extension (if you do not see it check you are looking at the right `scite` publisher in the top right)
+3. Click `package` on the left
+4. Click upload new package
+5. Click submit for review
 
-Then for Firefox:
+### Firefox ###
 
 ```bash
 $ zip -r extension-full.zip . -x "node_modules/*" -x ".cache/*" -x ".git/*"
@@ -61,10 +63,31 @@ $ zip -r ../extension.zip .
 ```
 
 1. Go to the [developer dashboard](https://addons.mozilla.org/en-US/developers/addons)
-1. Click `New version`
-1. Click `Select file` and select the new `extension.zip`
-1. Click `Continue`, `Yes`, `Upload source code` and select `extension-full.zip`
-1. Click `Continue`, write some release note(s) and submit!
+2. Click `New version`
+3. Click `Select file` and select the new `extension.zip`
+4. Click `Continue`, `Yes`, `Upload source code` and select `extension-full.zip`
+5. Click `Continue`, write some release note(s) and submit!
+
+
+### Safari ###
+
+**Note:** requires macosx+xcode
+
+Build the extension if you haven't already:
+```bash
+$ npm i
+$ npm run build
+```
+
+```bash
+xcrun safari-web-extension-converter ./extension --project-location . --app-name scite --bundle-identifier ai.scite --swift
+```
+
+once that opens in xcode follow `Enable Your App Extension in Safari` to install the extension in Safari:
+https://developer.apple.com/documentation/safariservices/safari_app_extensions/building_a_safari_app_extension#2957926
+and
+`Build and Run the Application` to run the extension
+
 
 ## Scite API Terms ##
 
