@@ -71,7 +71,7 @@ $ zip -r ../extension.zip .
 
 ### Safari ###
 
-**Note:** requires macosx+xcode
+**Note:** requires macosx+xcode+apple developer access
 
 Build the extension if you haven't already:
 ```bash
@@ -88,6 +88,17 @@ https://developer.apple.com/documentation/safariservices/safari_app_extensions/b
 and
 `Build and Run the Application` to run the extension
 
+Once you have the extension running do the following in xcode
+```
+- Set the version and build numbers in both the project and scite extension/Info.plist to be what you want
+- Project > Build
+- Project > Archive
+- Organizater > Upload
+```
+
+The new version should show up in the apple app store connect store ready for you to distribute.
+
+**Tip:** Xcode is very particular make sure all the version, certificate, and accounts information in the xcode project line up.
 
 ## Scite API Terms ##
 

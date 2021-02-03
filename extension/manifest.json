@@ -3,13 +3,16 @@
   "author": "Scite Inc.",
   "version": "1.14.2",
   "manifest_version": 2,
-  "description": "scite allows users to see how a scientific paper has been cited, providing the citation context and accompanying classification",
+  "description": "scite allows users to see how a publication has been cited, providing the citation context and classification",
   "icons": {
     "16": "images/icons/16.png",
     "32": "images/icons/32.png",
     "48": "images/icons/48.png",
     "64": "images/icons/64.png",
-    "128": "images/icons/128.png"
+    "128": "images/icons/128.png",
+    "256": "images/icons/256.png",
+    "512": "images/icons/512.png",
+    "1024": "images/icons/1024.png"
   },
   "content_scripts": [
     {
