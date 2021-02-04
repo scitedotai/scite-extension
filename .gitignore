@@ -6,3 +6,5 @@ node_modules
 .cache
 npm-debug.log
 web-ext-artifacts
+scite
+.DS_Store
