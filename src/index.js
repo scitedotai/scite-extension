@@ -17,6 +17,8 @@ const devLog = IS_DEV ? console.log.bind(window) : function () {}
 const SCITE_HOSTS = [
   'scite.ai',
   'staging.scite.ai',
+  'api.scite.ai',
+  'api-staging.scite.ai',
   'localhost'
 ]
 
