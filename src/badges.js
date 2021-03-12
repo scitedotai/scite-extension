@@ -2,8 +2,7 @@
 const queryString = require('query-string')
 
 const BADGE_SCRIPT = `
-<link rel="stylesheet" type="text/css" href="https://cdn.scite.ai/badge/scite-badge-v4.1.0.min.css">
-<script async type="application/javascript" src="https://cdn.scite.ai/badge/scite-badge-v4.1.0.min.js">
+<script async type="application/javascript" src="https://cdn.scite.ai/badge/scite-badge-v5.2.0.min.js">
 </script>`
 
 function createBadge (doi) {
