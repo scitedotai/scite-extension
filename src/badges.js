@@ -188,7 +188,6 @@ function findNatureDOIs () {
     }
     if (!elementFound) {
       const doi = cite?.textContent?.match(/doi\.org\/(.+)\s/)
-      console.log(doi)
       if (doi) {
         els.push({
           citeEl: cite,
