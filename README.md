@@ -91,6 +91,7 @@ and
 Once you have the extension running do the following in xcode
 ```
 - Set the version and build numbers in both the project and scite extension/Info.plist to be what you want
+- Set the category on the *.plist files
 - Project > Build
 - Project > Archive
 - Organizater > Upload

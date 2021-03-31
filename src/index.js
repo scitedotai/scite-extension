@@ -273,7 +273,8 @@ function runWithDelay () {
     'scopus',
     'karger.com',
     'journals.plos.org',
-    'europepmc.org'
+    'europepmc.org',
+    'orcid.org'
   ]
 
   // it would be better to poll, but that is more complicated and we don't
