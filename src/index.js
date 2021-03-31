@@ -25,7 +25,8 @@ const SCITE_HOSTS = [
 const DONT_POPUP_HOST = [
   'wikipedia.org',
   'scholar.google.com',
-  'google'
+  'google',
+  'connectedpapers'
 ]
 
 const docAsStr = document.documentElement.innerHTML

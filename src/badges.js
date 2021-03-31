@@ -17,7 +17,7 @@ function removeElementsByClass (className) {
 }
 
 /**
- * addRefreshListener adds an event listener on seeing all references so we can
+ * addRefreshListener adds a click event listener on seeing all references so we can
  * reload badges.
  */
 function addRefereshListener (refreshSelector, timeout = 1000) {
@@ -29,6 +29,32 @@ function addRefereshListener (refreshSelector, timeout = 1000) {
         setTimeout(() => insertBadges(), timeout)
       })
     }
+  }
+}
+
+/**
+ * addMutationListener adds an attribution mutation listener on specific attributes so we can
+ * reload badges.
+ */
+let mutationObserverSet = false
+function addMutationAttributeListener (listenSelectors) {
+  return () => {
+    if (mutationObserverSet) {
+      return
+    }
+    for (const selector of listenSelectors) {
+      const observer = new MutationObserver(function (mutations) {
+        mutations.forEach(() => {
+          removeElementsByClass('scite-badge')
+          insertBadges()
+        })
+      })
+
+      observer.observe(document.querySelector(selector), {
+        attributes: true // configure it to listen to attribute changes
+      })
+    }
+    mutationObserverSet = true
   }
 }
 
@@ -706,6 +732,27 @@ function findPNASDOIs () {
   return els
 }
 
+/**
+ * findConnectedPapersDOIs looks in reference tags that link to doi.org.
+ * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ */
+function findConnectedPapersDOIs () {
+  const els = []
+  const cites = document.body.querySelectorAll('#open-in-container')
+  for (const cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (const anchor of anchors) {
+      if (anchor?.href?.match(/doi\.org\/(.+)/)) {
+        els.push({
+          citeEl: cite,
+          doi: anchor.href.match(/10\..*/)[0]
+        })
+      }
+    }
+  }
+  return els
+}
+
 const BADGE_SITES = [
   {
     name: 'wikipedia.org',
@@ -1047,6 +1094,22 @@ const BADGE_SITES = [
       display: block !important;
       margin: 0.25rem 0 !important;
       width: max-content !important;
+    }
+    </style>
+`
+  },
+  {
+    name: 'connectedpapers.com',
+    findDoiEls: findConnectedPapersDOIs,
+    initFunc: addMutationAttributeListener(['.title_link']),
+    position: 'afterend',
+    style: `
+    <style>
+    .scite-badge {
+      display: block !important;
+      margin: 0.25rem 0 !important;
+      width: max-content !important;
+      z-index: 9999999999;
     }
     </style>
 `
