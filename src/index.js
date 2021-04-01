@@ -26,7 +26,8 @@ const DONT_POPUP_HOST = [
   'wikipedia.org',
   'scholar.google.com',
   'google',
-  'connectedpapers'
+  'connectedpapers',
+  'clinicaltrials.gov'
 ]
 
 const docAsStr = document.documentElement.innerHTML

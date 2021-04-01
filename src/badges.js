@@ -775,6 +775,28 @@ function findPeerJDOIs () {
   return els
 }
 
+/**
+ * findClinicalTrialsDOIs looks in reference links for doi.org.
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
+ */
+function findClinicalTrialsDOIs () {
+  const els = []
+  const cites = document.body.querySelectorAll('a')
+  for (const cite of cites) {
+    const re = /(10.\d{4,9}\/[-._;()/:A-Z0-9]+)/ig
+    const doi = cite?.textContent?.match(re)
+    console.log(doi)
+    if (doi) {
+      els.push({
+        citeEl: cite,
+        // remove the trailing period
+        doi: decodeURIComponent(doi[0]).slice(0, -1)
+      })
+    }
+  }
+  return els
+}
+
 const BADGE_SITES = [
   {
     name: 'wikipedia.org',
@@ -1139,6 +1161,21 @@ const BADGE_SITES = [
   {
     name: 'peerj.com',
     findDoiEls: findPeerJDOIs,
+    position: 'afterend',
+    style: `
+    <style>
+    .scite-badge {
+      display: block !important;
+      margin: 0.25rem 0 !important;
+      width: max-content !important;
+      z-index: 9999999999;
+    }
+    </style>
+`
+  },
+  {
+    name: 'clinicaltrials.gov',
+    findDoiEls: findClinicalTrialsDOIs,
     position: 'afterend',
     style: `
     <style>

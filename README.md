@@ -216,3 +216,7 @@ Result: https://www.connectedpapers.com/main/0b4c513b66754d5e7c700508629e2d28b10
 #### peerj
 
 Result: https://peerj.com/articles/148/
+
+#### clinical trials
+
+Result: https://www.clinicaltrials.gov/ct2/show/study/NCT03502551?term=ketamine&draw=2&rank=17
