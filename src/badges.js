@@ -16,6 +16,8 @@ function removeElementsByClass (className) {
   }
 }
 
+const DOI_REGEX = /(10.\d{4,9}\/[-._;()/:A-Z0-9]+)/ig
+
 /**
  * addRefreshListener adds a click event listener on seeing all references so we can
  * reload badges.
@@ -66,8 +68,7 @@ function findPubMedDOIEls () {
   const els = []
   const cites = [...document.body.querySelectorAll('.docsum-content'), ...document.body.querySelectorAll('.references-and-notes-list')]
   for (const cite of cites) {
-    const re = /(10.\d{4,9}\/[-._;()/:A-Z0-9]+)/ig
-    const text = cite?.textContent?.match(re)
+    const text = cite?.textContent?.match(DOI_REGEX)
     if (text && text.length > 0) {
       els.push({
         citeEl: cite,
@@ -90,8 +91,7 @@ function findPubMedCentralDOIEls () {
   for (const cite of cites) {
     const doiEl = cite.querySelector('.doi')
     try {
-      const re = /(10.\d{4,9}\/[-._;()/:A-Z0-9]+)/ig
-      const doi = doiEl?.textContent?.match(re)
+      const doi = doiEl?.textContent?.match(DOI_REGEX)
       if (doi && doi.length > 0) {
         els.push({
           citeEl: cite,
@@ -105,9 +105,8 @@ function findPubMedCentralDOIEls () {
 
   const references = [...document.body.querySelectorAll('.element-citation'), ...document.body.querySelectorAll('.mixed-citation')]
   for (const reference of references) {
-    const re = /(10.\d{4,9}\/[-._;()/:A-Z0-9]+)/ig
     try {
-      const text = reference?.textContent?.match(re)
+      const text = reference?.textContent?.match(DOI_REGEX)
       if (text && text.length > 0) {
         els.push({
           citeEl: reference,
@@ -571,8 +570,7 @@ function findKargerDOIs () {
   }
   cites = document.body.querySelectorAll('.hit-item-date')
   for (const cite of cites) {
-    const re = /(10.\d{4,9}\/[-._;()/:A-Z0-9]+)/ig
-    const text = cite?.textContent?.match(re)
+    const text = cite?.textContent?.match(DOI_REGEX)
     if (text && text.length > 0) {
       els.push({
         citeEl: cite,
@@ -668,8 +666,7 @@ function findScopusDOIs () {
   }
   cites = document.body.querySelectorAll('.refCont')
   for (const cite of cites) {
-    const re = /(10.\d{4,9}\/[-._;()/:A-Z0-9]+)/ig
-    const text = cite?.textContent?.match(re)
+    const text = cite?.textContent?.match(DOI_REGEX)
     if (text && text.length > 0 && text[0]) {
       els.push({
         citeEl: cite,
@@ -783,8 +780,7 @@ function findClinicalTrialsDOIs () {
   const els = []
   const cites = document.body.querySelectorAll('a')
   for (const cite of cites) {
-    const re = /(10.\d{4,9}\/[-._;()/:A-Z0-9]+)/ig
-    const doi = cite?.textContent?.match(re)
+    const doi = cite?.textContent?.match(DOI_REGEX)
     console.log(doi)
     if (doi) {
       els.push({
