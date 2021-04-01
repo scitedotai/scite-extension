@@ -60,7 +60,7 @@ function addMutationAttributeListener (listenSelectors) {
 
 /**
  * findPubMedDOIEls looks in cite tags for text beginning with DOI and captures it as a doi
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findPubMedDOIEls () {
   const els = []
@@ -82,7 +82,7 @@ function findPubMedDOIEls () {
 
 /**
  * findPubMedDOIEls looks in cite tags for text beginning with DOI and captures it as a doi
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findPubMedCentralDOIEls () {
   const els = []
@@ -125,7 +125,7 @@ function findPubMedCentralDOIEls () {
 
 /**
  * findWikipediaDOIEls looks in cite tags for anchors that link to doi.org and have a doi.
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findWikipediaDOIEls () {
   const els = []
@@ -146,7 +146,7 @@ function findWikipediaDOIEls () {
 
 /**
  * findScienceDirectDOIs looks in reference tags for anchors that link to doi.org and have a doi.
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findScienceDirectDOIs () {
   const els = []
@@ -168,7 +168,7 @@ function findScienceDirectDOIs () {
 
 /**
  * findELifeSciencesDOIs looks in doi tags that link to doi.org.
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findELifeSciencesDOIs () {
   const els = []
@@ -190,7 +190,7 @@ function findELifeSciencesDOIs () {
 
 /**
  * findNatureDOIs looks in reference tags that link to doi.org.
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findNatureDOIs () {
   const els = []
@@ -227,7 +227,7 @@ function findNatureDOIs () {
 
 /**
  * findSpringerDOIs looks in reference tags that link to doi.org.
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findSpringerDOIs () {
   const els = []
@@ -249,7 +249,7 @@ function findSpringerDOIs () {
 
 /**
  * findGoogleDOIs looks in reference tags that link has doi.
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findGoogleDOIs () {
   const els = []
@@ -272,7 +272,7 @@ function findGoogleDOIs () {
 
 /**
  * findPLOSDOIs looks in reference tags that have dois or dataset.doi.
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findPLOSDOIs () {
   const els = []
@@ -302,7 +302,7 @@ function findPLOSDOIs () {
 
 /**
  * findORCIDDOIs looks in reference tags that link to doi.org.
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findORCIDDOIs () {
   const els = []
@@ -324,7 +324,7 @@ function findORCIDDOIs () {
 
 /**
  * findACSDOIs looks in reference tags that link to doi.org.
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findACSDOIs () {
   const els = []
@@ -357,7 +357,7 @@ function findACSDOIs () {
 
 /**
  * findMDPIDOIs looks in reference tags that link to doi.org.
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findMDPIDOIs () {
   const els = []
@@ -379,7 +379,7 @@ function findMDPIDOIs () {
 
 /**
  * findSageDOIs looks in reference tags that link to doi.org.
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findSageDOIs () {
   const els = []
@@ -423,7 +423,7 @@ function findSageDOIs () {
 
 /**
  * findTandFDOIs looks in reference tags that link to doi.org.
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findTandFDOIs () {
   const els = []
@@ -481,7 +481,7 @@ function findTandFDOIs () {
 
 /**
  * findSPIEDOIs looks in reference tags that link to doi.org.
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findSPIEDOIs () {
   const els = []
@@ -516,7 +516,7 @@ function findSPIEDOIs () {
 
 /**
  * findSPIEDOIs looks in reference tags that link to doi.org.
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findWileyDOIs () {
   const els = []
@@ -551,7 +551,7 @@ function findWileyDOIs () {
 
 /**
  * findSPIEDOIs looks in reference tags that link to doi.org.
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findKargerDOIs () {
   const els = []
@@ -585,7 +585,7 @@ function findKargerDOIs () {
 
 /**
  * findBioArxivDOIs looks in reference tags that link to doi.org.
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findBioArxivDOIs () {
   const els = []
@@ -614,7 +614,7 @@ function findBioArxivDOIs () {
 
 /**
  * findScienceDOIs looks in reference tags that link to doi.org.
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findScienceDOIs () {
   const els = []
@@ -633,7 +633,7 @@ function findScienceDOIs () {
 
 /**
  * findWebOfKnowledgeDOIs looks in reference tags that link to doi.org.
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findWebOfKnowledgeDOIs () {
   const els = []
@@ -652,7 +652,7 @@ function findWebOfKnowledgeDOIs () {
 
 /**
  * findScopusDOIs looks in reference tags that link to doi.org.
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findScopusDOIs () {
   const els = []
@@ -682,7 +682,7 @@ function findScopusDOIs () {
 
 /**
  * findEuropePMCDOIs looks in reference tags that link to doi.org.
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findEuropePMCDOIs () {
   const els = []
@@ -705,7 +705,7 @@ function findEuropePMCDOIs () {
 
 /**
  * findPNASDOIs looks in reference tags that link to doi.org.
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findPNASDOIs () {
   const els = []
@@ -734,7 +734,7 @@ function findPNASDOIs () {
 
 /**
  * findConnectedPapersDOIs looks in reference tags that link to doi.org.
- * @returns {Array<{ citeEl: HTMLElement, doi: string}>} - Return
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findConnectedPapersDOIs () {
   const els = []
@@ -746,6 +746,28 @@ function findConnectedPapersDOIs () {
         els.push({
           citeEl: cite,
           doi: anchor.href.match(/10\..*/)[0]
+        })
+      }
+    }
+  }
+  return els
+}
+
+/**
+ * findPeerJDOIs looks in reference tags that link to doi.org.
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
+ */
+function findPeerJDOIs () {
+  const els = []
+  const cites = document.body.querySelectorAll('.citation')
+  for (const cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (const anchor of anchors) {
+      const doi = anchor?.href?.match(/10\.(.+)/)
+      if (doi) {
+        els.push({
+          citeEl: cite,
+          doi: decodeURIComponent(doi[0])
         })
       }
     }
@@ -1102,6 +1124,21 @@ const BADGE_SITES = [
     name: 'connectedpapers.com',
     findDoiEls: findConnectedPapersDOIs,
     initFunc: addMutationAttributeListener(['.title_link']),
+    position: 'afterend',
+    style: `
+    <style>
+    .scite-badge {
+      display: block !important;
+      margin: 0.25rem 0 !important;
+      width: max-content !important;
+      z-index: 9999999999;
+    }
+    </style>
+`
+  },
+  {
+    name: 'peerj.com',
+    findDoiEls: findPeerJDOIs,
     position: 'afterend',
     style: `
     <style>
