@@ -18,6 +18,72 @@ function removeElementsByClass (className) {
 
 const DOI_REGEX = /(10.\d{4,9}\/[-._;()/:A-Z0-9]+)/ig
 
+const commonOverlayStyle = `
+<style>
+.scite-badge {
+  display: block !important;
+  margin: 0.25rem 0 !important;
+  width: max-content !important;
+  z-index: 9999999999;
+}
+</style>
+`
+
+const commonStyle = `
+    <style>
+    .scite-badge {
+      display: block !important;
+      margin: 0.25rem 0 !important;
+      width: max-content !important;
+    }
+    </style>
+`
+
+const commonMinStyle = `
+    <style>
+    .scite-badge {
+      display: block;
+      width: min-content;
+      margin: 0.25rem 0;
+    }
+    </style>
+`
+
+const xivStyle = `
+    <style>
+    .scite-badge {
+      display: block !important;
+      margin: 0.25rem 0 !important;
+      width: max-content !important;
+    }
+    .scite-badge div {
+      margin: revert !important;
+      padding: 0 0.125rem !important
+    }
+    </style>
+`
+
+const leftMarginStyle = `
+<style>
+.scite-badge {
+  display: block;
+  width: min-content;
+  margin: 0.5rem 0;
+  margin-left: auto;
+}
+</style>
+`
+
+const largeMarginMinStyle = `
+<style>
+.scite-badge {
+  display: block;
+  width: min-content;
+  margin: 0.5rem 0;
+}
+</style>
+`
+
 /**
  * addRefreshListener adds a click event listener on seeing all references so we can
  * reload badges.
@@ -857,58 +923,25 @@ const BADGE_SITES = [
     name: 'elifesciences.org',
     findDoiEls: findELifeSciencesDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block;
-      width: min-content;
-      margin: 0.25rem 0;
-    }
-    </style>
-`
+    style: commonMinStyle
   },
   {
     name: 'nature.com',
     findDoiEls: findNatureDOIs,
     position: 'beforeend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block;
-      width: min-content;
-      margin: 0.5rem 0;
-      margin-left: auto;
-    }
-    </style>
-`
+    style: leftMarginStyle
   },
   {
     name: 'scholar.google.com',
     findDoiEls: findGoogleDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block;
-      width: min-content;
-      margin: 0.25rem 0;
-    }
-    </style>
-`
+    style: commonMinStyle
   },
   {
     name: 'google',
     findDoiEls: findGoogleDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block;
-      width: min-content;
-      margin: 0.25rem 0;
-    }
-    </style>
-`
+    style: commonMinStyle
   },
   {
     name: 'journals.plos.org',
@@ -927,15 +960,7 @@ const BADGE_SITES = [
     name: 'orcid.org',
     findDoiEls: findORCIDDOIs,
     position: 'beforeend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block;
-      width: min-content;
-      margin: 0.25rem 0;
-    }
-    </style>
-`
+    style: commonMinStyle
   },
   {
     name: 'pubs.acs.org',
@@ -955,58 +980,25 @@ const BADGE_SITES = [
     name: 'springer.com',
     findDoiEls: findSpringerDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block;
-      width: min-content;
-      margin: 0.5rem 0;
-      margin-left: auto;
-    }
-    </style>
-`
+    style: leftMarginStyle
   },
   {
     name: 'mdpi.com',
     findDoiEls: findMDPIDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block;
-      width: min-content;
-      margin: 0.5rem 0;
-    }
-    </style>
-`
+    style: largeMarginMinStyle
   },
   {
     name: 'journals.sagepub.com',
     findDoiEls: findSageDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block;
-      width: min-content;
-      margin: 0.5rem 0;
-    }
-    </style>
-`
+    style: largeMarginMinStyle
   },
   {
     name: 'tandfonline.com',
     findDoiEls: findTandFDOIs,
     position: 'beforeend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block;
-      width: min-content;
-      margin: 0.25rem 0;
-    }
-    </style>
-`
+    style: commonMinStyle
   },
   {
     name: 'spiedigitallibrary.org',
@@ -1039,187 +1031,75 @@ const BADGE_SITES = [
     name: 'karger.com',
     findDoiEls: findKargerDOIs,
     position: 'beforeend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block;
-      margin: 0.25rem 0;
-      width: max-content;
-    }
-    </style>
-`
+    style: commonStyle
   },
   {
     name: 'biorxiv.org',
     findDoiEls: findBioArxivDOIs,
     position: 'beforeend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block !important;
-      margin: 0.25rem 0 !important;
-      width: max-content !important;
-    }
-    .scite-badge div {
-      margin: revert !important;
-      padding: 0 0.125rem !important
-    }
-    </style>
-`
+    style: xivStyle
   },
   {
     name: 'medrxiv.org',
     findDoiEls: findBioArxivDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block !important;
-      margin: 0.25rem 0 !important;
-      width: max-content !important;
-    }
-    .scite-badge div {
-      margin: revert !important;
-      padding: 0 0.125rem !important
-    }
-    </style>
-`
+    style: xivStyle
   },
   {
     name: 'sciencemag.org',
     findDoiEls: findScienceDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block !important;
-      margin: 0.25rem 0 !important;
-      width: max-content !important;
-    }
-    .scite-badge div {
-      margin: revert !important;
-      padding: 0 0.125rem !important
-    }
-    </style>
-`
+    style: xivStyle
   },
   {
     name: 'webofknowledge',
     findDoiEls: findWebOfKnowledgeDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block !important;
-      margin: 0.25rem 0 !important;
-      width: max-content !important;
-    }
-    </style>
-`
+    style: commonStyle
   },
   {
     name: 'scopus',
     findDoiEls: findScopusDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block !important;
-      margin: 0.25rem 0 !important;
-      width: max-content !important;
-    }
-    </style>
-`
+    style: commonStyle
   },
   {
     name: 'pnas.org',
     findDoiEls: findPNASDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block !important;
-      margin: 0.25rem 0 !important;
-      width: max-content !important;
-    }
-    </style>
-`
+    style: commonStyle
   },
   {
     name: 'europepmc.org',
     findDoiEls: findEuropePMCDOIs,
     position: 'afterend',
     initFunc: addRefereshListener('#free-full-text', 3000),
-    style: `
-    <style>
-    .scite-badge {
-      display: block !important;
-      margin: 0.25rem 0 !important;
-      width: max-content !important;
-    }
-    </style>
-`
+    style: commonStyle
   },
   {
     name: 'connectedpapers.com',
     findDoiEls: findConnectedPapersDOIs,
     initFunc: addMutationAttributeListener(['.title_link']),
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block !important;
-      margin: 0.25rem 0 !important;
-      width: max-content !important;
-      z-index: 9999999999;
-    }
-    </style>
-`
+    style: commonOverlayStyle
   },
   {
     name: 'peerj.com',
     findDoiEls: findPeerJDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block !important;
-      margin: 0.25rem 0 !important;
-      width: max-content !important;
-      z-index: 9999999999;
-    }
-    </style>
-`
+    style: commonOverlayStyle
   },
   {
     name: 'clinicaltrials.gov',
     findDoiEls: findClinicalTrialsDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block !important;
-      margin: 0.25rem 0 !important;
-      width: max-content !important;
-      z-index: 9999999999;
-    }
-    </style>
-`
+    style: commonOverlayStyle
   },
   {
     name: 'researchgate.net',
     findDoiEls: findResearchGateDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block !important;
-      margin: 0.25rem 0 !important;
-      width: max-content !important;
-      z-index: 9999999999;
-    }
-    </style>
-`
+    style: commonOverlayStyle
   }
 ]
 
