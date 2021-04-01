@@ -781,13 +781,35 @@ function findClinicalTrialsDOIs () {
   const cites = document.body.querySelectorAll('a')
   for (const cite of cites) {
     const doi = cite?.textContent?.match(DOI_REGEX)
-    console.log(doi)
     if (doi) {
       els.push({
         citeEl: cite,
         // remove the trailing period
         doi: decodeURIComponent(doi[0]).slice(0, -1)
       })
+    }
+  }
+  return els
+}
+
+/**
+ * findResearchGatesDOIs looks in reference links to DOI.
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
+ */
+function findResearchGateDOIs () {
+  const els = []
+  const cites = document.body.querySelectorAll('.nova-v-publication-item__meta')
+  for (const cite of cites) {
+    const spans = cite.querySelectorAll('span')
+    for (const span of spans) {
+      const doi = span?.textContent?.match(DOI_REGEX)
+      console.log(doi)
+      if (doi) {
+        els.push({
+          citeEl: cite,
+          doi: decodeURIComponent(doi[0])
+        })
+      }
     }
   }
   return els
@@ -1172,6 +1194,21 @@ const BADGE_SITES = [
   {
     name: 'clinicaltrials.gov',
     findDoiEls: findClinicalTrialsDOIs,
+    position: 'afterend',
+    style: `
+    <style>
+    .scite-badge {
+      display: block !important;
+      margin: 0.25rem 0 !important;
+      width: max-content !important;
+      z-index: 9999999999;
+    }
+    </style>
+`
+  },
+  {
+    name: 'researchgate.net',
+    findDoiEls: findResearchGateDOIs,
     position: 'afterend',
     style: `
     <style>

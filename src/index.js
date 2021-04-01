@@ -172,7 +172,7 @@ function findDoiFromPubmed () {
 }
 
 function findDoiFromLink () {
-  const re = /href=["'].*doi.*(10\..+?)["']/
+  const re = /(10.\d{4,9}\/[-._;()/:A-Z0-9]+)/ig
   return runRegexOnDoc(re)
 }
 
@@ -198,6 +198,7 @@ function findDoi () {
 
   for (let i = 0; i < doiFinderFunctions.length; i++) {
     const myDoi = doiFinderFunctions[i]()
+    console.log(i, myDoi)
     if (myDoi && `${myDoi}`.startsWith('10.')) {
       // if we find a good DOI, stop looking
       return myDoi
