@@ -91,6 +91,7 @@ and
 Once you have the extension running do the following in xcode
 ```
 - Set the version and build numbers in both the project and scite extension/Info.plist to be what you want
+- Set the category on the *.plist files
 - Project > Build
 - Project > Archive
 - Organizater > Upload
@@ -206,3 +207,16 @@ Result: https://www.pnas.org/content/117/4/1910#ref-list-1
 #### Europe PMC
 
 Result: http://europepmc.org/article/MED/25942454#id600581
+
+#### Conected Papers
+
+Result: https://www.connectedpapers.com/main/0b4c513b66754d5e7c700508629e2d28b1061609/Science-mapping-software-tools-Review-analysis-and-cooperative-study-among-tools/graph
+
+
+#### peerj
+
+Result: https://peerj.com/articles/148/
+
+#### clinical trials
+
+Result: https://www.clinicaltrials.gov/ct2/show/study/NCT03502551?term=ketamine&draw=2&rank=17

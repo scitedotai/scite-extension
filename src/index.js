@@ -25,7 +25,9 @@ const SCITE_HOSTS = [
 const DONT_POPUP_HOST = [
   'wikipedia.org',
   'scholar.google.com',
-  'google'
+  'google',
+  'connectedpapers',
+  'clinicaltrials.gov'
 ]
 
 const docAsStr = document.documentElement.innerHTML
@@ -169,10 +171,9 @@ function findDoiFromPubmed () {
   }
 }
 
-function findDoiFromPsycnet () {
-  // gray: http://psycnet.apa.org/record/2000-13328-008
-  const re = /href='\/doi\/10\.(.+)/
-  return runRegexOnDoc(re, 'psycnet.apa.org')
+function findDoiFromLink () {
+  const re = /href=["'].*doi.*(10\..+?)["']/
+  return runRegexOnDoc(re)
 }
 
 function findDoiFromTitle () {
@@ -190,14 +191,14 @@ function findDoi () {
     findDoiFromScienceDirect,
     findDoiFromIeee,
     findDoiFromNumber,
-    findDoiFromPsycnet,
+    findDoiFromLink,
     findDoiFromPubmed,
     findDoiFromTitle
   ]
 
   for (let i = 0; i < doiFinderFunctions.length; i++) {
     const myDoi = doiFinderFunctions[i]()
-    if (myDoi) {
+    if (myDoi && `${myDoi}`.startsWith('10.')) {
       // if we find a good DOI, stop looking
       return myDoi
     }
@@ -206,7 +207,6 @@ function findDoi () {
 
 function popupDoi (doi) {
   const popup = document.createElement('div')
-
   if (poppedUp) {
     return false
   }
@@ -273,7 +273,8 @@ function runWithDelay () {
     'scopus',
     'karger.com',
     'journals.plos.org',
-    'europepmc.org'
+    'europepmc.org',
+    'orcid.org'
   ]
 
   // it would be better to poll, but that is more complicated and we don't
