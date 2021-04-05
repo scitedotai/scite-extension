@@ -1,4 +1,4 @@
-// TODO: (dom) look into deduplicating common extractors and loops.
+// TODO: (dom) look into deduplicating common extractors, loops, and styles.
 const queryString = require('query-string')
 
 const BADGE_SCRIPT = `
@@ -148,7 +148,7 @@ function findPubMedDOIEls () {
 }
 
 /**
- * findPubMedDOIEls looks in cite tags for text beginning with DOI and captures it as a doi
+ * findPubMedCentralDOIEls looks in cite tags for text beginning with DOI and captures it as a doi
  * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findPubMedCentralDOIEls () {
