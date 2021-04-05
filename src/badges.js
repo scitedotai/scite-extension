@@ -104,25 +104,38 @@ function addRefereshListener (refreshSelector, timeout = 1000) {
  * addMutationListener adds an attribution mutation listener on specific attributes so we can
  * reload badges.
  */
-let mutationObserverSet = false
 function addMutationAttributeListener (listenSelectors) {
+  let mutationObserverSet = false
   return () => {
-    if (mutationObserverSet) {
-      return
-    }
-    for (const selector of listenSelectors) {
-      const observer = new MutationObserver(function (mutations) {
-        mutations.forEach(() => {
-          removeElementsByClass('scite-badge')
-          insertBadges()
-        })
-      })
+    // periodically wait until we have set the mutation listener.
+    const interval = setInterval(() => {
+      if (mutationObserverSet) {
+        clearInterval(interval)
+        return
+      }
 
-      observer.observe(document.querySelector(selector), {
-        attributes: true // configure it to listen to attribute changes
-      })
-    }
-    mutationObserverSet = true
+      let observersSet = 0
+      for (const selector of listenSelectors) {
+        const observer = new MutationObserver(function (mutations) {
+          mutations.forEach(() => {
+            removeElementsByClass('scite-badge')
+            insertBadges()
+          })
+        })
+
+        const el = document.querySelector(selector)
+        if (!el) {
+          continue
+        }
+        observer.observe(el, {
+          attributes: true // configure it to listen to attribute changes
+        })
+        observersSet += 1
+      }
+      if (listenSelectors.length === observersSet) {
+        mutationObserverSet = true
+      }
+    }, 1000)
   }
 }
 
