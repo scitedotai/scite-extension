@@ -220,3 +220,12 @@ Result: https://peerj.com/articles/148/
 #### clinical trials
 
 Result: https://www.clinicaltrials.gov/ct2/show/study/NCT03502551?term=ketamine&draw=2&rank=17
+
+#### lens
+
+search: https://www.lens.org/lens/search/scholar/list?q=metabolic%20engineering&preview=true
+
+results: https://www.lens.org/lens/scholar/article/181-440-771-548-406/citations/citing
+
+and: https://www.lens.org/lens/scholar/article/181-440-771-548-406/citations/articles
+
