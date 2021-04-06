@@ -916,6 +916,29 @@ function findLensDOIs () {
   return els
 }
 
+/**
+ * findBMCDOIs looks in reference links to DOI.
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
+ */
+function findBMCDOIs () {
+  const els = []
+  const cites = document.body.querySelectorAll('.c-listing__view-options, .c-reading-companion__reference-links, .c-article-references__links')
+  for (const cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (const anchor of anchors) {
+      const doi = decodeURIComponent(anchor?.href).match(DOI_REGEX)
+      if (doi) {
+        els.push({
+          citeEl: cite,
+          doi: decodeURIComponent(doi[0])
+        })
+        break
+      }
+    }
+  }
+  return els
+}
+
 const BADGE_SITES = [
   {
     name: 'wikipedia.org',
@@ -1142,6 +1165,19 @@ const BADGE_SITES = [
     position: 'beforeend',
     initFunc: addRefereshListener('a', 1000),
     style: commonOverlayStyle
+  },
+  {
+    name: 'biomedcentral.com',
+    findDoiEls: findBMCDOIs,
+    position: 'beforeend',
+    style: `
+    <style>
+    .scite-badge {
+      font-weight: normal;
+      margin-left: 0.25rem;
+    }
+    </style>
+`
   }
 ]
 
