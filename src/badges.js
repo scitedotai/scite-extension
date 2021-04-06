@@ -882,12 +882,34 @@ function findResearchGateDOIs () {
     const spans = cite.querySelectorAll('span')
     for (const span of spans) {
       const doi = span?.textContent?.match(DOI_REGEX)
-      console.log(doi)
       if (doi) {
         els.push({
           citeEl: cite,
           doi: decodeURIComponent(doi[0])
         })
+      }
+    }
+  }
+  return els
+}
+
+/**
+ * findLensDOIs looks in reference links to DOI.
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
+ */
+function findLensDOIs () {
+  const els = []
+  const cites = document.body.querySelectorAll('.listing-sidebar')
+  for (const cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (const anchor of anchors) {
+      const doi = anchor?.href?.match(DOI_REGEX)
+      if (doi) {
+        els.push({
+          citeEl: cite,
+          doi: decodeURIComponent(doi[0])
+        })
+        break
       }
     }
   }
@@ -1112,6 +1134,13 @@ const BADGE_SITES = [
     name: 'researchgate.net',
     findDoiEls: findResearchGateDOIs,
     position: 'afterend',
+    style: commonOverlayStyle
+  },
+  {
+    name: 'lens.org',
+    findDoiEls: findLensDOIs,
+    position: 'beforeend',
+    initFunc: addRefereshListener('a', 1000),
     style: commonOverlayStyle
   }
 ]

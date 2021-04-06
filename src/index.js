@@ -199,7 +199,6 @@ function findDoi () {
 
   for (let i = 0; i < doiFinderFunctions.length; i++) {
     const myDoi = doiFinderFunctions[i]()
-    console.log(i, myDoi)
     if (myDoi && `${myDoi}`.startsWith('10.')) {
       // if we find a good DOI, stop looking
       return myDoi
@@ -277,7 +276,8 @@ function runWithDelay () {
     'journals.plos.org',
     'europepmc.org',
     'orcid.org',
-    'connectedpapers.com'
+    'connectedpapers.com',
+    'lens.org'
   ]
 
   // it would be better to poll, but that is more complicated and we don't
