@@ -12,7 +12,9 @@ import styles from './styles.css'
 import insertBadges from './badges'
 
 const IS_DEV = typeof process !== 'undefined' && process.NODE_ENV === 'development'
-const devLog = IS_DEV ? console.log.bind(window) : function () {}
+const devLog = IS_DEV ? console.log.bind(window) : function () { }
+
+const DOI_REGEX = /(10.\d{4,9}\/[-._;()/:A-Z0-9]+)/ig
 
 const SCITE_HOSTS = [
   'scite.ai',
@@ -179,7 +181,7 @@ function findDoiFromPsycnet () {
 
 function findDoiFromTitle () {
   // Crossref DOI regex. See https://www.crossref.org/blog/dois-and-matching-regular-expressions/
-  const re = /(10.\d{4,9}\/[-._;()/:A-Z0-9]+)/ig
+  const re = DOI_REGEX
   const doi = docTitle.match(re)
   return doi ? doi[0] : null
 }
