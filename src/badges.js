@@ -1,4 +1,4 @@
-// TODO: (dom) look into deduplicating common extractors and loops.
+// TODO: (dom) look into deduplicating common extractors, loops, and styles.
 const queryString = require('query-string')
 
 const BADGE_SCRIPT = `
@@ -17,6 +17,72 @@ function removeElementsByClass (className) {
 }
 
 const DOI_REGEX = /(10.\d{4,9}\/[-._;()/:A-Z0-9]+)/ig
+
+const commonOverlayStyle = `
+<style>
+.scite-badge {
+  display: block !important;
+  margin: 0.25rem 0 !important;
+  width: max-content !important;
+  z-index: 9999999999;
+}
+</style>
+`
+
+const commonStyle = `
+    <style>
+    .scite-badge {
+      display: block !important;
+      margin: 0.25rem 0 !important;
+      width: max-content !important;
+    }
+    </style>
+`
+
+const commonMinStyle = `
+    <style>
+    .scite-badge {
+      display: block;
+      width: min-content;
+      margin: 0.25rem 0;
+    }
+    </style>
+`
+
+const xivStyle = `
+    <style>
+    .scite-badge {
+      display: block !important;
+      margin: 0.25rem 0 !important;
+      width: max-content !important;
+    }
+    .scite-badge div {
+      margin: revert !important;
+      padding: 0 0.125rem !important
+    }
+    </style>
+`
+
+const leftMarginStyle = `
+<style>
+.scite-badge {
+  display: block;
+  width: min-content;
+  margin: 0.5rem 0;
+  margin-left: auto;
+}
+</style>
+`
+
+const largeMarginMinStyle = `
+<style>
+.scite-badge {
+  display: block;
+  width: min-content;
+  margin: 0.5rem 0;
+}
+</style>
+`
 
 /**
  * addRefreshListener adds a click event listener on seeing all references so we can
@@ -38,25 +104,38 @@ function addRefereshListener (refreshSelector, timeout = 1000) {
  * addMutationListener adds an attribution mutation listener on specific attributes so we can
  * reload badges.
  */
-let mutationObserverSet = false
 function addMutationAttributeListener (listenSelectors) {
+  let mutationObserverSet = false
   return () => {
-    if (mutationObserverSet) {
-      return
-    }
-    for (const selector of listenSelectors) {
-      const observer = new MutationObserver(function (mutations) {
-        mutations.forEach(() => {
-          removeElementsByClass('scite-badge')
-          insertBadges()
-        })
-      })
+    // periodically wait until we have set the mutation listener.
+    const interval = setInterval(() => {
+      if (mutationObserverSet) {
+        clearInterval(interval)
+        return
+      }
 
-      observer.observe(document.querySelector(selector), {
-        attributes: true // configure it to listen to attribute changes
-      })
-    }
-    mutationObserverSet = true
+      let observersSet = 0
+      for (const selector of listenSelectors) {
+        const observer = new MutationObserver(function (mutations) {
+          mutations.forEach(() => {
+            removeElementsByClass('scite-badge')
+            insertBadges()
+          })
+        })
+
+        const el = document.querySelector(selector)
+        if (!el) {
+          continue
+        }
+        observer.observe(el, {
+          attributes: true // configure it to listen to attribute changes
+        })
+        observersSet += 1
+      }
+      if (listenSelectors.length === observersSet) {
+        mutationObserverSet = true
+      }
+    }, 1000)
   }
 }
 
@@ -82,7 +161,7 @@ function findPubMedDOIEls () {
 }
 
 /**
- * findPubMedDOIEls looks in cite tags for text beginning with DOI and captures it as a doi
+ * findPubMedCentralDOIEls looks in cite tags for text beginning with DOI and captures it as a doi
  * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findPubMedCentralDOIEls () {
@@ -781,13 +860,80 @@ function findClinicalTrialsDOIs () {
   const cites = document.body.querySelectorAll('a')
   for (const cite of cites) {
     const doi = cite?.textContent?.match(DOI_REGEX)
-    console.log(doi)
     if (doi) {
       els.push({
         citeEl: cite,
         // remove the trailing period
         doi: decodeURIComponent(doi[0]).slice(0, -1)
       })
+    }
+  }
+  return els
+}
+
+/**
+ * findResearchGatesDOIs looks in reference links to DOI.
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
+ */
+function findResearchGateDOIs () {
+  const els = []
+  const cites = document.body.querySelectorAll('.nova-v-publication-item__meta')
+  for (const cite of cites) {
+    const spans = cite.querySelectorAll('span')
+    for (const span of spans) {
+      const doi = span?.textContent?.match(DOI_REGEX)
+      if (doi) {
+        els.push({
+          citeEl: cite,
+          doi: decodeURIComponent(doi[0])
+        })
+      }
+    }
+  }
+  return els
+}
+
+/**
+ * findLensDOIs looks in reference links to DOI.
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
+ */
+function findLensDOIs () {
+  const els = []
+  const cites = document.body.querySelectorAll('.listing-sidebar')
+  for (const cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (const anchor of anchors) {
+      const doi = anchor?.href?.match(DOI_REGEX)
+      if (doi) {
+        els.push({
+          citeEl: cite,
+          doi: decodeURIComponent(doi[0])
+        })
+        break
+      }
+    }
+  }
+  return els
+}
+
+/**
+ * findBMCDOIs looks in reference links to DOI.
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
+ */
+function findBMCDOIs () {
+  const els = []
+  const cites = document.body.querySelectorAll('.c-listing__view-options, .c-reading-companion__reference-links, .c-article-references__links')
+  for (const cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (const anchor of anchors) {
+      const doi = decodeURIComponent(anchor?.href).match(DOI_REGEX)
+      if (doi) {
+        els.push({
+          citeEl: cite,
+          doi: decodeURIComponent(doi[0])
+        })
+        break
+      }
     }
   }
   return els
@@ -835,58 +981,25 @@ const BADGE_SITES = [
     name: 'elifesciences.org',
     findDoiEls: findELifeSciencesDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block;
-      width: min-content;
-      margin: 0.25rem 0;
-    }
-    </style>
-`
+    style: commonMinStyle
   },
   {
     name: 'nature.com',
     findDoiEls: findNatureDOIs,
     position: 'beforeend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block;
-      width: min-content;
-      margin: 0.5rem 0;
-      margin-left: auto;
-    }
-    </style>
-`
+    style: leftMarginStyle
   },
   {
     name: 'scholar.google.com',
     findDoiEls: findGoogleDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block;
-      width: min-content;
-      margin: 0.25rem 0;
-    }
-    </style>
-`
+    style: commonMinStyle
   },
   {
     name: 'google',
     findDoiEls: findGoogleDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block;
-      width: min-content;
-      margin: 0.25rem 0;
-    }
-    </style>
-`
+    style: commonMinStyle
   },
   {
     name: 'journals.plos.org',
@@ -905,15 +1018,7 @@ const BADGE_SITES = [
     name: 'orcid.org',
     findDoiEls: findORCIDDOIs,
     position: 'beforeend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block;
-      width: min-content;
-      margin: 0.25rem 0;
-    }
-    </style>
-`
+    style: commonMinStyle
   },
   {
     name: 'pubs.acs.org',
@@ -933,58 +1038,25 @@ const BADGE_SITES = [
     name: 'springer.com',
     findDoiEls: findSpringerDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block;
-      width: min-content;
-      margin: 0.5rem 0;
-      margin-left: auto;
-    }
-    </style>
-`
+    style: leftMarginStyle
   },
   {
     name: 'mdpi.com',
     findDoiEls: findMDPIDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block;
-      width: min-content;
-      margin: 0.5rem 0;
-    }
-    </style>
-`
+    style: largeMarginMinStyle
   },
   {
     name: 'journals.sagepub.com',
     findDoiEls: findSageDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block;
-      width: min-content;
-      margin: 0.5rem 0;
-    }
-    </style>
-`
+    style: largeMarginMinStyle
   },
   {
     name: 'tandfonline.com',
     findDoiEls: findTandFDOIs,
     position: 'beforeend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block;
-      width: min-content;
-      margin: 0.25rem 0;
-    }
-    </style>
-`
+    style: commonMinStyle
   },
   {
     name: 'spiedigitallibrary.org',
@@ -1017,169 +1089,92 @@ const BADGE_SITES = [
     name: 'karger.com',
     findDoiEls: findKargerDOIs,
     position: 'beforeend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block;
-      margin: 0.25rem 0;
-      width: max-content;
-    }
-    </style>
-`
+    style: commonStyle
   },
   {
     name: 'biorxiv.org',
     findDoiEls: findBioArxivDOIs,
     position: 'beforeend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block !important;
-      margin: 0.25rem 0 !important;
-      width: max-content !important;
-    }
-    .scite-badge div {
-      margin: revert !important;
-      padding: 0 0.125rem !important
-    }
-    </style>
-`
+    style: xivStyle
   },
   {
     name: 'medrxiv.org',
     findDoiEls: findBioArxivDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block !important;
-      margin: 0.25rem 0 !important;
-      width: max-content !important;
-    }
-    .scite-badge div {
-      margin: revert !important;
-      padding: 0 0.125rem !important
-    }
-    </style>
-`
+    style: xivStyle
   },
   {
     name: 'sciencemag.org',
     findDoiEls: findScienceDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block !important;
-      margin: 0.25rem 0 !important;
-      width: max-content !important;
-    }
-    .scite-badge div {
-      margin: revert !important;
-      padding: 0 0.125rem !important
-    }
-    </style>
-`
+    style: xivStyle
   },
   {
     name: 'webofknowledge',
     findDoiEls: findWebOfKnowledgeDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block !important;
-      margin: 0.25rem 0 !important;
-      width: max-content !important;
-    }
-    </style>
-`
+    style: commonStyle
   },
   {
     name: 'scopus',
     findDoiEls: findScopusDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block !important;
-      margin: 0.25rem 0 !important;
-      width: max-content !important;
-    }
-    </style>
-`
+    style: commonStyle
   },
   {
     name: 'pnas.org',
     findDoiEls: findPNASDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block !important;
-      margin: 0.25rem 0 !important;
-      width: max-content !important;
-    }
-    </style>
-`
+    style: commonStyle
   },
   {
     name: 'europepmc.org',
     findDoiEls: findEuropePMCDOIs,
     position: 'afterend',
     initFunc: addRefereshListener('#free-full-text', 3000),
-    style: `
-    <style>
-    .scite-badge {
-      display: block !important;
-      margin: 0.25rem 0 !important;
-      width: max-content !important;
-    }
-    </style>
-`
+    style: commonStyle
   },
   {
     name: 'connectedpapers.com',
     findDoiEls: findConnectedPapersDOIs,
     initFunc: addMutationAttributeListener(['.title_link']),
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block !important;
-      margin: 0.25rem 0 !important;
-      width: max-content !important;
-      z-index: 9999999999;
-    }
-    </style>
-`
+    style: commonOverlayStyle
   },
   {
     name: 'peerj.com',
     findDoiEls: findPeerJDOIs,
     position: 'afterend',
-    style: `
-    <style>
-    .scite-badge {
-      display: block !important;
-      margin: 0.25rem 0 !important;
-      width: max-content !important;
-      z-index: 9999999999;
-    }
-    </style>
-`
+    style: commonOverlayStyle
   },
   {
     name: 'clinicaltrials.gov',
     findDoiEls: findClinicalTrialsDOIs,
     position: 'afterend',
+    style: commonOverlayStyle
+  },
+  {
+    name: 'researchgate.net',
+    findDoiEls: findResearchGateDOIs,
+    position: 'afterend',
+    style: commonOverlayStyle
+  },
+  {
+    name: 'lens.org',
+    findDoiEls: findLensDOIs,
+    position: 'beforeend',
+    initFunc: addRefereshListener('a', 1000),
+    style: commonOverlayStyle
+  },
+  {
+    name: 'biomedcentral.com',
+    findDoiEls: findBMCDOIs,
+    position: 'beforeend',
     style: `
     <style>
     .scite-badge {
-      display: block !important;
-      margin: 0.25rem 0 !important;
-      width: max-content !important;
-      z-index: 9999999999;
+      font-weight: normal;
+      margin-left: 0.25rem;
     }
     </style>
 `
