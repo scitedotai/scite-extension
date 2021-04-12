@@ -2,11 +2,11 @@
 const queryString = require('query-string')
 
 const BADGE_SCRIPT = `
-<script async type="application/javascript" src="https://cdn.scite.ai/badge/scite-badge-latest.min.js?v=2">
+<script async type="application/javascript" src="https://cdn.scite.ai/badge/scite-badge-latest.min.js?v=3">
 </script>`
 
 function createBadge (doi) {
-  return `<div class="scite-badge" data-doi="${doi}" data-layout="horizontal" data-small="true"/>`
+  return `<div class="scite-badge" data-doi="${doi}" data-layout="horizontal" data-small="true" data-tooltip-placement="none" />`
 }
 
 function removeElementsByClass (className) {
