@@ -273,8 +273,11 @@ function findELifeSciencesDOIs () {
 function findNatureDOIs () {
   const els = []
   const cites = [
+    ...document.body.querySelectorAll('.c-article-references__item'),
     ...document.body.querySelectorAll('.c-reading-companion__reference-item'),
-    ...document.body.querySelectorAll('[itemprop="citation"]')
+    ...document.body.querySelectorAll('[itemprop="citation"]'),
+    ...document.body.querySelectorAll('.js-ref-item')
+
   ]
   for (const cite of cites) {
     const anchors = cite.querySelectorAll('a')
