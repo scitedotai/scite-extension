@@ -943,6 +943,29 @@ function findBMCDOIs () {
   return els
 }
 
+/**
+ * findBMCDOIs looks in reference links to DOI.
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
+ */
+function findScieloDOIs () {
+  const els = []
+  const cites = document.body.querySelectorAll('.metadata')
+  for (const cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (const anchor of anchors) {
+      const doi = decodeURIComponent(anchor?.href).match(DOI_REGEX)
+      if (doi) {
+        els.push({
+          citeEl: cite,
+          doi: decodeURIComponent(doi[0])
+        })
+        break
+      }
+    }
+  }
+  return els
+}
+
 const BADGE_SITES = [
   {
     name: 'wikipedia.org',
@@ -1179,6 +1202,18 @@ const BADGE_SITES = [
     .scite-badge {
       font-weight: normal;
       margin-left: 0.25rem;
+    }
+    </style>
+`
+  },
+  {
+    name: 'scielo.org',
+    findDoiEls: findScieloDOIs,
+    position: 'afterend',
+    style: `
+    <style>
+    .scite-badge span {
+      margin-right: 0 !important;
     }
     </style>
 `
