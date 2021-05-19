@@ -322,6 +322,7 @@ function findSpringerDOIs () {
           citeEl: cite,
           doi: decodeURIComponent(doi[1])
         })
+        break
       }
     }
   }
