@@ -10,3 +10,9 @@
     border-right: none;
     overflow: hidden;
 }
+
+@media print {
+    .sciteApp {
+        display: none;
+    }
+}

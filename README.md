@@ -240,3 +240,7 @@ and: https://www.lens.org/lens/scholar/article/181-440-771-548-406/citations/art
 search: https://jcircadianrhythms.biomedcentral.com/articles?tab=keyword&sort=PubDateAscending
 
 result: https://jcircadianrhythms.biomedcentral.com/articles/10.1186/1740-3391-1-2
+
+#### scielo
+
+search: https://search.scielo.org/?q=robotics&lang=en&count=15&from=0&output=site&sort=YEAR_ASC&format=summary&fb=&page=1
