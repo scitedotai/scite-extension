@@ -339,11 +339,15 @@ function findGoogleDOIs () {
   for (const cite of cites) {
     const anchors = cite.querySelectorAll('a')
     for (const anchor of anchors) {
-      const doi = anchor?.href?.match(/10\.(.+)/)
-      if (doi && doi.length > 1) {
+      const doi = anchor?.href?.match(DOI_REGEX)
+      if (doi && doi.length > 0) {
+        let cleanDOI = decodeURIComponent(doi[0])
+        for (const ending of ['/full/html', '/html', '/abstract', '/full', '.pdf', '/pdf']) {
+          cleanDOI = cleanDOI.replace(ending, '')
+        }
         els.push({
           citeEl: cite,
-          doi: decodeURIComponent(doi[0])
+          doi: cleanDOI
         })
         break
       }
