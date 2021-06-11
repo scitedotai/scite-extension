@@ -244,3 +244,11 @@ result: https://jcircadianrhythms.biomedcentral.com/articles/10.1186/1740-3391-1
 #### scielo
 
 search: https://search.scielo.org/?q=robotics&lang=en&count=15&from=0&output=site&sort=YEAR_ASC&format=summary&fb=&page=1
+
+# APA Psychnet
+
+Search:
+https://psycnet.apa.org/search/results?id=56ab4ce0-0f51-85fc-7298-3e65d0f31e18&tab=PA&sort=CitedByCountSort1%20desc,PublicationYearMSSort%20desc&display=25&page=1
+
+Fulltext references:
+https://psycnet.apa.org/fulltext/2015-00298-001.html

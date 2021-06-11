@@ -16,6 +16,23 @@ const devLog = IS_DEV ? console.log.bind(window) : function () { }
 
 const DOI_REGEX = /(10.\d{4,9}\/[-._;()/:A-Z0-9]+)/ig
 
+// Single-page apps take a while to fully load all the HTML,
+// and until they do we can't find the DOI
+const LONG_DELAY_HOSTS = [
+  'psycnet.apa.org',
+  'www.sciencedirect.com',
+  'mdpi.com',
+  'onlinelibrary.wiley.com',
+  'webofknowledge',
+  'scopus',
+  'karger.com',
+  'journals.plos.org',
+  'europepmc.org',
+  'orcid.org',
+  'connectedpapers.com',
+  'lens.org'
+]
+
 const SCITE_HOSTS = [
   'scite.ai',
   'staging.scite.ai',
@@ -24,12 +41,16 @@ const SCITE_HOSTS = [
   'localhost'
 ]
 
-const DONT_POPUP_HOST = [
+const DONT_POPUP_HOSTS = [
   'wikipedia.org',
   'scholar.google.com',
   'google',
   'connectedpapers',
   'clinicaltrials.gov'
+]
+
+const RESTRICTED_PATH_POPUP_HOSTS = [
+  { host: 'psycnet.apa.org', restrictedPaths: ['/record', '/fulltext', '/search/display'] }
 ]
 
 const docAsStr = document.documentElement.innerHTML
@@ -175,8 +196,7 @@ function findDoiFromPubmed () {
 
 function findDoiFromPsycnet () {
   // gray: http://psycnet.apa.org/record/2000-13328-008
-  const re = /href='\/doi\/10\.(.+)/
-  return runRegexOnDoc(re, 'psycnet.apa.org')
+  return runRegexOnDoc(DOI_REGEX, 'psycnet.apa.org')
 }
 
 function findDoiFromTitle () {
@@ -210,6 +230,7 @@ function findDoi () {
 
 function popupDoi (doi) {
   const popup = document.createElement('div')
+  popup.id = 'scite-popup'
   if (poppedUp) {
     return false
   }
@@ -246,10 +267,16 @@ function main () {
   }
   insertBadges()
 
-  for (const site of DONT_POPUP_HOST) {
+  for (const site of DONT_POPUP_HOSTS) {
     // Incase the host has a sub domain like en.wikipedia or fr.wikipedia
     // we check a lesser substring with includes.
     if (window.location.href.includes(site)) {
+      return
+    }
+  }
+
+  for (const site of RESTRICTED_PATH_POPUP_HOSTS) {
+    if (window.location.href.includes(site.host) && !site.restrictedPaths.some(path => window.location.pathname.includes(path))) {
       return
     }
   }
@@ -263,28 +290,16 @@ function main () {
 }
 
 function runWithDelay () {
-  let delay = 200
+  const popupRef = document.querySelector('#scite-popup')
+  if (popupRef) {
+    popupRef.remove()
+  }
 
-  // Single-page apps take a while to fully load all the HTML,
-  // and until they do we can't find the DOI
-  const longDelayHosts = [
-    'psycnet.apa.org',
-    'www.sciencedirect.com',
-    'mdpi.com',
-    'onlinelibrary.wiley.com',
-    'webofknowledge',
-    'scopus',
-    'karger.com',
-    'journals.plos.org',
-    'europepmc.org',
-    'orcid.org',
-    'connectedpapers.com',
-    'lens.org'
-  ]
+  let delay = 200
 
   // it would be better to poll, but that is more complicated and we don't
   // have many reports of SPAs like this yet.
-  for (const host of longDelayHosts) {
+  for (const host of LONG_DELAY_HOSTS) {
     if (myHost.includes(host)) {
       delay = 3000
     }
@@ -293,3 +308,17 @@ function runWithDelay () {
 }
 
 runWithDelay()
+
+// For SPAs we need to listen to route changes and refresh
+let lastUrl = window.location.href
+new MutationObserver(() => {
+  const url = window.location.href
+  if (url !== lastUrl) {
+    lastUrl = url
+    onUrlChange()
+  }
+}).observe(document, { subtree: true, childList: true })
+
+function onUrlChange () {
+  runWithDelay()
+}

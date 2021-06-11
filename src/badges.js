@@ -79,7 +79,7 @@ const largeMarginMinStyle = `
 .scite-badge {
   display: block;
   width: min-content;
-  margin: 0.5rem 0;
+  margin: 0.5rem 0 !important;
 }
 </style>
 `
@@ -948,12 +948,35 @@ function findBMCDOIs () {
 }
 
 /**
- * findBMCDOIs looks in reference links to DOI.
+ * findScieloDOIs looks in reference links to DOI.
  * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findScieloDOIs () {
   const els = []
   const cites = document.body.querySelectorAll('.metadata')
+  for (const cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (const anchor of anchors) {
+      const doi = decodeURIComponent(anchor?.href).match(DOI_REGEX)
+      if (doi) {
+        els.push({
+          citeEl: cite,
+          doi: decodeURIComponent(doi[0])
+        })
+        break
+      }
+    }
+  }
+  return els
+}
+
+/**
+ * findAPADOIs looks in reference links to DOI.
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
+ */
+function findAPADOIs () {
+  const els = []
+  const cites = document.body.querySelectorAll('.resultData, .citText')
   for (const cite of cites) {
     const anchors = cite.querySelectorAll('a')
     for (const anchor of anchors) {
@@ -1221,6 +1244,12 @@ const BADGE_SITES = [
     }
     </style>
 `
+  },
+  {
+    name: 'apa.org',
+    findDoiEls: findAPADOIs,
+    position: 'afterend',
+    style: largeMarginMinStyle
   }
 ]
 
