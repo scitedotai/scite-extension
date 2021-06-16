@@ -1264,6 +1264,11 @@ export default function insertBadges () {
     return
   }
 
+  const badges = document.querySelectorAll('.scite-badge')
+  for (const badge of badges) {
+    badge.remove()
+  }
+
   const els = badgeSite.findDoiEls()
   if (!els || els.length <= 0) {
     return
