@@ -1,5 +1,22 @@
 # Scite Extension #
 
+## Issues or Feature Requests ##
+
+**Want to see the extension or scite badges somewhere?**
+
+Feel free to raise an issue requesting us to support the badge or extension in particular places or contact us at hi@scite.ai
+
+If you are interested in implementing the badge on a site you run see https://scite.ai/badge
+
+**See a bug?**
+
+Feel free to raise an issue here and we will address it as soon as possible.
+
+**Want to contribute?**
+
+We are happy for folks to contribute to the badge and extension, just raise an issue describing what you would like to do and feel free to make a PR against it!
+
+
 ## Building ##
 
 ```
