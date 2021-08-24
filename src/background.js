@@ -28,8 +28,10 @@ browser.contextMenus.create({
 browser.contextMenus.onClicked.addListener(function (info, tab) {
   if (info.menuItemId === 'scite-citation-search') {
     if (info.selectionText) {
+      const encodedSelection = encodeURIComponent(info.selectionText)
+
       browser.tabs.create({
-        url: `https://scite.ai/search/citations?q=${info.selectionText}&utm_source=generic&utm_medium=plugin&utm_campaign=plugin-citation-search`
+        url: `https://scite.ai/search/citations?q=${encodedSelection}&utm_source=generic&utm_medium=plugin&utm_campaign=plugin-citation-search`
       })
     }
   }
