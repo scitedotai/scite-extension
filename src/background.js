@@ -21,7 +21,7 @@ function onCreated() {
 
 browser.contextMenus.create({
   id: 'scite-citation-search',
-  title: 'Search citation statements',
+  title: 'Search scite.ai citation statements',
   contexts: ['selection']
 }, onCreated)
 
