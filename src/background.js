@@ -29,7 +29,7 @@ browser.contextMenus.onClicked.addListener(function (info, tab) {
   if (info.menuItemId === 'scite-citation-search') {
     if (info.selectionText) {
       browser.tabs.create({
-        url: `https://scite.ai/search/citations?q=${info.selectionText}`
+        url: `https://scite.ai/search/citations?q=${info.selectionText}&utm_source=generic&utm_medium=plugin&utm_campaign=plugin-citation-search`
       })
     }
   }
