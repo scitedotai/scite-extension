@@ -1,5 +1,22 @@
 # Scite Extension #
 
+## Issues or Feature Requests ##
+
+**Want to see the extension or scite badges somewhere?**
+
+Feel free to raise an issue requesting us to support the badge or extension in particular places or contact us at hi@scite.ai
+
+If you are interested in implementing the badge on a site you run see https://scite.ai/badge
+
+**See a bug?**
+
+Feel free to raise an issue here and we will address it as soon as possible.
+
+**Want to contribute?**
+
+We are happy for folks to contribute to the badge and extension, just raise an issue describing what you would like to do and feel free to make a PR against it!
+
+
 ## Building ##
 
 ```
@@ -133,6 +150,8 @@ Search: https://elifesciences.org/articles/62456#references
 #### nature.com
 
 Result: https://www.nature.com/articles/s41467-020-19171-4
+
+News Result: https://www.nature.com/articles/d41586-021-00958-4
 #### scholar.google.com
 
 Search: https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=Citation+contexts&btnG=
@@ -238,3 +257,15 @@ and: https://www.lens.org/lens/scholar/article/181-440-771-548-406/citations/art
 search: https://jcircadianrhythms.biomedcentral.com/articles?tab=keyword&sort=PubDateAscending
 
 result: https://jcircadianrhythms.biomedcentral.com/articles/10.1186/1740-3391-1-2
+
+#### scielo
+
+search: https://search.scielo.org/?q=robotics&lang=en&count=15&from=0&output=site&sort=YEAR_ASC&format=summary&fb=&page=1
+
+# APA Psychnet
+
+Search:
+https://psycnet.apa.org/search/results?id=56ab4ce0-0f51-85fc-7298-3e65d0f31e18&tab=PA&sort=CitedByCountSort1%20desc,PublicationYearMSSort%20desc&display=25&page=1
+
+Fulltext references:
+https://psycnet.apa.org/fulltext/2015-00298-001.html

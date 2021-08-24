@@ -2,7 +2,7 @@
 const queryString = require('query-string')
 
 const BADGE_SCRIPT = `
-<script async type="application/javascript" src="https://cdn.scite.ai/badge/scite-badge-latest.min.js?v=3">
+<script async type="application/javascript" src="https://cdn.scite.ai/badge/scite-badge-latest.min.js?v=5">
 </script>`
 
 function createBadge (doi) {
@@ -79,7 +79,7 @@ const largeMarginMinStyle = `
 .scite-badge {
   display: block;
   width: min-content;
-  margin: 0.5rem 0;
+  margin: 0.5rem 0 !important;
 }
 </style>
 `
@@ -273,8 +273,11 @@ function findELifeSciencesDOIs () {
 function findNatureDOIs () {
   const els = []
   const cites = [
+    ...document.body.querySelectorAll('.c-article-references__item'),
     ...document.body.querySelectorAll('.c-reading-companion__reference-item'),
-    ...document.body.querySelectorAll('[itemprop="citation"]')
+    ...document.body.querySelectorAll('[itemprop="citation"]'),
+    ...document.body.querySelectorAll('.js-ref-item')
+
   ]
   for (const cite of cites) {
     const anchors = cite.querySelectorAll('a')
@@ -319,6 +322,7 @@ function findSpringerDOIs () {
           citeEl: cite,
           doi: decodeURIComponent(doi[1])
         })
+        break
       }
     }
   }
@@ -335,11 +339,15 @@ function findGoogleDOIs () {
   for (const cite of cites) {
     const anchors = cite.querySelectorAll('a')
     for (const anchor of anchors) {
-      const doi = anchor?.href?.match(/10\.(.+)/)
-      if (doi && doi.length > 1) {
+      const doi = anchor?.href?.match(DOI_REGEX)
+      if (doi && doi.length > 0) {
+        let cleanDOI = decodeURIComponent(doi[0])
+        for (const ending of ['/full/html', '/html', '/abstract', '/full', '.pdf', '/pdf']) {
+          cleanDOI = cleanDOI.replace(ending, '')
+        }
         els.push({
           citeEl: cite,
-          doi: decodeURIComponent(doi[0])
+          doi: cleanDOI
         })
         break
       }
@@ -939,6 +947,52 @@ function findBMCDOIs () {
   return els
 }
 
+/**
+ * findScieloDOIs looks in reference links to DOI.
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
+ */
+function findScieloDOIs () {
+  const els = []
+  const cites = document.body.querySelectorAll('.metadata')
+  for (const cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (const anchor of anchors) {
+      const doi = decodeURIComponent(anchor?.href).match(DOI_REGEX)
+      if (doi) {
+        els.push({
+          citeEl: cite,
+          doi: decodeURIComponent(doi[0])
+        })
+        break
+      }
+    }
+  }
+  return els
+}
+
+/**
+ * findAPADOIs looks in reference links to DOI.
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
+ */
+function findAPADOIs () {
+  const els = []
+  const cites = document.body.querySelectorAll('.resultData, .citText')
+  for (const cite of cites) {
+    const anchors = cite.querySelectorAll('a')
+    for (const anchor of anchors) {
+      const doi = decodeURIComponent(anchor?.href).match(DOI_REGEX)
+      if (doi) {
+        els.push({
+          citeEl: cite,
+          doi: decodeURIComponent(doi[0])
+        })
+        break
+      }
+    }
+  }
+  return els
+}
+
 const BADGE_SITES = [
   {
     name: 'wikipedia.org',
@@ -1178,6 +1232,24 @@ const BADGE_SITES = [
     }
     </style>
 `
+  },
+  {
+    name: 'scielo.org',
+    findDoiEls: findScieloDOIs,
+    position: 'afterend',
+    style: `
+    <style>
+    .scite-badge span {
+      margin-right: 0 !important;
+    }
+    </style>
+`
+  },
+  {
+    name: 'apa.org',
+    findDoiEls: findAPADOIs,
+    position: 'afterend',
+    style: largeMarginMinStyle
   }
 ]
 
@@ -1190,6 +1262,11 @@ export default function insertBadges () {
   }
   if (!badgeSite) {
     return
+  }
+
+  const badges = document.querySelectorAll('.scite-badge')
+  for (const badge of badges) {
+    badge.remove()
   }
 
   const els = badgeSite.findDoiEls()
