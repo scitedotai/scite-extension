@@ -10,3 +10,27 @@ browser.runtime.onInstalled.addListener(function (details) {
     })
   }
 })
+
+function onCreated() {
+  if (browser.runtime.lastError) {
+    console.log(`Error: ${browser.runtime.lastError}`);
+  } else {
+    console.log("Item created successfully");
+  }
+}
+
+browser.contextMenus.create({
+  id: 'scite-citation-search',
+  title: 'Search citation statements',
+  contexts: ['selection']
+}, onCreated)
+
+browser.contextMenus.onClicked.addListener(function (info, tab) {
+  if (info.menuItemId === 'scite-citation-search') {
+    if (info.selectionText) {
+      browser.tabs.create({
+        url: `https://scite.ai/search/citations?q=${info.selectionText}`
+      })
+    }
+  }
+})

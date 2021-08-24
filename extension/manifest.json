@@ -37,6 +37,7 @@
     ]
   },
   "permissions": [
-    "https://api.scite.ai/*"
+    "https://api.scite.ai/*",
+    "contextMenus"
   ]
 }
