@@ -25,10 +25,10 @@
   "author": "Milo Mordaunt <milo@scite.ai>",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.10.1",
-    "@babel/core": "^7.10.2",
-    "@babel/plugin-transform-react-jsx": "^7.10.1",
-    "@babel/preset-env": "^7.10.2",
+    "@babel/cli": "^7.14.8",
+    "@babel/core": "^7.15.0",
+    "@babel/plugin-transform-react-jsx": "^7.14.9",
+    "@babel/preset-env": "^7.15.0",
     "autoprefixer": "^9.8.0",
     "parcel-bundler": "^1.12.4",
     "postcss-modules": "^1.5.0",
@@ -37,13 +37,12 @@
     "web-ext": "^5.4.0"
   },
   "dependencies": {
-    "classnames": "^2.2.6",
-    "npm-watch": "^0.7.0",
-    "preact": "^10.4.8",
+    "classnames": "^2.3.1",
+    "npm-watch": "^0.11.0",
     "query-string": "^5.1.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "scite-widget": "github:scitedotai/scite-widget#master",
-    "whatwg-fetch": "^3.0.0"
+    "whatwg-fetch": "^3.6.2"
   }
 }
