@@ -392,7 +392,7 @@ function findPLOSDOIs () {
  */
 function findORCIDDOIs () {
   const els = []
-  const cites = document.body.querySelectorAll('.url-work')
+  const cites = document.body.querySelectorAll('app-panel-data')
   for (const cite of cites) {
     const anchors = cite.querySelectorAll('a')
     for (const anchor of anchors) {
