@@ -11,11 +11,11 @@ browser.runtime.onInstalled.addListener(function (details) {
   }
 })
 
-function onCreated() {
+function onCreated () {
   if (browser.runtime.lastError) {
-    console.log(`Error: ${browser.runtime.lastError}`);
+    console.log(`Error: ${browser.runtime.lastError}`)
   } else {
-    console.log("Item created successfully");
+    console.log('Item created successfully')
   }
 }
 
@@ -29,7 +29,7 @@ browser.contextMenus.onClicked.addListener(function (info, tab) {
   if (info.menuItemId === 'scite-citation-search') {
     if (info.selectionText) {
       const encodedSelection = encodeURIComponent(
-        `"${info.selectionText}"`
+        `${info.selectionText}`
       )
 
       browser.tabs.create({
