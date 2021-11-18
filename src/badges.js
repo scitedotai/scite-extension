@@ -1307,10 +1307,14 @@ export default async function insertBadges () {
     return
   }
 
-  for (const el of els) {
-    const doi = el.doi || (await matchReference(el.reference))?.doi
+  const jobs = els.map(({ citeEl, doi, reference }) => ({
+    citeEl,
+    getDoi: doi ? new Promise(resolve => resolve({ doi })) : matchReference(reference)
+  }))
+  for (const job of jobs) {
+    const doi = (await job.getDoi)?.doi
     if (doi) {
-      el.citeEl.insertAdjacentHTML(badgeSite.position, createBadge(doi.toLowerCase()?.trim()))
+      job.citeEl.insertAdjacentHTML(badgeSite.position, createBadge(doi.toLowerCase()?.trim()))
     }
   }
 
