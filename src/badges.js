@@ -1308,7 +1308,7 @@ export default async function insertBadges () {
   }
 
   for (const el of els) {
-    const doi = el.doi || (await matchReference(el.reference)).doi
+    const doi = el.doi || (await matchReference(el.reference))?.doi
     if (doi) {
       el.citeEl.insertAdjacentHTML(badgeSite.position, createBadge(doi.toLowerCase()?.trim()))
     }

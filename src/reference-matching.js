@@ -11,7 +11,11 @@ export const matchReference = async ({
     first_author: firstAuthor
   })
   url.search = params.toString()
-  const result = await fetch(url)
-  const data = await result.json()
-  return data
+  try {
+    const result = await fetch(url)
+    const data = await result.json()
+    return data
+  } catch (e) {
+    return null
+  }
 }
