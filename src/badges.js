@@ -1309,10 +1309,10 @@ export default async function insertBadges () {
 
   const jobs = els.map(({ citeEl, doi, reference }) => ({
     citeEl,
-    resolveDoi: doi ? new Promise(resolve => resolve(doi)) : matchReference(reference)?.doi
+    resolveDoi: doi ? new Promise(resolve => resolve({ doi })) : matchReference(reference)
   }))
   for (const job of jobs) {
-    const doi = await job.resolveDoi
+    const doi = (await job.resolveDoi)?.doi
     if (doi) {
       job.citeEl.insertAdjacentHTML(badgeSite.position, createBadge(doi.toLowerCase()?.trim()))
     }
