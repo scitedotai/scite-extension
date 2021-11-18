@@ -1,5 +1,6 @@
 // TODO: (dom) look into deduplicating common extractors, loops, and styles.
-const queryString = require('query-string')
+import queryString from 'query-string'
+import { matchReference } from './reference-matching'
 
 const BADGE_SCRIPT = `
 <script async type="application/javascript" src="https://cdn.scite.ai/badge/scite-badge-latest.min.js?v=5">
@@ -116,7 +117,7 @@ function addMutationAttributeListener (listenSelectors) {
 
       let observersSet = 0
       for (const selector of listenSelectors) {
-        const observer = new MutationObserver(function (mutations) {
+        const observer = new window.MutationObserver(function (mutations) {
           mutations.forEach(() => {
             removeElementsByClass('scite-badge')
             insertBadges()
@@ -329,6 +330,36 @@ function findSpringerDOIs () {
   return els
 }
 
+function getGoogleRef (cite) {
+  const title = cite.querySelector('.gs_rt')?.textContent
+  const authors = cite.querySelector('.gs_a')?.textContent.split('-')[0]
+
+  if (!title || !authors) {
+    return null
+  }
+
+  const firstAuthor = authors.split(',')[0]
+  const firstAuthorSurname = firstAuthor.split(' ').pop()
+  return {
+    title,
+    firstAuthor: firstAuthorSurname
+  }
+}
+
+function getGoogleDOI (cite) {
+  const anchors = cite.querySelectorAll('a')
+  for (const anchor of anchors) {
+    const doi = anchor?.href?.match(DOI_REGEX)
+    if (doi && doi.length > 0) {
+      let cleanDOI = decodeURIComponent(doi[0])
+      for (const ending of ['/full/html', '/html', '/abstract', '/full', '.pdf', '/pdf']) {
+        cleanDOI = cleanDOI.replace(ending, '')
+      }
+      return cleanDOI
+    }
+  }
+}
+
 /**
  * findGoogleDOIs looks in reference tags that link has doi.
  * @returns {Array<{ citeEl: Element, doi: string}>} - Return
@@ -336,21 +367,23 @@ function findSpringerDOIs () {
 function findGoogleDOIs () {
   const els = []
   const cites = [...document.body.querySelectorAll('.rc'), ...document.body.querySelectorAll('.gs_r')]
+
   for (const cite of cites) {
-    const anchors = cite.querySelectorAll('a')
-    for (const anchor of anchors) {
-      const doi = anchor?.href?.match(DOI_REGEX)
-      if (doi && doi.length > 0) {
-        let cleanDOI = decodeURIComponent(doi[0])
-        for (const ending of ['/full/html', '/html', '/abstract', '/full', '.pdf', '/pdf']) {
-          cleanDOI = cleanDOI.replace(ending, '')
-        }
-        els.push({
-          citeEl: cite,
-          doi: cleanDOI
-        })
-        break
-      }
+    const embeddedDOI = getGoogleDOI(cite)
+    if (embeddedDOI) {
+      els.push({
+        citeEl: cite,
+        doi: embeddedDOI
+      })
+      continue
+    }
+
+    const reference = getGoogleRef(cite)
+    if (reference) {
+      els.push({
+        citeEl: cite,
+        reference
+      })
     }
   }
   return els
@@ -1253,7 +1286,7 @@ const BADGE_SITES = [
   }
 ]
 
-export default function insertBadges () {
+export default async function insertBadges () {
   let badgeSite
   for (const site of BADGE_SITES) {
     if (window.location.href.includes(site.name)) {
@@ -1274,8 +1307,15 @@ export default function insertBadges () {
     return
   }
 
-  for (const el of els) {
-    el.citeEl.insertAdjacentHTML(badgeSite.position, createBadge(el?.doi?.toLowerCase()?.trim()))
+  const jobs = els.map(({ citeEl, doi, reference }) => ({
+    citeEl,
+    resolveDoi: doi ? new Promise(resolve => resolve(doi)) : matchReference(reference)?.doi
+  }))
+  for (const job of jobs) {
+    const doi = await job.resolveDoi
+    if (doi) {
+      job.citeEl.insertAdjacentHTML(badgeSite.position, createBadge(doi.toLowerCase()?.trim()))
+    }
   }
 
   // if we have dois then add badge to them.

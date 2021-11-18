@@ -3,6 +3,7 @@
  */
 
 import 'whatwg-fetch'
+import 'regenerator-runtime/runtime'
 
 import React from 'react'
 import { render } from 'react-dom'
@@ -256,16 +257,16 @@ function markPage () {
   marker.id = 'scite-extension-marker'
   document.body.appendChild(marker)
 
-  const extensionLoadEvent = new Event('scite-extension/loaded')
+  const extensionLoadEvent = new window.Event('scite-extension/loaded')
   window.dispatchEvent(extensionLoadEvent)
 }
 
-function main () {
+async function main () {
   if (SCITE_HOSTS.includes(myHost)) {
     markPage()
     return
   }
-  insertBadges()
+  await insertBadges()
 
   for (const site of DONT_POPUP_HOSTS) {
     // Incase the host has a sub domain like en.wikipedia or fr.wikipedia
@@ -304,14 +305,16 @@ function runWithDelay () {
       delay = 3000
     }
   }
-  setTimeout(main, delay)
+  setTimeout(async () => {
+    await main()
+  }, delay)
 }
 
 runWithDelay()
 
 // For SPAs we need to listen to route changes and refresh
 let lastUrl = window.location.href
-new MutationObserver(() => {
+new window.MutationObserver(() => {
   const url = window.location.href
   if (url !== lastUrl) {
     lastUrl = url
