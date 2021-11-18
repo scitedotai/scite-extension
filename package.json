@@ -42,6 +42,7 @@
     "query-string": "^5.1.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "regenerator-runtime": "^0.13.9",
     "scite-widget": "github:scitedotai/scite-widget#master",
     "whatwg-fetch": "^3.6.2"
   }
