@@ -33,7 +33,7 @@
     "parcel-bundler": "^1.12.4",
     "postcss-modules": "^1.5.0",
     "snazzy": "^9.0.0",
-    "standard": "^16.0.3",
+    "standard": "^16.0.4",
     "web-ext": "^5.4.0"
   },
   "dependencies": {
