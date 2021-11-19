@@ -3,17 +3,13 @@
   "version": "1.27.0",
   "description": "scite allow users to see how a scientific paper has been cited by providing the context of the citation and a classification describing whether it provides supporting or contrasting evidence for the cited claim",
   "main": "index.js",
-  "watch": {
-    "build": "src/**/*.*"
-  },
   "scripts": {
-    "lint": "standard --verbose | snazzy && stylelint '**/*.css'",
-    "lint:fix": "standard --fix | snazzy && stylelint --fix '**/*.css'",
+    "lint": "standard --verbose | snazzy && stylelint 'src/**/*.css'",
+    "lint:fix": "standard --fix | snazzy && stylelint --fix 'src/**/*.css'",
     "lint:ext": "web-ext lint",
-    "dev": "web-ext run -s ./extension",
-    "build": "./build.sh",
+    "dev": "concurrently \"web-ext run -s ./extension\" \"webpack --config config/webpack.dev.js\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "npm-watch"
+    "build": "webpack --config config/webpack.prod.js"
   },
   "keywords": [
     "webextensions",
@@ -25,20 +21,30 @@
   "author": "Milo Mordaunt <milo@scite.ai>",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.14.8",
-    "@babel/core": "^7.15.0",
-    "@babel/plugin-transform-react-jsx": "^7.14.9",
-    "@babel/preset-env": "^7.15.0",
-    "autoprefixer": "^9.8.0",
-    "parcel-bundler": "^1.12.4",
-    "postcss-modules": "^1.5.0",
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.0",
+    "@babel/plugin-transform-react-jsx": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "@swc/core": "^1.2.111",
+    "autoprefixer": "^10.4.0",
+    "concurrently": "^6.4.0",
+    "css-loader": "^6.5.1",
+    "css-minimizer-webpack-plugin": "^3.1.4",
+    "mini-css-extract-plugin": "^2.4.5",
+    "postcss-loader": "^6.2.0",
+    "postcss-modules": "^4.2.2",
     "snazzy": "^9.0.0",
     "standard": "^16.0.4",
-    "web-ext": "^5.4.0"
+    "stylelint": "^13.13.1",
+    "stylelint-config-css-modules": "^2.2.0",
+    "stylelint-config-standard": "^22.0.0",
+    "swc-loader": "^0.1.15",
+    "web-ext": "^6.5.0",
+    "webpack": "^5.64.1",
+    "webpack-cli": "^4.9.1"
   },
   "dependencies": {
     "classnames": "^2.3.1",
-    "npm-watch": "^0.11.0",
     "query-string": "^5.1.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

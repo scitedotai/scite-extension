@@ -1,18 +1,16 @@
 .sciteApp {
-    z-index: 9999999999;
-
-    position: fixed;
-    right: 0;
-    top: 45%;
-
-    border-radius: 8px 0 0 8px;
-    border: 1px solid #cfcfcf;
-    border-right: none;
-    overflow: hidden;
+  z-index: 9999999999;
+  position: fixed;
+  right: 0;
+  top: 45%;
+  border-radius: 8px 0 0 8px;
+  border: 1px solid #cfcfcf;
+  border-right: none;
+  overflow: hidden;
 }
 
 @media print {
-    .sciteApp {
-        display: none;
-    }
+  .sciteApp {
+    display: none;
+  }
 }
