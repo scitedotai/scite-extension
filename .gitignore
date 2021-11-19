@@ -1,5 +1,6 @@
 dist
 extension/index.js
+extension/index.js.LICENSE.txt
 extension/background.js
 extension/styles.css
 node_modules

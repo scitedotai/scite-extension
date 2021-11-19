@@ -28,10 +28,10 @@ Then the extension is in `extension`
 
 ## Developing ##
 
-For local development you can use [web-ext](https://github.com/mozilla/web-ext) which will run the extension in a browser and reload any change to the build. You can manually build like above or use `npm run watch build` to automatically build any changes you make to src.
+For local development you can use [web-ext](https://github.com/mozilla/web-ext) which will run the extension in a browser and reload any change to the build.
+
 ```
-$ npm run dev # run web-ext
-$ npm run watch build # build any changes you make to src.
+$ npm run dev
 ```
 
 Use web-ext lint to lint your changes

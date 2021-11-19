@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-css-modules"
+  ],
+  "rules": {
+    "font-family-no-missing-generic-family-keyword": [true, { "ignoreFontFamilies": ["scite-icons"] }],
+    "value-keyword-case": ["lower", {
+      "ignoreProperties": ["composes"]
+    }]
+  }
+}
