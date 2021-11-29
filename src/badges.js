@@ -151,6 +151,21 @@ function addMutationAttributeListener (listenSelectors) {
   }
 }
 
+function getAnchorDOI (cite) {
+  const anchors = cite.querySelectorAll('a')
+  for (const anchor of anchors) {
+    const doi = anchor?.href?.match(DOI_REGEX)
+    if (doi && doi.length > 0) {
+      let cleanDOI = decodeURIComponent(doi[0])
+      for (const ending of ['/full/html', '/html', '/abstract', '/full', '.pdf', '/pdf']) {
+        cleanDOI = cleanDOI.replace(ending, '')
+      }
+      return cleanDOI
+    }
+  }
+}
+
+
 /**
  * findPubMedDOIEls looks in cite tags for text beginning with DOI and captures it as a doi
  * @returns {Array<{ citeEl: Element, doi: string}>} - Return
@@ -234,23 +249,44 @@ function findWikipediaDOIEls () {
   return els
 }
 
+function getScienceDirectRef (cite) {
+  const title = cite.querySelector('.result-list-title-link')?.textContent
+  const firstAuthor = cite.querySelector('.author').textContent
+
+  if (!title || !firstAuthor) {
+    return null
+  }
+
+  const firstAuthorSurname = firstAuthor.split(' ').pop()
+  return {
+    title,
+    firstAuthor: firstAuthorSurname
+  }
+}
+
 /**
  * findScienceDirectDOIs looks in reference tags for anchors that link to doi.org and have a doi.
  * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findScienceDirectDOIs () {
   const els = []
-  const cites = document.body.querySelectorAll('.reference')
+  const cites = [...document.body.querySelectorAll('.reference'), ...document.body.querySelectorAll('.result-item-content')]
   for (const cite of cites) {
-    const anchors = cite.querySelectorAll('a')
-    for (const anchor of anchors) {
-      const doi = anchor?.href?.match(/doi\.org\/(.+)/)
-      if (doi && doi.length > 1) {
-        els.push({
-          citeEl: cite,
-          doi: doi[1]
-        })
-      }
+    const anchorDoi = getAnchorDOI(cite)
+    if (anchorDoi) {
+      els.push({
+        citeEl: cite,
+        doi: anchorDoi
+      })
+      continue
+    }
+
+    const reference = getScienceDirectRef(cite)
+    if (reference) {
+      els.push({
+        citeEl: cite,
+        reference
+      })
     }
   }
   return els
@@ -384,20 +420,6 @@ function getGoogleRef (cite) {
   }
 }
 
-function getGoogleDOI (cite) {
-  const anchors = cite.querySelectorAll('a')
-  for (const anchor of anchors) {
-    const doi = anchor?.href?.match(DOI_REGEX)
-    if (doi && doi.length > 0) {
-      let cleanDOI = decodeURIComponent(doi[0])
-      for (const ending of ['/full/html', '/html', '/abstract', '/full', '.pdf', '/pdf']) {
-        cleanDOI = cleanDOI.replace(ending, '')
-      }
-      return cleanDOI
-    }
-  }
-}
-
 /**
  * findGoogleScholarDOIs looks in reference tags that link has doi.
  * @returns {Array<{ citeEl: Element, doi: string}>} - Return
@@ -407,7 +429,7 @@ function findGoogleScholarDOIs () {
   const cites = [...document.body.querySelectorAll('.rc'), ...document.body.querySelectorAll('.gs_r')]
 
   for (const cite of cites) {
-    const embeddedDOI = getGoogleDOI(cite)
+    const embeddedDOI = getAnchorDOI(cite)
     if (embeddedDOI) {
       els.push({
         citeEl: cite,
@@ -436,7 +458,7 @@ function findGoogleDOIs () {
   const cites = document.body.querySelectorAll('.g')
 
   for (const cite of cites) {
-    const embeddedDOI = getGoogleDOI(cite)
+    const embeddedDOI = getAnchorDOI(cite)
     if (embeddedDOI) {
       els.push({
         citeEl: cite,
