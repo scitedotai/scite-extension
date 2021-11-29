@@ -50,6 +50,17 @@ const commonMinStyle = `
     </style>
 `
 
+const googleStyle = `
+    <style>
+    .scite-badge {
+      display: block;
+      width: min-content;
+      margin-top: -1rem;
+      margin-bottom: 2rem;
+    }
+    </style>
+`
+
 const xivStyle = `
     <style>
     .scite-badge {
@@ -330,7 +341,7 @@ function findSpringerDOIs () {
   return els
 }
 
-function getGoogleRef (cite) {
+function getGoogleScholarRef (cite) {
   const title = cite.querySelector('.gs_rt')?.textContent
   const authors = cite.querySelector('.gs_a')?.textContent.split('-')[0]
 
@@ -339,6 +350,33 @@ function getGoogleRef (cite) {
   }
 
   const firstAuthor = authors.split(',')[0]
+  const firstAuthorSurname = firstAuthor.split(' ').pop()
+  return {
+    title,
+    firstAuthor: firstAuthorSurname
+  }
+}
+
+function getGoogleAuthor (spans) {
+  for (const span of spans) {
+    const text = span.textContent
+
+    if (/^by\s/.test(text)) {
+      const byText = text.split('·')[0]
+      return byText.replace(/^by\s/, '').trim()
+    }
+  }
+}
+
+function getGoogleRef (cite) {
+  const title = cite.querySelector('h3')?.textContent
+  const spans = cite.querySelectorAll('span')
+  const firstAuthor = getGoogleAuthor(spans)
+
+  if (!title || !firstAuthor) {
+    return null
+  }
+
   const firstAuthorSurname = firstAuthor.split(' ').pop()
   return {
     title,
@@ -361,12 +399,41 @@ function getGoogleDOI (cite) {
 }
 
 /**
+ * findGoogleScholarDOIs looks in reference tags that link has doi.
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
+ */
+function findGoogleScholarDOIs () {
+  const els = []
+  const cites = [...document.body.querySelectorAll('.rc'), ...document.body.querySelectorAll('.gs_r')]
+
+  for (const cite of cites) {
+    const embeddedDOI = getGoogleDOI(cite)
+    if (embeddedDOI) {
+      els.push({
+        citeEl: cite,
+        doi: embeddedDOI
+      })
+      continue
+    }
+
+    const reference = getGoogleScholarRef(cite)
+    if (reference) {
+      els.push({
+        citeEl: cite,
+        reference
+      })
+    }
+  }
+  return els
+}
+
+/**
  * findGoogleDOIs looks in reference tags that link has doi.
  * @returns {Array<{ citeEl: Element, doi: string}>} - Return
  */
 function findGoogleDOIs () {
   const els = []
-  const cites = [...document.body.querySelectorAll('.rc'), ...document.body.querySelectorAll('.gs_r')]
+  const cites = document.body.querySelectorAll('.g')
 
   for (const cite of cites) {
     const embeddedDOI = getGoogleDOI(cite)
@@ -1078,7 +1145,7 @@ const BADGE_SITES = [
   },
   {
     name: 'scholar.google.com',
-    findDoiEls: findGoogleDOIs,
+    findDoiEls: findGoogleScholarDOIs,
     position: 'afterend',
     style: commonMinStyle
   },
@@ -1086,7 +1153,7 @@ const BADGE_SITES = [
     name: 'google',
     findDoiEls: findGoogleDOIs,
     position: 'afterend',
-    style: commonMinStyle
+    style: googleStyle
   },
   {
     name: 'journals.plos.org',
