@@ -1161,7 +1161,7 @@ const BADGE_SITES = [
   {
     name: 'google',
     findDoiEls: findGoogleDOIs,
-    position: 'afterend',
+    position: 'beforeend',
     style: commonMinStyle
   },
   {
