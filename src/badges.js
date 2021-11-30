@@ -1,6 +1,7 @@
 // TODO: (dom) look into deduplicating common extractors, loops, and styles.
 import queryString from 'query-string'
 import { matchReference } from './reference-matching'
+import { sliceIntoChunks } from './util'
 
 const BADGE_SCRIPT = `
 <script async type="application/javascript" src="https://cdn.scite.ai/badge/scite-badge-latest.min.js?v=5">
@@ -140,6 +141,20 @@ function addMutationAttributeListener (listenSelectors) {
   }
 }
 
+function getAnchorDOI (cite) {
+  const anchors = cite.querySelectorAll('a')
+  for (const anchor of anchors) {
+    const doi = anchor?.href?.match(DOI_REGEX)
+    if (doi && doi.length > 0) {
+      let cleanDOI = decodeURIComponent(doi[0])
+      for (const ending of ['/full/html', '/html', '/abstract', '/full', '.pdf', '/pdf']) {
+        cleanDOI = cleanDOI.replace(ending, '')
+      }
+      return cleanDOI
+    }
+  }
+}
+
 /**
  * findPubMedDOIEls looks in cite tags for text beginning with DOI and captures it as a doi
  * @returns {Array<{ citeEl: Element, doi: string}>} - Return
@@ -210,17 +225,30 @@ function findWikipediaDOIEls () {
   const els = []
   const cites = document.body.querySelectorAll('cite')
   for (const cite of cites) {
-    const anchors = cite.querySelectorAll('a')
-    for (const anchor of anchors) {
-      if (anchor?.href?.match(/doi\.org\/(.+)/) && anchor?.textContent?.match(/10\.(.+)/)) {
-        els.push({
-          citeEl: cite,
-          doi: anchor.textContent
-        })
-      }
+    const anchorDoi = getAnchorDOI(cite)
+    if (anchorDoi) {
+      els.push({
+        citeEl: cite,
+        doi: anchorDoi
+      })
     }
   }
   return els
+}
+
+function getScienceDirectRef (cite) {
+  const title = cite.querySelector('.result-list-title-link')?.textContent
+  const firstAuthor = cite.querySelector('.author').textContent
+
+  if (!title || !firstAuthor) {
+    return null
+  }
+
+  const firstAuthorSurname = firstAuthor.split(' ').pop()
+  return {
+    title,
+    firstAuthor: firstAuthorSurname
+  }
 }
 
 /**
@@ -229,17 +257,23 @@ function findWikipediaDOIEls () {
  */
 function findScienceDirectDOIs () {
   const els = []
-  const cites = document.body.querySelectorAll('.reference')
+  const cites = [...document.body.querySelectorAll('.reference'), ...document.body.querySelectorAll('.result-item-content')]
   for (const cite of cites) {
-    const anchors = cite.querySelectorAll('a')
-    for (const anchor of anchors) {
-      const doi = anchor?.href?.match(/doi\.org\/(.+)/)
-      if (doi && doi.length > 1) {
-        els.push({
-          citeEl: cite,
-          doi: doi[1]
-        })
-      }
+    const anchorDoi = getAnchorDOI(cite)
+    if (anchorDoi) {
+      els.push({
+        citeEl: cite,
+        doi: anchorDoi
+      })
+      continue
+    }
+
+    const reference = getScienceDirectRef(cite)
+    if (reference) {
+      els.push({
+        citeEl: cite,
+        reference
+      })
     }
   }
   return els
@@ -330,7 +364,7 @@ function findSpringerDOIs () {
   return els
 }
 
-function getGoogleRef (cite) {
+function getGoogleScholarRef (cite) {
   const title = cite.querySelector('.gs_rt')?.textContent
   const authors = cite.querySelector('.gs_a')?.textContent.split('-')[0]
 
@@ -346,18 +380,60 @@ function getGoogleRef (cite) {
   }
 }
 
-function getGoogleDOI (cite) {
-  const anchors = cite.querySelectorAll('a')
-  for (const anchor of anchors) {
-    const doi = anchor?.href?.match(DOI_REGEX)
-    if (doi && doi.length > 0) {
-      let cleanDOI = decodeURIComponent(doi[0])
-      for (const ending of ['/full/html', '/html', '/abstract', '/full', '.pdf', '/pdf']) {
-        cleanDOI = cleanDOI.replace(ending, '')
-      }
-      return cleanDOI
+function getGoogleAuthor (spans) {
+  for (const span of spans) {
+    const text = span.textContent
+
+    if (/^by\s/.test(text)) {
+      const byText = text.split('·')[0]
+      return byText.replace(/^by\s/, '').trim()
     }
   }
+}
+
+function getGoogleRef (cite) {
+  const title = cite.querySelector('h3')?.textContent
+  const spans = cite.querySelectorAll('span')
+  const firstAuthor = getGoogleAuthor(spans)
+
+  if (!title || !firstAuthor) {
+    return null
+  }
+
+  const firstAuthorSurname = firstAuthor.split(' ').pop()
+  return {
+    title,
+    firstAuthor: firstAuthorSurname
+  }
+}
+
+/**
+ * findGoogleScholarDOIs looks in reference tags that link has doi.
+ * @returns {Array<{ citeEl: Element, doi: string}>} - Return
+ */
+function findGoogleScholarDOIs () {
+  const els = []
+  const cites = [...document.body.querySelectorAll('.rc'), ...document.body.querySelectorAll('.gs_r')]
+
+  for (const cite of cites) {
+    const embeddedDOI = getAnchorDOI(cite)
+    if (embeddedDOI) {
+      els.push({
+        citeEl: cite,
+        doi: embeddedDOI
+      })
+      continue
+    }
+
+    const reference = getGoogleScholarRef(cite)
+    if (reference) {
+      els.push({
+        citeEl: cite,
+        reference
+      })
+    }
+  }
+  return els
 }
 
 /**
@@ -366,10 +442,10 @@ function getGoogleDOI (cite) {
  */
 function findGoogleDOIs () {
   const els = []
-  const cites = [...document.body.querySelectorAll('.rc'), ...document.body.querySelectorAll('.gs_r')]
+  const cites = document.body.querySelectorAll('.g')
 
   for (const cite of cites) {
-    const embeddedDOI = getGoogleDOI(cite)
+    const embeddedDOI = getAnchorDOI(cite)
     if (embeddedDOI) {
       els.push({
         citeEl: cite,
@@ -1078,14 +1154,14 @@ const BADGE_SITES = [
   },
   {
     name: 'scholar.google.com',
-    findDoiEls: findGoogleDOIs,
+    findDoiEls: findGoogleScholarDOIs,
     position: 'afterend',
     style: commonMinStyle
   },
   {
     name: 'google',
     findDoiEls: findGoogleDOIs,
-    position: 'afterend',
+    position: 'beforeend',
     style: commonMinStyle
   },
   {
@@ -1287,12 +1363,7 @@ const BADGE_SITES = [
 ]
 
 export default async function insertBadges () {
-  let badgeSite
-  for (const site of BADGE_SITES) {
-    if (window.location.href.includes(site.name)) {
-      badgeSite = site
-    }
-  }
+  const badgeSite = BADGE_SITES.find(site => window.location.href.includes(site.name))
   if (!badgeSite) {
     return
   }
@@ -1307,15 +1378,26 @@ export default async function insertBadges () {
     return
   }
 
-  const jobs = els.map(({ citeEl, doi, reference }) => ({
-    citeEl,
-    resolveDoi: doi ? new Promise(resolve => resolve({ doi })) : matchReference(reference)
-  }))
-  for (const job of jobs) {
-    const doi = (await job.resolveDoi)?.doi
-    if (doi) {
-      job.citeEl.insertAdjacentHTML(badgeSite.position, createBadge(doi.toLowerCase()?.trim()))
+  const refsToResolve = []
+  for (const el of els) {
+    if (el.doi) {
+      el.citeEl.insertAdjacentHTML(badgeSite.position, createBadge(el.doi.toLowerCase()?.trim()))
+    } else {
+      refsToResolve.push(el)
     }
+  }
+
+  //
+  // Resolve references up to 20 at a time
+  //
+  const jobs = sliceIntoChunks(refsToResolve, 20)
+  for (const batch of jobs) {
+    await Promise.all(batch.map(async el => {
+      const result = await matchReference(el.reference)
+      if (result?.matched) {
+        el.citeEl.insertAdjacentHTML(badgeSite.position, createBadge(result.doi.toLowerCase().trim()))
+      }
+    }))
   }
 
   // if we have dois then add badge to them.
