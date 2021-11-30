@@ -51,17 +51,6 @@ const commonMinStyle = `
     </style>
 `
 
-const googleStyle = `
-    <style>
-    .scite-badge {
-      display: block;
-      width: min-content;
-      margin-top: -1rem;
-      margin-bottom: 2rem;
-    }
-    </style>
-`
-
 const xivStyle = `
     <style>
     .scite-badge {
@@ -1173,7 +1162,7 @@ const BADGE_SITES = [
     name: 'google',
     findDoiEls: findGoogleDOIs,
     position: 'afterend',
-    style: googleStyle
+    style: commonMinStyle
   },
   {
     name: 'journals.plos.org',
