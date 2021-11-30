@@ -1,6 +1,7 @@
 // TODO: (dom) look into deduplicating common extractors, loops, and styles.
 import queryString from 'query-string'
 import { matchReference } from './reference-matching'
+import { sliceIntoChunks } from './util'
 
 const BADGE_SCRIPT = `
 <script async type="application/javascript" src="https://cdn.scite.ai/badge/scite-badge-latest.min.js?v=5">
@@ -164,7 +165,6 @@ function getAnchorDOI (cite) {
     }
   }
 }
-
 
 /**
  * findPubMedDOIEls looks in cite tags for text beginning with DOI and captures it as a doi
@@ -1380,6 +1380,13 @@ export default async function insertBadges () {
   for (const site of BADGE_SITES) {
     if (window.location.href.includes(site.name)) {
       badgeSite = site
+
+      //
+      // Break after first match. This way
+      // if two conflict we resolve to
+      // first one
+      //
+      break
     }
   }
   if (!badgeSite) {
@@ -1396,15 +1403,26 @@ export default async function insertBadges () {
     return
   }
 
-  const jobs = els.map(({ citeEl, doi, reference }) => ({
-    citeEl,
-    resolveDoi: doi ? new Promise(resolve => resolve({ doi })) : matchReference(reference)
-  }))
-  for (const job of jobs) {
-    const doi = (await job.resolveDoi)?.doi
-    if (doi) {
-      job.citeEl.insertAdjacentHTML(badgeSite.position, createBadge(doi.toLowerCase()?.trim()))
+  const refsToResolve = []
+  for (const el of els) {
+    if (el.doi) {
+      el.citeEl.insertAdjacentHTML(badgeSite.position, createBadge(el.doi.toLowerCase()?.trim()))
+    } else {
+      refsToResolve.push(el)
     }
+  }
+
+  //
+  // Resolve references up to 20 at a time
+  //
+  const jobs = sliceIntoChunks(refsToResolve, 20)
+  for (const batch of jobs) {
+    await Promise.all(batch.map(async el => {
+      const result = await matchReference(el.reference)
+      if (result?.matched) {
+        el.citeEl.insertAdjacentHTML(badgeSite.position, createBadge(result.doi.toLowerCase().trim()))
+      }
+    }))
   }
 
   // if we have dois then add badge to them.
