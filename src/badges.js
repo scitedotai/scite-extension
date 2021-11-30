@@ -1376,19 +1376,7 @@ const BADGE_SITES = [
 ]
 
 export default async function insertBadges () {
-  let badgeSite
-  for (const site of BADGE_SITES) {
-    if (window.location.href.includes(site.name)) {
-      badgeSite = site
-
-      //
-      // Break after first match. This way
-      // if two conflict we resolve to
-      // first one
-      //
-      break
-    }
-  }
+  const badgeSite = BADGE_SITES.find(site => window.location.href.includes(site.name))
   if (!badgeSite) {
     return
   }
