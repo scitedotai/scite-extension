@@ -236,14 +236,12 @@ function findWikipediaDOIEls () {
   const els = []
   const cites = document.body.querySelectorAll('cite')
   for (const cite of cites) {
-    const anchors = cite.querySelectorAll('a')
-    for (const anchor of anchors) {
-      if (anchor?.href?.match(/doi\.org\/(.+)/) && anchor?.textContent?.match(/10\.(.+)/)) {
-        els.push({
-          citeEl: cite,
-          doi: anchor.textContent
-        })
-      }
+    const anchorDoi = getAnchorDOI(cite)
+    if (anchorDoi) {
+      els.push({
+        citeEl: cite,
+        doi: anchorDoi
+      })
     }
   }
   return els
