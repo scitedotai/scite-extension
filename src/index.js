@@ -12,6 +12,20 @@ import 'scite-widget/lib/main.css'
 import styles from './styles.css'
 import insertBadges from './badges'
 
+/* global chrome, browser:true */
+if (typeof chrome !== 'undefined' && chrome) {
+  const browser = chrome
+}
+
+const getStorageItem = async (key) => {
+  const storage = await new Promise(resolve => browser.storage.local.get(key, resolve))
+  return storage[key]
+}
+
+const setStorageItem = (key) => {
+  browser.storage.local.set(key)
+}
+
 const IS_DEV = typeof process !== 'undefined' && process.NODE_ENV === 'development'
 const devLog = IS_DEV ? console.log.bind(window) : function () { }
 
@@ -229,7 +243,7 @@ function findDoi () {
   }
 }
 
-function popupDoi (doi) {
+async function popupDoi (doi) {
   const popup = document.createElement('div')
   popup.id = 'scite-popup'
   if (poppedUp) {
@@ -238,10 +252,16 @@ function popupDoi (doi) {
   popup.scrolling = 'no'
   popup.className = styles.sciteApp
 
+  const shouldHide = await getStorageItem('hidePopup') || false
+  console.log(await getStorageItem('hidePopup'))
+
   document.documentElement.appendChild(popup)
   render(
     (
-      <HideableTally>
+      <HideableTally
+        hide={shouldHide} clickFn={() =>
+          setStorageItem({ hidePopup: !shouldHide })}
+      >
         <TallyLoader doi={doi}>
           {({ tally, notices }) => (
             <Tally tally={tally} notices={notices} />
@@ -289,7 +309,7 @@ async function main () {
     return
   }
 
-  popupDoi(doi)
+  await popupDoi(doi)
 }
 
 function runWithDelay () {

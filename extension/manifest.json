@@ -38,6 +38,7 @@
   },
   "permissions": [
     "https://api.scite.ai/*",
-    "contextMenus"
+    "contextMenus",
+    "storage"
   ]
 }
