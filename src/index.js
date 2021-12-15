@@ -7,7 +7,7 @@ import 'regenerator-runtime/runtime'
 
 import React from 'react'
 import { render } from 'react-dom'
-import { Tally, TallyLoader } from 'scite-widget'
+import { HideableTally, Tally, TallyLoader } from 'scite-widget'
 import 'scite-widget/lib/main.css'
 import styles from './styles.css'
 import insertBadges from './badges'
@@ -241,11 +241,13 @@ function popupDoi (doi) {
   document.documentElement.appendChild(popup)
   render(
     (
-      <TallyLoader doi={doi}>
-        {({ tally, notices }) => (
-          <Tally tally={tally} notices={notices} />
-        )}
-      </TallyLoader>
+      <HideableTally>
+        <TallyLoader doi={doi}>
+          {({ tally, notices }) => (
+            <Tally tally={tally} notices={notices} />
+          )}
+        </TallyLoader>
+      </HideableTally>
     ),
     popup
   )
