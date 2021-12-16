@@ -7,10 +7,24 @@ import 'regenerator-runtime/runtime'
 
 import React from 'react'
 import { render } from 'react-dom'
-import { Tally, TallyLoader } from 'scite-widget'
+import { HideableTally, Tally, TallyLoader } from 'scite-widget'
 import 'scite-widget/lib/main.css'
 import styles from './styles.css'
 import insertBadges from './badges'
+
+/* global chrome, browser:true */
+if (typeof chrome !== 'undefined' && chrome) {
+  const browser = chrome
+}
+
+const getStorageItem = async (key) => {
+  const storage = await new Promise(resolve => browser.storage.local.get(key, resolve))
+  return storage[key]
+}
+
+const setStorageItem = (key) => {
+  browser.storage.local.set(key)
+}
 
 const IS_DEV = typeof process !== 'undefined' && process.NODE_ENV === 'development'
 const devLog = IS_DEV ? console.log.bind(window) : function () { }
@@ -207,6 +221,23 @@ function findDoiFromTitle () {
   return doi ? doi[0] : null
 }
 
+function findDoiFromHostName () {
+  // PDF documents. See https://www.tandfonline.com/doi/pdf/10.1080/10962247.2018.1459956
+  // https://link.springer.com/content/pdf/10.1007/s11192-017-2242-0.pdf
+  // https://www.biorxiv.org/content/10.1101/2021.03.15.435418v1.full.pdf
+  const re = DOI_REGEX
+  const doi = window.location.href.match(re)
+  const doiString = doi ? doi[0] : null
+  if (doiString) {
+    const badEndings = [/v..full.pdf/, '.full.pdf', '.full.html', '.full.htm', '.full.txt', '.pdf', '.html', '.htm', '.txt', '.full']
+    const cleanDoiString = badEndings.reduce(function (acc, badEnding) {
+      return acc.replace(badEnding, '')
+    }, doiString)
+    console.log('cleanDoiString', cleanDoiString)
+    return cleanDoiString
+  }
+}
+
 function findDoi () {
   // we try each of these functions, in order, to get a DOI from the page.
   const doiFinderFunctions = [
@@ -217,7 +248,8 @@ function findDoi () {
     findDoiFromNumber,
     findDoiFromPsycnet,
     findDoiFromPubmed,
-    findDoiFromTitle
+    findDoiFromTitle,
+    findDoiFromHostName
   ]
 
   for (let i = 0; i < doiFinderFunctions.length; i++) {
@@ -229,7 +261,7 @@ function findDoi () {
   }
 }
 
-function popupDoi (doi) {
+async function popupDoi (doi) {
   const popup = document.createElement('div')
   popup.id = 'scite-popup'
   if (poppedUp) {
@@ -238,14 +270,21 @@ function popupDoi (doi) {
   popup.scrolling = 'no'
   popup.className = styles.sciteApp
 
+  const shouldHide = await getStorageItem('hidePopup') || false
+
   document.documentElement.appendChild(popup)
   render(
     (
-      <TallyLoader doi={doi}>
-        {({ tally, notices }) => (
-          <Tally tally={tally} notices={notices} />
-        )}
-      </TallyLoader>
+      <HideableTally
+        hide={shouldHide} clickFn={() =>
+          setStorageItem({ hidePopup: !shouldHide })}
+      >
+        <TallyLoader doi={doi}>
+          {({ tally, notices }) => (
+            <Tally tally={tally} notices={notices} />
+          )}
+        </TallyLoader>
+      </HideableTally>
     ),
     popup
   )
@@ -287,7 +326,7 @@ async function main () {
     return
   }
 
-  popupDoi(doi)
+  await popupDoi(doi)
 }
 
 function runWithDelay () {
