@@ -221,6 +221,23 @@ function findDoiFromTitle () {
   return doi ? doi[0] : null
 }
 
+function findDoiFromHostName () {
+  // PDF documents. See https://www.tandfonline.com/doi/pdf/10.1080/10962247.2018.1459956
+  // https://link.springer.com/content/pdf/10.1007/s11192-017-2242-0.pdf
+  // https://www.biorxiv.org/content/10.1101/2021.03.15.435418v1.full.pdf
+  const re = DOI_REGEX
+  const doi = window.location.href.match(re)
+  const doiString = doi ? doi[0] : null
+  if (doiString) {
+    const badEndings = [/v..full.pdf/, '.full.pdf', '.full.html', '.full.htm', '.full.txt', '.pdf', '.html', '.htm', '.txt', '.full']
+    const cleanDoiString = badEndings.reduce(function (acc, badEnding) {
+      return acc.replace(badEnding, '')
+    }, doiString)
+    console.log('cleanDoiString', cleanDoiString)
+    return cleanDoiString
+  }
+}
+
 function findDoi () {
   // we try each of these functions, in order, to get a DOI from the page.
   const doiFinderFunctions = [
@@ -231,7 +248,8 @@ function findDoi () {
     findDoiFromNumber,
     findDoiFromPsycnet,
     findDoiFromPubmed,
-    findDoiFromTitle
+    findDoiFromTitle,
+    findDoiFromHostName
   ]
 
   for (let i = 0; i < doiFinderFunctions.length; i++) {
@@ -253,7 +271,6 @@ async function popupDoi (doi) {
   popup.className = styles.sciteApp
 
   const shouldHide = await getStorageItem('hidePopup') || false
-  console.log(await getStorageItem('hidePopup'))
 
   document.documentElement.appendChild(popup)
   render(
