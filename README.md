@@ -20,7 +20,7 @@ We are happy for folks to contribute to the badge and extension, just raise an i
 ## Building ##
 
 ```
-$ npm i
+$ npm ci
 $ npm run build
 ```
 
