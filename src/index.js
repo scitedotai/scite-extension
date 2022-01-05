@@ -11,10 +11,12 @@ import { HideableTally, Tally, TallyLoader } from 'scite-widget'
 import 'scite-widget/lib/main.css'
 import styles from './styles.css'
 import insertBadges from './badges'
+import { matchReference } from './reference-matching'
+import { parsePDFForTitleandAuthor } from './pdf'
 
 /* global chrome, browser:true */
 if (typeof chrome !== 'undefined' && chrome) {
-  const browser = chrome
+  const browser = chrome // eslint-disable-line no-undef no-unused-vars
 }
 
 const getStorageItem = async (key) => {
@@ -235,12 +237,24 @@ function findDoiFromHostName () {
     const cleanDoiString = badEndings.reduce(function (acc, badEnding) {
       return acc.replace(badEnding, '')
     }, doiString)
-    console.log('cleanDoiString', cleanDoiString)
     return cleanDoiString
   }
 }
 
-function findDoi () {
+async function findDoiFromPDF () {
+  if (document.contentType === 'application/pdf') {
+    const titleAndAuthor = await parsePDFForTitleandAuthor(window.location.href)
+    if (titleAndAuthor.doi) {
+      return titleAndAuthor.doi
+    }
+    if (titleAndAuthor.title) {
+      const { doi } = await matchReference(titleAndAuthor)
+      return doi
+    }
+  }
+}
+
+async function findDoi () {
   // we try each of these functions, in order, to get a DOI from the page.
   const doiFinderFunctions = [
     findDoiFromMetaTags,
@@ -261,6 +275,7 @@ function findDoi () {
       return myDoi
     }
   }
+  return await findDoiFromPDF()
 }
 
 async function popupDoi (doi) {
@@ -322,7 +337,7 @@ async function main () {
       return
     }
   }
-  const doi = findDoi()
+  const doi = await findDoi()
 
   if (!doi) {
     return

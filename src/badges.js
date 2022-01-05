@@ -414,7 +414,6 @@ function getGoogleRef (cite) {
 function findGoogleScholarDOIs () {
   const els = []
   const cites = [...document.body.querySelectorAll('.rc'), ...document.body.querySelectorAll('.gs_r')]
-
   for (const cite of cites) {
     const embeddedDOI = getAnchorDOI(cite)
     if (embeddedDOI) {
@@ -1153,7 +1152,7 @@ const BADGE_SITES = [
     style: leftMarginStyle
   },
   {
-    name: 'scholar.google.com',
+    name: 'scholar.google',
     findDoiEls: findGoogleScholarDOIs,
     position: 'afterend',
     style: commonMinStyle

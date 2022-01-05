@@ -1,5 +1,4 @@
 const path = require('path')
-const { SourceMapDevToolPlugin } = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
