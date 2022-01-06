@@ -16,7 +16,7 @@ import { parsePDFForTitleandAuthor } from './pdf'
 
 /* global chrome, browser:true */
 if (typeof chrome !== 'undefined' && chrome) {
-  const browser = chrome // eslint-disable-line no-undef no-unused-vars
+  const browser = chrome // eslint-disable-line no-unused-vars
 }
 
 const getStorageItem = async (key) => {
