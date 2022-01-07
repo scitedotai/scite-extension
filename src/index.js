@@ -318,9 +318,11 @@ function markPage () {
 }
 
 async function main () {
-  if (SCITE_HOSTS.includes(myHost)) {
-    markPage()
-    return
+  for (const sciteHost of SCITE_HOSTS) {
+    if (myHost.includes(sciteHost)) {
+      markPage()
+      return
+    }
   }
   await insertBadges()
 
