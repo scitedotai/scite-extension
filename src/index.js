@@ -209,7 +209,7 @@ function findDoiFromPubmed () {
 
   const doiLinkElem = document.querySelectorAll("a[ref='aid_type=doi']")
   if (doiLinkElem.length) {
-    return doiLinkElem[0].textContent
+    return doiLinkElem[0]?.textContent
   }
 }
 
