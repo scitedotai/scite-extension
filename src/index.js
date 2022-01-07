@@ -106,12 +106,14 @@ function findDoiFromMetaTags () {
   let doi
 
   metas.forEach(function (myMeta) {
-    if (!myMeta.name) {
+    const name = myMeta.name || myMeta.getAttribute('property')
+
+    if (!name) {
       return true // keep iterating
     }
 
     // has to be a meta name likely to contain a DOI
-    if (doiMetaNames.indexOf(myMeta.name.toLowerCase()) < 0) {
+    if (doiMetaNames.indexOf(name.toLowerCase()) < 0) {
       return true // continue iterating
     }
 
