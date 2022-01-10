@@ -219,10 +219,19 @@ function findDoiFromPsycnet () {
 }
 
 function findDoiFromADS () {
-  // exampleh: ttps://ui.adsabs.harvard.edu/abs/2011TJSAI..26..166M/abstract
+  // exampleh: https://ui.adsabs.harvard.edu/abs/2011TJSAI..26..166M/abstract
   const dataTarget = document.querySelectorAll('*[data-target="DOI"]')
   if (dataTarget.length) {
     return dataTarget[0]?.textContent
+  }
+}
+
+function findDoiFromJSTOR () {
+  // exampleh: https://www.jstor.org/stable/1340219
+  const dataTarget = document.querySelectorAll('*[data-qa="crossref-doi"]')
+  if (dataTarget.length) {
+    const doi = dataTarget[0]?.textContent.match(DOI_REGEX)
+    return doi
   }
 }
 
@@ -266,6 +275,7 @@ async function findDoi () {
   // we try each of these functions, in order, to get a DOI from the page.
   const doiFinderFunctions = [
     findDoiFromADS,
+    findDoiFromJSTOR,
     findDoiFromMetaTags,
     findDoiFromDataDoiAttributes,
     findDoiFromScienceDirect,
@@ -279,6 +289,7 @@ async function findDoi () {
 
   for (let i = 0; i < doiFinderFunctions.length; i++) {
     const myDoi = doiFinderFunctions[i]()
+    console.log(myDoi)
     if (myDoi && `${myDoi}`.startsWith('10.')) {
       // if we find a good DOI, stop looking
       return myDoi
