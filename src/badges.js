@@ -1361,9 +1361,18 @@ const BADGE_SITES = [
   }
 ]
 
+// We don't want badges on these sites.
+// Sometimes we need to explicitly exclude them
+// so we can remain general to other paths
+// and subdomains on the same domain.
+const NON_BADGE_SITES = [
+  'mail.google'
+]
+
 export default async function insertBadges () {
   const badgeSite = BADGE_SITES.find(site => window.location.href.includes(site.name))
-  if (!badgeSite) {
+  const nonBadgeSite = NON_BADGE_SITES.find(site => window.location.href.includes(site))
+  if (!badgeSite || nonBadgeSite) {
     return
   }
 
