@@ -218,6 +218,14 @@ function findDoiFromPsycnet () {
   return runRegexOnDoc(DOI_REGEX, 'psycnet.apa.org')
 }
 
+function findDoiFromADS () {
+  // exampleh: ttps://ui.adsabs.harvard.edu/abs/2011TJSAI..26..166M/abstract
+  const dataTarget = document.querySelectorAll('*[data-target="DOI"]')
+  if (dataTarget.length) {
+    return dataTarget[0]?.textContent
+  }
+}
+
 function findDoiFromTitle () {
   // Crossref DOI regex. See https://www.crossref.org/blog/dois-and-matching-regular-expressions/
   const re = DOI_REGEX
@@ -257,6 +265,7 @@ async function findDoiFromPDF () {
 async function findDoi () {
   // we try each of these functions, in order, to get a DOI from the page.
   const doiFinderFunctions = [
+    findDoiFromADS,
     findDoiFromMetaTags,
     findDoiFromDataDoiAttributes,
     findDoiFromScienceDirect,
@@ -353,6 +362,7 @@ function runWithDelay () {
   if (popupRef) {
     popupRef.remove()
   }
+  poppedUp = false
 
   let delay = 200
 
