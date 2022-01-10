@@ -1,6 +1,6 @@
 {
   "name": "scite-extension",
-  "version": "1.30.2",
+  "version": "1.31.0",
   "description": "scite allow users to see how a scientific paper has been cited by providing the context of the citation and a classification describing whether it provides supporting or contrasting evidence for the cited claim",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,9 @@
     "lint:fix": "standard --fix | snazzy && stylelint --fix 'src/**/*.css'",
     "lint:ext": "web-ext lint",
     "dev": "concurrently \"web-ext run -s ./extension\" \"webpack --config config/webpack.dev.js\"",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:chrome": "concurrently \"web-ext run -s ./extension -t chromium\" \"webpack --config config/webpack.dev.js\"",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "build": "webpack --config config/webpack.prod.js"
   },
   "keywords": [
@@ -45,6 +47,9 @@
   },
   "dependencies": {
     "classnames": "^2.3.1",
+    "jest": "^27.4.7",
+    "jest-fetch-mock": "^3.0.3",
+    "pdfjs-dist": "^2.12.313",
     "query-string": "^5.1.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

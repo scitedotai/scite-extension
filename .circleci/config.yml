@@ -1,0 +1,42 @@
+version: '2.1'
+orbs:
+  slack: circleci/slack@4.1.1
+jobs:
+  test:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:lts
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package-lock.json" }}
+
+      - run: npm ci
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package-lock.json" }}
+
+      - run: npm run lint
+      - run: npm test -- --max-workers=2
+      - slack/notify:
+          event: fail
+          template: SLACK_FAIL_TEST_TEMPLATE
+      - slack/notify:
+          event: pass
+          template: SLACK_PASS_TEST_TEMPLATE
+
+workflows:
+  version: 2
+  test-build-deploy:
+    jobs:
+      - test:
+          context:
+            - slack-secrets
+          filters:
+            tags:
+              only: /v.*-(stage|prod)$/

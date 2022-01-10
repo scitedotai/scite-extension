@@ -238,7 +238,7 @@ function findWikipediaDOIEls () {
 
 function getScienceDirectRef (cite) {
   const title = cite.querySelector('.result-list-title-link')?.textContent
-  const firstAuthor = cite.querySelector('.author').textContent
+  const firstAuthor = cite.querySelector('.author')?.textContent
 
   if (!title || !firstAuthor) {
     return null
@@ -382,7 +382,7 @@ function getGoogleScholarRef (cite) {
 
 function getGoogleAuthor (spans) {
   for (const span of spans) {
-    const text = span.textContent
+    const text = span?.textContent || ''
 
     if (/^by\s/.test(text)) {
       const byText = text.split('·')[0]
@@ -414,7 +414,6 @@ function getGoogleRef (cite) {
 function findGoogleScholarDOIs () {
   const els = []
   const cites = [...document.body.querySelectorAll('.rc'), ...document.body.querySelectorAll('.gs_r')]
-
   for (const cite of cites) {
     const embeddedDOI = getAnchorDOI(cite)
     if (embeddedDOI) {
@@ -508,7 +507,7 @@ function findORCIDDOIs () {
       if (anchor?.href?.match(/doi\.org\/(.+)/) && anchor?.textContent?.match(/10\.(.+)/)) {
         els.push({
           citeEl: cite,
-          doi: anchor.textContent
+          doi: anchor?.textContent
         })
         break
       }
@@ -837,7 +836,7 @@ function findWebOfKnowledgeDOIs () {
     if (doi) {
       els.push({
         citeEl: cite,
-        doi: doi.textContent
+        doi: doi?.textContent
       })
     }
   }
@@ -1153,7 +1152,7 @@ const BADGE_SITES = [
     style: leftMarginStyle
   },
   {
-    name: 'scholar.google.com',
+    name: 'scholar.google',
     findDoiEls: findGoogleScholarDOIs,
     position: 'afterend',
     style: commonMinStyle
