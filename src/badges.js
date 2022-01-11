@@ -365,8 +365,9 @@ function findSpringerDOIs () {
 }
 
 function getGoogleScholarRef (cite) {
-  const title = cite.querySelector('.gs_rt')?.textContent
-  const authors = cite.querySelector('.gs_a')?.textContent.split('-')[0]
+  const title = cite.querySelector('.gs_rt')?.textContent || cite.querySelector('.gsc_a_at')?.textContent
+  const authors = cite.querySelector('.gs_a')?.textContent.split('-')[0] || cite.querySelector('.gs_gray')?.textContent
+  console.log(title, authors)
 
   if (!title || !authors) {
     return null
@@ -413,7 +414,7 @@ function getGoogleRef (cite) {
  */
 function findGoogleScholarDOIs () {
   const els = []
-  const cites = [...document.body.querySelectorAll('.rc'), ...document.body.querySelectorAll('.gs_r')]
+  const cites = [...document.body.querySelectorAll('.rc'), ...document.body.querySelectorAll('.gs_r'), ...document.body.querySelectorAll('.gsc_a_t')]
   for (const cite of cites) {
     const embeddedDOI = getAnchorDOI(cite)
     if (embeddedDOI) {
@@ -1154,7 +1155,7 @@ const BADGE_SITES = [
   {
     name: 'scholar.google',
     findDoiEls: findGoogleScholarDOIs,
-    position: 'afterend',
+    position: 'beforeend',
     style: commonMinStyle
   },
   {
