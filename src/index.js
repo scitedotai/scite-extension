@@ -289,7 +289,6 @@ async function findDoi () {
 
   for (let i = 0; i < doiFinderFunctions.length; i++) {
     const myDoi = doiFinderFunctions[i]()
-    console.log(myDoi)
     if (myDoi && `${myDoi}`.startsWith('10.')) {
       // if we find a good DOI, stop looking
       return myDoi
