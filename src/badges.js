@@ -367,7 +367,6 @@ function findSpringerDOIs () {
 function getGoogleScholarRef (cite) {
   const title = cite.querySelector('.gs_rt')?.textContent || cite.querySelector('.gsc_a_at')?.textContent
   const authors = cite.querySelector('.gs_a')?.textContent.split('-')[0] || cite.querySelector('.gs_gray')?.textContent
-  console.log(title, authors)
 
   if (!title || !authors) {
     return null
