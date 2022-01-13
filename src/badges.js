@@ -365,8 +365,8 @@ function findSpringerDOIs () {
 }
 
 function getGoogleScholarRef (cite) {
-  const title = cite.querySelector('.gs_rt')?.textContent
-  const authors = cite.querySelector('.gs_a')?.textContent.split('-')[0]
+  const title = cite.querySelector('.gs_rt')?.textContent || cite.querySelector('.gsc_a_at')?.textContent
+  const authors = cite.querySelector('.gs_a')?.textContent.split('-')[0] || cite.querySelector('.gs_gray')?.textContent
 
   if (!title || !authors) {
     return null
@@ -413,7 +413,7 @@ function getGoogleRef (cite) {
  */
 function findGoogleScholarDOIs () {
   const els = []
-  const cites = [...document.body.querySelectorAll('.rc'), ...document.body.querySelectorAll('.gs_r')]
+  const cites = [...document.body.querySelectorAll('.rc'), ...document.body.querySelectorAll('.gs_r'), ...document.body.querySelectorAll('.gsc_a_t')]
   for (const cite of cites) {
     const embeddedDOI = getAnchorDOI(cite)
     if (embeddedDOI) {
@@ -1154,7 +1154,7 @@ const BADGE_SITES = [
   {
     name: 'scholar.google',
     findDoiEls: findGoogleScholarDOIs,
-    position: 'afterend',
+    position: 'beforeend',
     style: commonMinStyle
   },
   {
@@ -1361,9 +1361,18 @@ const BADGE_SITES = [
   }
 ]
 
+// We don't want badges on these sites.
+// Sometimes we need to explicitly exclude them
+// so we can remain general to other paths
+// and subdomains on the same domain.
+const NON_BADGE_SITES = [
+  'mail.google'
+]
+
 export default async function insertBadges () {
   const badgeSite = BADGE_SITES.find(site => window.location.href.includes(site.name))
-  if (!badgeSite) {
+  const nonBadgeSite = NON_BADGE_SITES.find(site => window.location.href.includes(site))
+  if (!badgeSite || nonBadgeSite) {
     return
   }
 
