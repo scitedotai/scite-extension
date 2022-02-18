@@ -124,9 +124,9 @@ https://scite.ai/apiterms
 
 ## Testing Badge Pages ##
 
-These are the sites we offical support for our badge insertion.
+These are the sites we officially support for our badge insertion.
 
-When making changes test on the folling sites (examples suggested):
+When making changes test on the following sites (examples suggested):
 
 #### wikipedia.org
 
