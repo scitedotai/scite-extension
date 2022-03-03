@@ -8,7 +8,7 @@ const BADGE_SCRIPT = `
 </script>`
 
 function createBadge (doi) {
-  return `<div id="scite-extension-badge" class="scite-badge" data-doi="${doi}" data-layout="horizontal" data-small="true" data-tooltip-placement="none" />`
+  return `<div class="scite-badge scite-extension-badge" data-doi="${doi}" data-layout="horizontal" data-small="true" data-tooltip-placement="none" />`
 }
 
 function removeElementsByQuery (query) {
@@ -95,7 +95,7 @@ function addRefereshListener (refreshSelector, timeout = 1000) {
     const showAll = document.body.querySelector(refreshSelector)
     if (showAll) {
       showAll.addEventListener('click', () => {
-        removeElementsByQuery('#scite-extension-badge')
+        removeElementsByQuery('.scite-extension-badge')
         setTimeout(() => insertBadges(), timeout)
       })
     }
@@ -120,7 +120,7 @@ function addMutationAttributeListener (listenSelectors) {
       for (const selector of listenSelectors) {
         const observer = new window.MutationObserver(function (mutations) {
           mutations.forEach(() => {
-            removeElementsByQuery('#scite-extension-badge')
+            removeElementsByQuery('.scite-extension-badge')
             insertBadges()
           })
         })
@@ -1376,7 +1376,7 @@ export default async function insertBadges () {
     return
   }
 
-  const badges = document.querySelectorAll('#scite-badge-extension')
+  const badges = document.querySelectorAll('.scite-badge-extension')
   for (const badge of badges) {
     badge.remove()
   }
