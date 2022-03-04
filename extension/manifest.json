@@ -40,5 +40,8 @@
     "https://api.scite.ai/*",
     "contextMenus",
     "storage"
+  ],
+  "web_accessible_resources": [
+    "fonts/*"
   ]
 }

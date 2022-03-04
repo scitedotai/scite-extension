@@ -10,5 +10,8 @@ module.exports = {
   automock: false,
   setupFiles: [
     './setupTests.js'
-  ]
+  ],
+  transform: {
+    '^.+\\.(t|j)sx?$': ['@swc/jest']
+  }
 }
