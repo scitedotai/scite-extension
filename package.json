@@ -23,11 +23,8 @@
   "author": "Milo Mordaunt <milo@scite.ai>",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.16.0",
-    "@babel/core": "^7.16.0",
-    "@babel/plugin-transform-react-jsx": "^7.16.0",
-    "@babel/preset-env": "^7.16.4",
     "@swc/core": "^1.2.111",
+    "@swc/jest": "^0.2.20",
     "autoprefixer": "^10.4.0",
     "concurrently": "^6.4.0",
     "css-loader": "^6.5.1",
