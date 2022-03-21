@@ -2,22 +2,14 @@ const API_URL = 'https://api.scite.ai'
 
 export const matchReference = async ({
   title,
-  firstAuthor,
-  postValidate = true
+  firstAuthor
 } = {}) => {
   const { fetch } = window
   const url = new URL(`${API_URL}/search/match_reference`)
 
-  // glutton requires a non empty first author but can work wihout if post validate is off
-  if (!firstAuthor) {
-    firstAuthor = 'placeholder'
-    postValidate = false
-  }
-
   const params = new URLSearchParams({
     title,
-    first_author: firstAuthor,
-    post_validate: postValidate === true ? 'true' : 'false'
+    first_author: firstAuthor
   })
   url.search = params.toString()
   try {
