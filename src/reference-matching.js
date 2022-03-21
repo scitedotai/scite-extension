@@ -4,6 +4,10 @@ export const matchReference = async ({
   title,
   firstAuthor
 } = {}) => {
+  if (!title && !firstAuthor) {
+    return null
+  }
+
   const { fetch } = window
   const url = new URL(`${API_URL}/search/match_reference`)
 
