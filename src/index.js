@@ -47,7 +47,8 @@ const LONG_DELAY_HOSTS = [
   'europepmc.org',
   'orcid.org',
   'connectedpapers.com',
-  'lens.org'
+  'lens.org',
+  'www.semanticscholar.org'
 ]
 
 const SCITE_HOSTS = [
@@ -79,7 +80,6 @@ let poppedUp = false
 function runRegexOnDoc (re, host) {
   // @re regex that has a submatch in it that we're searching for, like /foo(.+?)bar/
   // @host optional. only work on this host.
-
   if (!host || host === myHost) {
     const m = re.exec(docAsStr)
     if (m && m.length > 1) {
@@ -218,6 +218,19 @@ function findDoiFromPsycnet () {
   return runRegexOnDoc(DOI_REGEX, 'psycnet.apa.org')
 }
 
+function findDoiFromSemanticScholar () {
+  // example: https://www.semanticscholar.org/paper/ProofWriter%3A-Generating-Implications%2C-Proofs%2C-and-Tafjord-Dalvi/87c45a908537ffe1d2ab71a5d609bd7b4efa4fe1
+  if (myHost.indexOf('www.semanticscholar.org') < 0) {
+    return null
+  }
+
+  const doiLinkElem = document.querySelector('.doi__link')
+  const doiCandidate = doiLinkElem?.textContent
+  if (doiCandidate?.indexOf('10.') === 0) {
+    return doiCandidate
+  }
+}
+
 function findDoiFromADS () {
   // exampleh: https://ui.adsabs.harvard.edu/abs/2011TJSAI..26..166M/abstract
   const dataTarget = document.querySelectorAll('*[data-target="DOI"]')
@@ -275,6 +288,7 @@ async function findDoi () {
   // we try each of these functions, in order, to get a DOI from the page.
   const doiFinderFunctions = [
     findDoiFromADS,
+    findDoiFromSemanticScholar,
     findDoiFromJSTOR,
     findDoiFromMetaTags,
     findDoiFromDataDoiAttributes,
@@ -367,6 +381,7 @@ async function main () {
   await popupDoi(doi)
 }
 
+let timeoutID = null
 function runWithDelay () {
   const popupRef = document.querySelector('#scite-popup')
   if (popupRef) {
@@ -383,7 +398,10 @@ function runWithDelay () {
       delay = 3000
     }
   }
-  setTimeout(async () => {
+  if (timeoutID) {
+    clearTimeout(timeoutID)
+  }
+  timeoutID = setTimeout(async () => {
     await main()
   }, delay)
 }

@@ -269,3 +269,12 @@ https://psycnet.apa.org/search/results?id=56ab4ce0-0f51-85fc-7298-3e65d0f31e18&t
 
 Fulltext references:
 https://psycnet.apa.org/fulltext/2015-00298-001.html
+
+# Semantic Scholar
+
+Search:
+https://www.semanticscholar.org/search?q=factuality&sort=relevance
+
+Fulltext:
+https://www.semanticscholar.org/paper/Understanding-Factuality-in-Abstractive-with-FRANK%3A-Pagnoni-Balachandran/667bdd2a8dc997d40c106ff6761babebe4050762
+
