@@ -11,10 +11,10 @@ function createBadge (doi) {
   return `<div class="scite-badge scite-extension-badge" data-doi="${doi}" data-layout="horizontal" data-small="true" data-tooltip-placement="none" />`
 }
 
-function removeElementsByQuery (query) {
-  const elements = document.querySelectorAll(query)
-  while (elements.length > 0) {
-    elements[0].parentNode.removeChild(elements[0])
+function removeElementsByQuery (query, parentEl = document) {
+  const elements = parentEl.querySelectorAll(query)
+  for (const element of elements) {
+    element.parentNode?.removeChild(element)
   }
 }
 
@@ -91,12 +91,16 @@ const largeMarginMinStyle = `
  * reload badges.
  */
 function addRefereshListener (refreshSelector, timeout = 1000) {
+  let timeoutID = null
   return () => {
     const showAll = document.body.querySelector(refreshSelector)
     if (showAll) {
       showAll.addEventListener('click', () => {
         removeElementsByQuery('.scite-extension-badge')
-        setTimeout(() => insertBadges(), timeout)
+        if (timeoutID) {
+          clearTimeout(timeoutID)
+        }
+        timeoutID = setTimeout(() => insertBadges(), timeout)
       })
     }
   }
@@ -1101,6 +1105,29 @@ function findAPADOIs () {
   return els
 }
 
+/**
+ * findSemanticScholarDOIs finds references from semantic scholar.
+ * @returns {Array<{ citeEl: Element, reference: Object }>} - Return
+ */
+function findSemanticScholarDOIs () {
+  const els = []
+  const cites = document.body.querySelectorAll('.cl-paper-row')
+  for (const cite of cites) {
+    const title = cite.querySelector('.cl-paper-title')?.textContent
+    const firstAuthor = cite.querySelector('.cl-paper-authors__author-link')?.textContent?.split(' ').pop()
+    if (title && firstAuthor) {
+      els.push({
+        citeEl: cite,
+        reference: {
+          title,
+          firstAuthor
+        }
+      })
+    }
+  }
+  return els
+}
+
 const BADGE_SITES = [
   {
     name: 'wikipedia.org',
@@ -1358,6 +1385,12 @@ const BADGE_SITES = [
     findDoiEls: findAPADOIs,
     position: 'afterend',
     style: largeMarginMinStyle
+  },
+  {
+    name: 'semanticscholar.org',
+    findDoiEls: findSemanticScholarDOIs,
+    position: 'afterend',
+    style: largeMarginMinStyle
   }
 ]
 
@@ -1369,16 +1402,13 @@ const NON_BADGE_SITES = [
   'mail.google'
 ]
 
+let initFuncSet = false
 export default async function insertBadges () {
+  // because we are asyncly calling functions we must lock this function to avoid multiple overlapping calls.
   const badgeSite = BADGE_SITES.find(site => window.location.href.includes(site.name))
   const nonBadgeSite = NON_BADGE_SITES.find(site => window.location.href.includes(site))
   if (!badgeSite || nonBadgeSite) {
     return
-  }
-
-  const badges = document.querySelectorAll('.scite-badge-extension')
-  for (const badge of badges) {
-    badge.remove()
   }
 
   const els = badgeSite.findDoiEls()
@@ -1421,7 +1451,8 @@ export default async function insertBadges () {
     )
   }
 
-  if (badgeSite.initFunc) {
+  if (badgeSite.initFunc && !initFuncSet) {
+    initFuncSet = true
     badgeSite.initFunc()
   }
 }

@@ -47,7 +47,8 @@ const LONG_DELAY_HOSTS = [
   'europepmc.org',
   'orcid.org',
   'connectedpapers.com',
-  'lens.org'
+  'lens.org',
+  'www.semanticscholar.org'
 ]
 
 const SCITE_HOSTS = [
@@ -224,8 +225,8 @@ function findDoiFromSemanticScholar () {
   }
 
   const doiLinkElem = document.querySelector('.doi__link')
-  const doiCandidate = doiLinkElem.textContent
-  if (doiCandidate.indexOf('10.') === 0) {
+  const doiCandidate = doiLinkElem?.textContent
+  if (doiCandidate?.indexOf('10.') === 0) {
     return doiCandidate
   }
 }
@@ -380,6 +381,7 @@ async function main () {
   await popupDoi(doi)
 }
 
+let timeoutID = null
 function runWithDelay () {
   const popupRef = document.querySelector('#scite-popup')
   if (popupRef) {
@@ -396,7 +398,10 @@ function runWithDelay () {
       delay = 3000
     }
   }
-  setTimeout(async () => {
+  if (timeoutID) {
+    clearTimeout(timeoutID)
+  }
+  timeoutID = setTimeout(async () => {
     await main()
   }, delay)
 }
