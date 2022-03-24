@@ -47,8 +47,7 @@ const LONG_DELAY_HOSTS = [
   'europepmc.org',
   'orcid.org',
   'connectedpapers.com',
-  'lens.org',
-  'www.semanticscholar.org'
+  'lens.org'
 ]
 
 const SCITE_HOSTS = [
