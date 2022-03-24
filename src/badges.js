@@ -1105,29 +1105,6 @@ function findAPADOIs () {
   return els
 }
 
-/**
- * findSemanticScholarDOIs finds references from semantic scholar.
- * @returns {Array<{ citeEl: Element, reference: Object }>} - Return
- */
-function findSemanticScholarDOIs () {
-  const els = []
-  const cites = document.body.querySelectorAll('.cl-paper-row')
-  for (const cite of cites) {
-    const title = cite.querySelector('.cl-paper-title')?.textContent
-    const firstAuthor = cite.querySelector('.cl-paper-authors__author-link')?.textContent?.split(' ').pop()
-    if (title && firstAuthor) {
-      els.push({
-        citeEl: cite,
-        reference: {
-          title,
-          firstAuthor
-        }
-      })
-    }
-  }
-  return els
-}
-
 const BADGE_SITES = [
   {
     name: 'wikipedia.org',
@@ -1385,12 +1362,6 @@ const BADGE_SITES = [
     findDoiEls: findAPADOIs,
     position: 'afterend',
     style: largeMarginMinStyle
-  },
-  {
-    name: 'semanticscholar.org',
-    findDoiEls: findSemanticScholarDOIs,
-    position: 'afterend',
-    style: largeMarginMinStyle
   }
 ]
 
@@ -1410,6 +1381,10 @@ export default async function insertBadges () {
   if (!badgeSite || nonBadgeSite) {
     return
   }
+  // remove all badges now and then again right before injection
+  // we need to do this twice because we want to remove old badges right away
+  // then we need to remove them again right before new badges are injected
+  removeElementsByQuery('.scite-extension-badge')
 
   const els = badgeSite.findDoiEls()
   if (!els || els.length <= 0) {
@@ -1417,9 +1392,10 @@ export default async function insertBadges () {
   }
 
   const refsToResolve = []
+  const badges = []
   for (const el of els) {
     if (el.doi) {
-      el.citeEl.insertAdjacentHTML(badgeSite.position, createBadge(el.doi.toLowerCase()?.trim()))
+      badges.push(el)
     } else {
       refsToResolve.push(el)
     }
@@ -1432,10 +1408,18 @@ export default async function insertBadges () {
   for (const batch of jobs) {
     await Promise.all(batch.map(async el => {
       const result = await matchReference(el.reference)
-      if (result?.matched) {
-        el.citeEl.insertAdjacentHTML(badgeSite.position, createBadge(result.doi.toLowerCase().trim()))
+      if (result?.matched && result?.doi) {
+        badges.push({
+          ...el,
+          doi: result.doi
+        })
       }
     }))
+  }
+
+  removeElementsByQuery('.scite-extension-badge')
+  for (const badge of badges) {
+    badge.citeEl.insertAdjacentHTML(badgeSite.position, createBadge(badge.doi.toLowerCase()?.trim()))
   }
 
   // if we have dois then add badge to them.
