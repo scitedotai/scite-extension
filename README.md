@@ -74,7 +74,7 @@ $ zip -r extension.zip extension/*
 ### Firefox ###
 
 ```bash
-$ zip -r extension-full.zip . -x "node_modules/*" -x ".cache/*" -x ".git/*"
+$ zip -r extension-full.zip . -x "node_modules/*" -x ".cache/*" -x ".git/*" -x "extension/index.*" -x "extension/background.js" -x "extension/styles.css"
 $ cd extension
 $ zip -r ../extension.zip .
 ```
