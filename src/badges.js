@@ -1,11 +1,8 @@
 // TODO: (dom) look into deduplicating common extractors, loops, and styles.
 import queryString from 'query-string'
+import * as sciteBadge from 'scite-badge'
 import { matchReference } from './reference-matching'
 import { sliceIntoChunks } from './util'
-
-const BADGE_SCRIPT = `
-<script async type="application/javascript" src="https://cdn.scite.ai/badge/scite-badge-latest.min.js?v=5">
-</script>`
 
 function createBadge (doi) {
   return `<div class="scite-badge scite-extension-badge" data-doi="${doi}" data-layout="horizontal" data-small="true" data-tooltip-placement="none" />`
@@ -1422,13 +1419,11 @@ export default async function insertBadges () {
     badge.citeEl.insertAdjacentHTML(badgeSite.position, createBadge(badge.doi.toLowerCase()?.trim()))
   }
 
-  // if we have dois then add badge to them.
-  // use range and contextual fragment so the script gets executed.
   const range = document.createRange()
   range.setStart(document.documentElement, 0)
-  document.documentElement.appendChild(
-    range.createContextualFragment(BADGE_SCRIPT)
-  )
+
+  sciteBadge.insertBadges()
+
   if (badgeSite.style) {
     document.documentElement.appendChild(
       range.createContextualFragment(badgeSite.style)
