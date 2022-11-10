@@ -30,6 +30,34 @@ jobs:
           event: pass
           template: SLACK_PASS_TEST_TEMPLATE
 
+  deploy:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:lts
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package-lock.json" }}
+
+      - run: npm ci
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package-lock.json" }}
+
+      - run: npm run build:badge
+      - run: npm run upload_badge
+      - slack/notify:
+          event: fail
+          template: SLACK_FAIL_TEMPLATE
+      - slack/notify:
+          event: pass
+          template: SLACK_PASS_TEMPLATE
+
 workflows:
   version: 2
   test-build-deploy:

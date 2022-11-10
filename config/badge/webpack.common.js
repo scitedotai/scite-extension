@@ -38,7 +38,7 @@ module.exports = {
     ]
   },
   output: {
-    filename: '[name].js',
+    filename: 'badge.bundle.js',
     path: path.resolve(__dirname, '../../dist'),
     library: {
       type: 'umd'
