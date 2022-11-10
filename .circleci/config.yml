@@ -67,4 +67,14 @@ workflows:
             - slack-secrets
           filters:
             tags:
-              only: /v.*-(stage|prod)$/
+              only: /^badge-v.*-(stage|prod)$/
+      - deploy:
+          context:
+            - slack-secrets
+          filters:
+            tags:
+              only: /^badge-v.*-(stage|prod)$/
+            branches:
+              ignore: /.*/
+          requires:
+            - test
