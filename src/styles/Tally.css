@@ -1,0 +1,67 @@
+.tally * {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.tally {
+  line-height: 1.5;
+  padding: 8px;
+  padding-right: 12px;
+  padding-bottom: 0;
+  color: #0e1d1a;
+  background-color: white;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+  will-change: opacity, background-color;
+  transition: all 200ms ease-in-out;
+  opacity: 0;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.badgeTally {
+  /* Something of a hack so we can avoid
+    setting overflow: 'hidden' on the
+    outer div whilst having a tooltip
+    translated outside of it */
+  border-radius: 8px 0 0 0;
+  padding-bottom: 8px;
+}
+
+.horizontal {
+  padding: 0 8px;
+  flex-direction: row;
+  height: 100%;
+}
+
+.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tally:hover {
+  background-color: #f4f4f4;
+}
+
+.logo {
+  display: block;
+  margin-bottom: 8px;
+  width: 4em;
+  max-width: 4em;
+}
+
+.logoSmall {
+  width: 3em;
+  max-width: 3em;
+  padding-left: 4px;
+}
+
+.small {
+  padding: 0 4px;
+}
+
+.forceCollapse {
+  display: none;
+}

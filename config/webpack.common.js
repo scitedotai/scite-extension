@@ -17,23 +17,6 @@ module.exports = {
         exclude: /node_modules/,
         use: 'swc-loader'
       },
-
-      //
-      // Node modules css we import just as global CSS
-      //
-      {
-        test: /\.css$/,
-        include: /node_modules/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'postcss-loader'
-        ]
-      },
-
-      //
-      // Our CSS we import as CSS modules CSS
-      //
       {
         test: /\.css$/,
         exclude: /node_modules/,

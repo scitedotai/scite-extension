@@ -1,0 +1,222 @@
+.tooltip {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 16px;
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
+  transition: opacity 200ms ease-in-out;
+  padding: 16px;
+  border: 1px solid #ebebeb;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 0 37px 0 rgba(0, 0, 0, 0.05);
+  z-index: 9999;
+  width: 250px;
+  height: auto;
+  cursor: pointer;
+}
+
+.tooltipShow {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tooltip[data-placement="top"]::after,
+.tooltip[data-placement="top"]::before {
+  top: 100%;
+  left: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.tooltip[data-placement="top"]::after {
+  border-color: rgba(255, 255, 255, 0);
+  border-top-color: #fff;
+  border-width: 10px;
+  margin-left: -10px;
+}
+
+.tooltip[data-placement="top"]::before {
+  border-color: rgba(235, 235, 235, 0);
+  border-top-color: #ebebeb;
+  border-width: 11px;
+  margin-left: -11px;
+}
+
+.tooltip[data-placement="left"]::after,
+.tooltip[data-placement="left"]::before {
+  left: 100%;
+  top: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.tooltip[data-placement="left"]::after {
+  border-color: rgba(255, 255, 255, 0);
+  border-left-color: #fff;
+  border-width: 10px;
+  margin-top: -10px;
+}
+
+.tooltip[data-placement="left"]::before {
+  border-color: rgba(235, 235, 235, 0);
+  border-left-color: #ebebeb;
+  border-width: 11px;
+  margin-top: -11px;
+}
+
+.tooltip[data-placement="right"]::after,
+.tooltip[data-placement="right"]::before {
+  right: 100%;
+  top: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.tooltip[data-placement="right"]::after {
+  border-color: rgba(255, 255, 255, 0);
+  border-right-color: #fff;
+  border-width: 10px;
+  margin-top: -10px;
+}
+
+.tooltip[data-placement="right"]::before {
+  border-color: rgba(235, 235, 235, 0);
+  border-right-color: #ebebeb;
+  border-width: 11px;
+  margin-top: -11px;
+}
+
+.tooltip[data-placement="bottom"]::after,
+.tooltip[data-placement="bottom"]::before {
+  bottom: 100%;
+  left: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.tooltip[data-placement="bottom"]::after {
+  border-color: rgba(255, 255, 255, 0);
+  border-bottom-color: #fff;
+  border-width: 10px;
+  margin-left: -10px;
+}
+
+.tooltip[data-placement="bottom"]::before {
+  border-color: rgba(235, 235, 235, 0);
+  border-bottom-color: #ebebeb;
+  border-width: 11px;
+  margin-left: -11px;
+}
+
+.reference {
+  /* So it doesn't get wider than the badge itself
+     * based on the width of the container */
+}
+
+.tooltipContent {
+  font-size: 14px;
+}
+
+.tally {
+  line-height: 1.5;
+}
+
+.tallyCounts {
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.tallyCount {
+  margin: 0.5rem 0;
+  font-weight: bold;
+}
+
+.labels {
+  display: inline-block;
+}
+
+.noticeLabel {
+  display: inline;
+}
+
+.label {
+  display: block;
+  margin: 0.5rem 0;
+  margin-left: 1rem;
+}
+
+.message {
+  color: #828179;
+}
+
+.bold {
+  font-weight: bold;
+  color: black;
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+  font-weight: inherit;
+  transition: 200ms opacity ease-in-out;
+}
+
+.link:hover,
+.link:active {
+  opacity: 0.8;
+}
+
+.button {
+  display: inline-block;
+  background-color: #0062ff;
+  border-radius: 6px;
+  padding: 6px 12px;
+  margin-top: 12px;
+  color: white;
+  text-decoration: none;
+  transition: background-color 200ms ease-in-out;
+}
+
+.button:hover {
+  background-color: #4da3ff;
+
+  /* For (a) site(s) that specifies a:hover color to be inherit */
+  color: white;
+}
+
+.logo {
+  display: block;
+  width: 5em;
+}
+
+.slogan {
+  display: block;
+  margin: 0.5rem 0;
+}
+
+.retractionsCopy {
+  color: #d84215;
+  font-weight: bold;
+}
+
+.noticeCopy {
+  color: black;
+  font-weight: bold;
+}

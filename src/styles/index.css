@@ -1,0 +1,28 @@
+:global(.scite-badge) {
+  display: inline-block;
+}
+
+:global(.scite-badge .scite-tally) {
+  border-radius: 8px;
+  border: 1px solid #cfcfcf;
+  min-height: 120px;
+  box-sizing: border-box;
+}
+
+:global(.scite-badge[data-layout='horizontal'] .scite-tally) {
+  min-height: 0;
+  max-height: 32px;
+}
+
+:global(.scite-badge:not([data-chart-type]) .scite-section-tally) {
+  border-radius: 8px;
+  height: min-content;
+  width: min-content;
+  padding: 8px 0 0 8px;
+  border: 1px solid #cfcfcf;
+  box-sizing: border-box;
+}
+
+:global(.scite-badge[data-section-tally-layout='horizontal'] .scite-section-tally) {
+  padding: 0;
+}
