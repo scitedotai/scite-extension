@@ -11,7 +11,7 @@
     "dev:chrome": "concurrently \"web-ext run -s ./extension -t chromium\" \"webpack --config config/webpack.dev.js\"",
     "test": "jest",
     "test:watch": "jest --watch",
-    "build": "webpack --config config/webpack.prod.js",
+    "build": "NODE_ENV=production webpack --config config/webpack.prod.js",
     "dev:badge": "webpack serve -c config/badge/webpack.dev.js",
     "build:badge": "NODE_ENV=production webpack -c config/badge/webpack.prod.js",
     "upload_badge": "node ./scripts/upload-badge.js"
