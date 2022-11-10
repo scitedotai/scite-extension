@@ -85,8 +85,8 @@ If `insert-before` is not set to `true` then the badge will be appended to the e
 Releases are uploaded to our CDN by Circle. The release channel is based on the tag. To release a commit to stage push the tag (e.g.):
 
 ```bash
-$ git tag v1.2.0-stage -m "My cool new version"
-$ git push origin v1.2.0-stage
+$ git tag badge-v8.1.0-stage -m "My cool new version"
+$ git push origin badge-v8.1.0-stage
 ```
 
 To release to prod (e.g.):
