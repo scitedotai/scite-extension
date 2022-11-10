@@ -5,21 +5,21 @@ jobs:
   test:
     working_directory: ~/repo
     docker:
-      - image: circleci/node:lts
+      - image: cimg/node:16.18
 
     steps:
       - checkout
 
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package-lock.json" }}
+            - v2-dependencies-{{ checksum "package-lock.json" }}
 
       - run: npm ci
 
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package-lock.json" }}
+          key: v2-dependencies-{{ checksum "package-lock.json" }}
 
       - run: npm run lint
       - run: npm test -- --max-workers=2
@@ -33,21 +33,21 @@ jobs:
   deploy:
     working_directory: ~/repo
     docker:
-      - image: circleci/node:lts
+      - image: cimg/node:16.18
 
     steps:
       - checkout
 
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package-lock.json" }}
+            - v2-dependencies-{{ checksum "package-lock.json" }}
 
       - run: npm ci
 
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package-lock.json" }}
+          key: v2-dependencies-{{ checksum "package-lock.json" }}
 
       - run: npm run build:badge
       - run: npm run upload_badge
