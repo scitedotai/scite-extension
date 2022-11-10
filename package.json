@@ -61,8 +61,8 @@
     "query-string": "^5.1.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-popper": "^2.3.0",
     "regenerator-runtime": "^0.13.10",
-    "scite-badge": "git+https://git@github.com/scitedotai/scite-badge.git#c42e7a7febf5bd7e2ff28c5852119ee9c45ff223",
     "whatwg-fetch": "^3.6.2"
   },
   "standard": {
