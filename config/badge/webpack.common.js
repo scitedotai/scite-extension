@@ -6,7 +6,9 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const TAG = execSync('git describe --abbrev=0').toString().trim()
 
 module.exports = {
-  entry: './src/badge/index.js',
+  entry: {
+    badge: './src/badge/index.js'
+  },
 
   plugins: [
     new CleanWebpackPlugin(),
@@ -38,7 +40,7 @@ module.exports = {
     ]
   },
   output: {
-    filename: 'badge.bundle.js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, '../../dist'),
     library: {
       type: 'umd'
