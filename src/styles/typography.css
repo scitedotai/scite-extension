@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+
+@font-face {
+  font-family: 'scite-icons';
+  src: url('https://cdn.scite.ai/assets/fonts/scite-icons/scite-icons.eot?v=5');
+  src:
+    url('https://cdn.scite.ai/assets/fonts/scite-icons/scite-icons.eot?v=5#iefix') format('embedded-opentype'),
+    url('https://cdn.scite.ai/assets/fonts/scite-icons/scite-icons.woff2?v=5') format('woff2'),
+    url('https://cdn.scite.ai/assets/fonts/scite-icons/scite-icons.woff?v=5') format('woff'),
+    url('https://cdn.scite.ai/assets/fonts/scite-icons/scite-icons.ttf?v=5') format('truetype'),
+    url('https://cdn.scite.ai/assets/fonts/scite-icons/scite-icons.svg?v=5#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}

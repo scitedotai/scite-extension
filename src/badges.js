@@ -1,6 +1,6 @@
 // TODO: (dom) look into deduplicating common extractors, loops, and styles.
 import queryString from 'query-string'
-import * as sciteBadge from 'scite-badge'
+import * as sciteBadge from './badge/main'
 import { matchReference } from './reference-matching'
 import { sliceIntoChunks } from './util'
 

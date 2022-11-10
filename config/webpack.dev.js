@@ -1,8 +1,8 @@
+const { merge } = require('webpack-merge')
 const { SourceMapDevToolPlugin } = require('webpack')
-const commonConfig = require('./webpack.common')
+const common = require('./webpack.common')
 
-module.exports = {
-  ...commonConfig,
+module.exports = merge(common, {
   mode: 'development',
   watch: true,
 
@@ -12,10 +12,9 @@ module.exports = {
   //
   devtool: false,
   plugins: [
-    ...commonConfig.plugins,
     new SourceMapDevToolPlugin({
       test: /\.(js|jsx|css)($|\?)/i,
       exclude: /scite-extension\/src\/background.js/
     })
   ]
-}
+})

@@ -1,0 +1,57 @@
+.tally * {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.tally {
+  line-height: 1.5;
+  color: #0e1d1a;
+  background-color: white;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+  will-change: opacity, background-color;
+  transition: all 200ms ease-in-out;
+  display: flex;
+  flex-direction: column;
+}
+
+.tally:hover {
+  background-color: #f4f4f4;
+}
+
+.hideContainer {
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  color: #82807d;
+  font-size: 12px;
+  z-index: 1;
+}
+
+.logoSingleLetter {
+  width: 1em;
+  max-width: 1em;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  padding-right: 8px;
+}
+
+.openingArrow {
+  font-weight: 600;
+  font-size: 16px;
+  color: #82807d;
+  margin-right: 4px;
+}
+
+.closingArrow {
+  display: block;
+  width: 1em;
+  max-width: 1em;
+  font-weight: 600;
+  font-size: 16px;
+  color: #82807d;
+}

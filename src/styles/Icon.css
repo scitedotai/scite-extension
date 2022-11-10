@@ -1,0 +1,58 @@
+.icon {
+  font-family: 'scite-icons' !important;
+  speak: none;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  line-height: 1.5 !important;
+}
+
+.unclassified::before {
+  content: "\e80a";
+  color: #828179;
+}
+
+.contrasting::before {
+  content: "\e80a";
+  color: #0062ff;
+}
+
+.mentioning::before {
+  content: "\e902";
+  color: #393f43;
+}
+
+.supporting::before {
+  content: "\e903";
+  color: #26a65b;
+}
+
+.retractions::before {
+  content: "\e901";
+  color: #ff3b30;
+}
+
+.notices::before {
+  content: "\e90a";
+  color: #82807d;
+}
+
+.publications::before {
+  content: "\e90b";
+  color: #82807d;
+}
+
+.smallIcon {
+  line-height: 1rem !important;
+}
+
+.openingArrow::before {
+  content: "\e922";
+  color: #82807d;
+}
+
+.closingCaret::before {
+  content: "\e925";
+  color: #82807d;
+}

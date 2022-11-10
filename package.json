@@ -11,7 +11,9 @@
     "dev:chrome": "concurrently \"web-ext run -s ./extension -t chromium\" \"webpack --config config/webpack.dev.js\"",
     "test": "jest",
     "test:watch": "jest --watch",
-    "build": "webpack --config config/webpack.prod.js"
+    "build": "webpack --config config/webpack.prod.js",
+    "dev:badge": "webpack serve -c config/badge/webpack.dev.js",
+    "build:badge": "webpack -c config/badge/webpack.prod.js"
   },
   "keywords": [
     "webextensions",
@@ -23,24 +25,31 @@
   "author": "Milo Mordaunt <milo@scite.ai>",
   "license": "MIT",
   "devDependencies": {
-    "@swc/core": "^1.2.111",
-    "@swc/jest": "^0.2.20",
+    "@swc/core": "^1.3.14",
+    "@swc/jest": "^0.2.23",
     "autoprefixer": "^10.4.0",
+    "aws-sdk": "^2.1251.0",
+    "clean-webpack-plugin": "^4.0.0",
     "concurrently": "^6.4.0",
-    "css-loader": "^6.5.1",
+    "css-loader": "^6.7.1",
     "css-minimizer-webpack-plugin": "^3.1.4",
+    "html-webpack-plugin": "^5.5.0",
+    "identity-obj-proxy": "^3.0.0",
     "mini-css-extract-plugin": "^2.4.5",
     "postcss-loader": "^6.2.0",
     "postcss-modules": "^4.2.2",
     "snazzy": "^9.0.0",
     "standard": "^16.0.4",
+    "style-loader": "^3.3.1",
     "stylelint": "^13.13.1",
     "stylelint-config-css-modules": "^2.2.0",
     "stylelint-config-standard": "^22.0.0",
-    "swc-loader": "^0.1.15",
+    "swc-loader": "^0.2.3",
     "web-ext": "^6.5.0",
-    "webpack": "^5.64.1",
-    "webpack-cli": "^4.9.1"
+    "webpack": "^5.75.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.11.1",
+    "webpack-merge": "^5.8.0"
   },
   "dependencies": {
     "classnames": "^2.3.1",
@@ -51,8 +60,15 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "regenerator-runtime": "^0.13.9",
-    "scite-widget": "git+https://git@github.com/scitedotai/scite-widget.git#master",
-    "scite-badge": "git+https://git@github.com/scitedotai/scite-badge.git#v7.3.1-prod",
+    "scite-badge": "git+https://git@github.com/scitedotai/scite-badge.git#c42e7a7febf5bd7e2ff28c5852119ee9c45ff223",
     "whatwg-fetch": "^3.6.2"
+  },
+  "standard": {
+    "ignore": [
+      "dist"
+    ],
+    "globals": [
+      "__VERSION__"
+    ]
   }
 }

@@ -2,6 +2,7 @@
 // https://jestjs.io/docs/en/configuration.html
 
 module.exports = {
+  testEnvironment: 'jsdom',
   clearMocks: true,
   coverageDirectory: 'coverage',
   moduleNameMapper: {
