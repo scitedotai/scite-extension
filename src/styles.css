@@ -18,14 +18,14 @@
 }
 
 @font-face {
-  font-family: 'scite-icons';
+  font-family: scite-icons;
   src: url('moz-extension://__MSG_@@extension_id__/fonts/scite-icons/scite-icons.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'scite-icons';
+  font-family: scite-icons;
   src: url('moz-extension://__MSG_@@extension_id__/fonts/scite-icons/scite-icons.eot');
   src:
     url('moz-extension://__MSG_@@extension_id__/fonts/scite-icons/scite-icons.eot') format('embedded-opentype'),
