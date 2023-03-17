@@ -88,6 +88,10 @@ export function getConfig (el) {
     config.rewardfulID = data.rewardfulId
   }
 
+  if (data.showTotal) {
+    config.showTotal = data.showTotal === 'true'
+  }
+
   return config
 }
 
@@ -159,6 +163,7 @@ export function insertBadge (el, tally, notices, sectionTally) {
   const autologin = config.autologin || undefined
   const rewardfulID = config.rewardfulID || undefined
   const showLogo = config.showLogo || true
+  const showTotal = typeof config.showTotal === 'boolean' ? config.showTotal : true
 
   // Section Tally related values
   const chartType = config.chartType || null
@@ -177,6 +182,30 @@ export function insertBadge (el, tally, notices, sectionTally) {
     console.warn('Scite badge: unmounting component on another react DOM')
   }
 
+  const tallyProps = {
+    tally, 
+    horizontal, 
+    showZero, 
+    forceCollapse, 
+    showLabels, 
+    notices, 
+    small, 
+    source: HOST_NAME,
+    campaign, 
+    autologin, 
+    rewardfulID, 
+    isBadge: true,
+    showLogo,
+    showTotal 
+  }
+
+  const sectionTallyProps = {
+    ...tallyProps,
+    tally: sectionTally,
+    horizontal: horizontalSectionTally,
+    chartType
+  }
+
   if (showBothTallies) {
     render(
       (
@@ -191,21 +220,7 @@ export function insertBadge (el, tally, notices, sectionTally) {
               slide={slide}
               notices={notices}
             >
-              <Tally
-                tally={tally}
-                horizontal={horizontal}
-                showZero={showZero}
-                forceCollapse={forceCollapse}
-                showLabels={showLabels}
-                notices={notices}
-                small={small}
-                source={HOST_NAME}
-                campaign={campaign}
-                autologin={autologin}
-                rewardfulID={rewardfulID}
-                isBadge
-                showLogo={showLogo}
-              />
+              <Tally {...tallyProps} />
             </Tooltip>
           </div>
           <div>
@@ -218,21 +233,7 @@ export function insertBadge (el, tally, notices, sectionTally) {
               slide={slide}
               tallyType='sections'
             >
-              <SectionTally
-                tally={sectionTally}
-                horizontal={horizontalSectionTally}
-                showZero={showZero}
-                forceCollapse={forceCollapse}
-                showLabels={showLabels}
-                small={small}
-                source={HOST_NAME}
-                campaign={campaign}
-                autologin={autologin}
-                rewardfulID={rewardfulID}
-                isBadge
-                chartType={chartType}
-                showLogo={false}
-              />
+              <SectionTally {...sectionTallyProps} />
             </Tooltip>
           </div>
         </>
@@ -251,21 +252,7 @@ export function insertBadge (el, tally, notices, sectionTally) {
           slide={slide}
           notices={notices}
         >
-          <Tally
-            tally={tally}
-            horizontal={horizontal}
-            showZero={showZero}
-            forceCollapse={forceCollapse}
-            showLabels={showLabels}
-            notices={notices}
-            small={small}
-            source={HOST_NAME}
-            campaign={campaign}
-            autologin={autologin}
-            rewardfulID={rewardfulID}
-            isBadge
-            showLogo={showLogo}
-          />
+          <Tally {...tallyProps} />
         </Tooltip>
       ),
       el
@@ -282,21 +269,7 @@ export function insertBadge (el, tally, notices, sectionTally) {
           slide={slide}
           tallyType='sections'
         >
-          <SectionTally
-            tally={sectionTally}
-            horizontal={horizontalSectionTally}
-            showZero={showZero}
-            forceCollapse={forceCollapse}
-            showLabels={showLabels}
-            small={small}
-            source={HOST_NAME}
-            campaign={campaign}
-            autologin={autologin}
-            rewardfulID={rewardfulID}
-            isBadge
-            chartType={chartType}
-            showLogo={showLogo}
-          />
+          <SectionTally {...sectionTallyProps} />
         </Tooltip>
       ),
       el

@@ -29,7 +29,7 @@ const Tally = ({
   source, campaign, autologin, rewardfulID,
   tally, forceCollapse, showLabels, notices,
   small = false, horizontal = false, isBadge = false, showZero = true,
-  showLogo = true
+  showLogo = true, showTotal = true
 }) => {
   const params = {
     utm_medium: isBadge ? 'badge' : 'plugin',
@@ -83,7 +83,7 @@ const Tally = ({
           src='https://cdn.scite.ai/assets/images/logo.svg'
         />
       )}
-      <Count type='publications' count={citingPublications} horizontal={horizontal} showLabels={showLabels} small={small} />
+      {showTotal && <Count type='publications' count={citingPublications} horizontal={horizontal} showLabels={showLabels} small={small} />}
       <Count type='supporting' count={supporting} horizontal={horizontal} showLabels={showLabels} small={small} />
       <Count type='mentioning' count={mentioning} horizontal={horizontal} showLabels={showLabels} small={small} />
       <Count type='contrasting' count={contrasting} horizontal={horizontal} showLabels={showLabels} small={small} />
