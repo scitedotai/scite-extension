@@ -7,6 +7,7 @@
     "font-family-no-missing-generic-family-keyword": [true, { "ignoreFontFamilies": ["scite-icons"] }],
     "value-keyword-case": ["lower", {
       "ignoreProperties": ["composes"]
-    }]
+    }],
+    "selector-class-pattern": "^[a-z][a-zA-Z0-9]+$"
   }
 }

@@ -183,20 +183,20 @@ export function insertBadge (el, tally, notices, sectionTally) {
   }
 
   const tallyProps = {
-    tally, 
-    horizontal, 
-    showZero, 
-    forceCollapse, 
-    showLabels, 
-    notices, 
-    small, 
+    tally,
+    horizontal,
+    showZero,
+    forceCollapse,
+    showLabels,
+    notices,
+    small,
     source: HOST_NAME,
-    campaign, 
-    autologin, 
-    rewardfulID, 
+    campaign,
+    autologin,
+    rewardfulID,
     isBadge: true,
     showLogo,
-    showTotal 
+    showTotal
   }
 
   const sectionTallyProps = {

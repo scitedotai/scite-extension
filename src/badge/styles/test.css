@@ -3,7 +3,9 @@
   margin: 0 auto;
 }
 
+/* stylelint-disable */
 :global(.badge-row) {
+/* stylelint-enable */
   display: flex;
   margin-top: 2rem;
 }
