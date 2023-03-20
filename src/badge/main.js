@@ -5,6 +5,7 @@ import SectionTally from '../components/SectionTally'
 import { fetchNotices, fetchTallies, fetchSectionTallies } from './scite'
 import Tooltip from '../components/Tooltip'
 import '../styles/index.css'
+import '../styles/typography.css'
 
 const BATCH_SIZE = 500
 
