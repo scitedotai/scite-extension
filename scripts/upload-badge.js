@@ -6,7 +6,7 @@ const CloudFront = require('aws-sdk/clients/cloudfront')
 
 const TAG = execSync('git describe --abbrev=0').toString().trim()
 const VERSION = TAG.split('-')[0]
-const ENV = TAG.split('-')[1]
+const ENV = TAG.split('-').slice(-1)[0]
 
 const BUCKET = ENV === 'prod' ? 'scitewebassets' : 'scitewebassets-stage'
 const CLOUDFRONT_DISTRIBUTION = ENV === 'prod' ? 'ERIXC9NB9NEX7' : 'EE31527A00YNS'
