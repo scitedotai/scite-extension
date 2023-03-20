@@ -182,6 +182,17 @@ export function insertBadge (el, tally, notices, sectionTally) {
     console.warn('Scite badge: unmounting component on another react DOM')
   }
 
+  const tooltipProps = {
+    doi,
+    tally,
+    showZero,
+    placement,
+    flip,
+    slide,
+    notices,
+    showTotal
+  }
+
   const tallyProps = {
     tally,
     horizontal,
@@ -211,26 +222,13 @@ export function insertBadge (el, tally, notices, sectionTally) {
       (
         <>
           <div style={{ display: 'inline-block', marginBottom: '4px' }}>
-            <Tooltip
-              doi={doi}
-              tally={tally}
-              showZero={showZero}
-              placement={placement}
-              flip={flip}
-              slide={slide}
-              notices={notices}
-            >
+            <Tooltip {...tooltipProps}>
               <Tally {...tallyProps} />
             </Tooltip>
           </div>
           <div>
             <Tooltip
-              doi={doi}
-              tally={sectionTally}
-              showZero={showZero}
-              placement={placement}
-              flip={flip}
-              slide={slide}
+              {...tooltipProps}
               tallyType='sections'
             >
               <SectionTally {...sectionTallyProps} />
@@ -243,15 +241,7 @@ export function insertBadge (el, tally, notices, sectionTally) {
   } else if (tallyShow) {
     render(
       (
-        <Tooltip
-          doi={doi}
-          tally={tally}
-          showZero={showZero}
-          placement={placement}
-          flip={flip}
-          slide={slide}
-          notices={notices}
-        >
+        <Tooltip {...tooltipProps}>
           <Tally {...tallyProps} />
         </Tooltip>
       ),
