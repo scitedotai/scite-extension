@@ -25,11 +25,22 @@ const retractionFilter = status => {
   return false
 }
 
+const isNonZero = ({ tally, notices, showCites }) => {
+  const hasNotices = !!notices?.length
+  const hasCites = tally && (tally.total > 0 || tally.citingPublications > 0)
+
+  if (!showCites) {
+    return hasNotices
+  }
+
+  return hasNotices || hasCites
+}
+
 const Tally = ({
   source, campaign, autologin, rewardfulID,
   tally, forceCollapse, showLabels, notices,
   small = false, horizontal = false, isBadge = false, showZero = true,
-  showLogo = true, showTotal = true
+  showLogo = true, showTotal = true, showCites = true
 }) => {
   const params = {
     utm_medium: isBadge ? 'badge' : 'plugin',
@@ -51,7 +62,7 @@ const Tally = ({
     tally: classNames('scite-tally', styles.tally, {
       [styles.horizontal]: horizontal,
       [styles.small]: small && horizontal,
-      [styles.show]: showZero ? tally : tally && (tally.total > 0 || tally.citingPublications > 0),
+      [styles.show]: showZero ? tally : isNonZero({ tally, notices, showCites }),
       [styles.forceCollapse]: forceCollapse && tally.total === 0 && tally.citingPublications === 0,
       [styles.badgeTally]: isBadge
     })
@@ -83,10 +94,10 @@ const Tally = ({
           src='https://cdn.scite.ai/assets/images/logo.svg'
         />
       )}
-      {showTotal && <Count type='publications' count={citingPublications} horizontal={horizontal} showLabels={showLabels} small={small} />}
-      <Count type='supporting' count={supporting} horizontal={horizontal} showLabels={showLabels} small={small} />
-      <Count type='mentioning' count={mentioning} horizontal={horizontal} showLabels={showLabels} small={small} />
-      <Count type='contrasting' count={contrasting} horizontal={horizontal} showLabels={showLabels} small={small} />
+      {showCites && showTotal && <Count type='publications' count={citingPublications} horizontal={horizontal} showLabels={showLabels} small={small} />}
+      {showCites && <Count type='supporting' count={supporting} horizontal={horizontal} showLabels={showLabels} small={small} />}
+      {showCites && <Count type='mentioning' count={mentioning} horizontal={horizontal} showLabels={showLabels} small={small} />}
+      {showCites && <Count type='contrasting' count={contrasting} horizontal={horizontal} showLabels={showLabels} small={small} />}
       {retractionsCount > 0 && <Count type='retractions' count={retractionsCount} horizontal={horizontal} showLabels={showLabels} small={small} />}
       {noticeCount > 0 && <Count type='notices' count={noticeCount} horizontal={horizontal} showLabels={showLabels} small={small} />}
     </div>
