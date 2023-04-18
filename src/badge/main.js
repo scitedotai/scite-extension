@@ -214,7 +214,7 @@ export function insertBadge (el, tally, notices, sectionTally) {
     isBadge: true,
     showLogo,
     showTotal,
-    showCites: false
+    showCites
   }
 
   const sectionTallyProps = {
