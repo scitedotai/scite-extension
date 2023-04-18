@@ -6,7 +6,7 @@
 :global(.scite-badge .scite-tally) {
   border-radius: 8px;
   border: 1px solid #cfcfcf;
-  min-height: 120px;
+  min-height: 80px;
   box-sizing: border-box;
 }
 

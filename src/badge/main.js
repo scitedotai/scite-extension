@@ -29,6 +29,10 @@ export function getConfig (el) {
     config.sectionTallyShow = data.sectionTallyShow === 'true'
   }
 
+  if (data.showCites) {
+    config.showCites = data.showCites === 'true'
+  }
+
   if (data.showLogo) {
     config.showLogo = data.showLogo === 'true'
   }
@@ -154,6 +158,7 @@ export function insertBadge (el, tally, notices, sectionTally) {
 
   const doi = config.doi
   const showZero = config.showZero || false
+  const showCites = typeof config.showCites === 'boolean' ? config.showCites : true
   const forceCollapse = config.forceCollapse || false
   const horizontal = config.horizontal || false
   const placement = config.placement || 'top'
@@ -208,7 +213,8 @@ export function insertBadge (el, tally, notices, sectionTally) {
     rewardfulID,
     isBadge: true,
     showLogo,
-    showTotal
+    showTotal,
+    showCites
   }
 
   const sectionTallyProps = {
