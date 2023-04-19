@@ -92,7 +92,7 @@ $ git push origin badge-v8.1.0-stage
 To release to prod (e.g.):
 
 ```bash
-$ git tag v1.2.0-prod -m "My cool new version"
+$ git tag badge-v8.1.0-prod -m "My cool new version"
 $ git push origin v1.2.0-prod
 ```
 
