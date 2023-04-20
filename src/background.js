@@ -21,7 +21,7 @@ function onCreated () {
 
 browser.contextMenus.create({
   id: 'scite-citation-search',
-  title: 'Search scite.ai citation statements',
+  title: 'Ask scite.ai assistant',
   contexts: ['selection']
 }, onCreated)
 
@@ -33,7 +33,7 @@ browser.contextMenus.onClicked.addListener(function (info, tab) {
       )
 
       browser.tabs.create({
-        url: `https://scite.ai/search/citations?q=${encodedSelection}&utm_source=generic&utm_medium=plugin&utm_campaign=plugin-citation-search`
+        url: `https://scite.ai/assistant?startTerm=${encodedSelection}&utm_source=generic&utm_medium=plugin&utm_campaign=plugin-citation-search`
       })
     }
   }
