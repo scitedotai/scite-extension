@@ -26,10 +26,10 @@
   "author": "Milo Mordaunt <milo@scite.ai>",
   "license": "MIT",
   "devDependencies": {
-    "@swc/core": "^1.3.41",
-    "@swc/jest": "^0.2.24",
+    "@swc/core": "^1.3.52",
+    "@swc/jest": "^0.2.26",
     "autoprefixer": "^10.4.14",
-    "aws-sdk": "^2.1337.0",
+    "aws-sdk": "^2.1362.0",
     "clean-webpack-plugin": "^4.0.0",
     "concurrently": "^7.6.0",
     "css-loader": "^6.7.3",
@@ -47,10 +47,10 @@
     "stylelint-config-css-modules": "^4.2.0",
     "stylelint-config-standard": "^31.0.0",
     "swc-loader": "^0.2.3",
-    "web-ext": "^7.5.0",
-    "webpack": "^5.76.2",
+    "web-ext": "^7.6.1",
+    "webpack": "^5.80.0",
     "webpack-cli": "^5.0.1",
-    "webpack-dev-server": "^4.12.0",
+    "webpack-dev-server": "^4.13.3",
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
