@@ -284,6 +284,14 @@ async function findDoiFromPDF () {
   }
 }
 
+function findDoiFromWOS () {
+  // span with id FullRTa-DOI
+  const doi = document.querySelector('#FullRTa-DOI')
+  if (doi) {
+    return doi.textContent
+  }
+}
+
 async function findDoi () {
   // we try each of these functions, in order, to get a DOI from the page.
   const doiFinderFunctions = [
@@ -298,7 +306,8 @@ async function findDoi () {
     findDoiFromPsycnet,
     findDoiFromPubmed,
     findDoiFromTitle,
-    findDoiFromHostName
+    findDoiFromHostName,
+    findDoiFromWOS
   ]
 
   for (let i = 0; i < doiFinderFunctions.length; i++) {
