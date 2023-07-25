@@ -1,6 +1,6 @@
 {
   "name": "scite-extension",
-  "version": "1.36.1",
+  "version": "1.36.2",
   "description": "scite allow users to see how a scientific paper has been cited by providing the context of the citation and a classification describing whether it provides supporting or contrasting evidence for the cited claim",
   "main": "index.js",
   "scripts": {
@@ -54,6 +54,7 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
     "classnames": "^2.3.2",
     "jest": "^29.5.0",
     "jest-fetch-mock": "^3.0.3",
