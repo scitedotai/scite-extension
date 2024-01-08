@@ -99,23 +99,23 @@ const Message = ({ className }) => (
   </div>
 )
 
-const TooltipContent = ({ tally, notices, showTotal }) => (
+const TooltipContent = ({ tally, notices, showTotal, sciteBaseUrl }) => (
   <div className={styles.tooltipContent}>
     <img className={styles.logo} src='https://cdn.scite.ai/assets/images/logo.svg' />
     <span className={styles.slogan}>Smart Citations</span>
 
     <Tally tally={tally} notices={notices} showTotal={showTotal} />
-    {tally && <a className={styles.button} href={`https://scite.ai/reports/${tally.doi}`} target='_blank' rel='noopener noreferrer'>View Citations</a>}
+    {tally && <a className={styles.button} href={`${sciteBaseUrl}/reports/${tally.doi}`} target='_blank' rel='noopener noreferrer'>View Citations</a>}
     <Message />
   </div>
 )
 
-const SectionTallyTooltipContent = ({ tally }) => (
+const SectionTallyTooltipContent = ({ tally, sciteBaseUrl }) => (
   <div>
     <img className={styles.logo} src='https://cdn.scite.ai/assets/images/logo.svg' />
     <span className={styles.slogan}>Cited in Sections</span>
     <SectionTally tally={tally} />
-    {tally && <a className={styles.button} href={`https://scite.ai/reports/${tally.doi}`} target='_blank' rel='noopener noreferrer'>View Citations</a>}
+    {tally && <a className={styles.button} href={`${sciteBaseUrl}/reports/${tally.doi}`} target='_blank' rel='noopener noreferrer'>View Citations</a>}
     <Message />
   </div>
 )
@@ -131,7 +131,8 @@ const TooltipPopper = ({
   handleMouseEnter,
   handleMouseLeave,
   tallyType,
-  showTotal
+  showTotal,
+  sciteBaseUrl
 }) => {
   let updatePosition
   // XXX: Hack to fix positioning on first load, sorry
@@ -142,7 +143,7 @@ const TooltipPopper = ({
   }, [tally])
 
   const handleClickTooltip = () => {
-    window.open(`https://scite.ai/reports/${doi}`)
+    window.open(`${sciteBaseUrl}/reports/${doi}`)
   }
 
   return (
@@ -189,8 +190,8 @@ const TooltipPopper = ({
             onMouseLeave={handleMouseLeave}
             onClick={handleClickTooltip}
           >
-            {tallyType === 'smart_citations' && (<TooltipContent tally={tally} notices={notices} showTotal={showTotal} />)}
-            {tallyType === 'sections' && (<SectionTallyTooltipContent tally={tally} />)}
+            {tallyType === 'smart_citations' && (<TooltipContent tally={tally} notices={notices} showTotal={showTotal} sciteBaseUrl={sciteBaseUrl} />)}
+            {tallyType === 'sections' && (<SectionTallyTooltipContent tally={tally} sciteBaseUrl={sciteBaseUrl} />)}
           </div>
         )
       }}
@@ -208,11 +209,14 @@ export const Tooltip = ({
   slide = 0,
   children,
   tallyType = 'smart_citations',
-  showTotal = true
+  showTotal = true,
+  useTestEnv = false
 }) => {
   const [showTooltip, setShowTooltip] = useState(false)
   let hideTooltipIntvl
   let showTooltipIntvl
+
+  const sciteBaseUrl = useTestEnv ? 'https://staging.scite.ai' : 'https://scite.ai'
 
   const handleMouseEnter = () => {
     if (placement === 'none') {
@@ -270,6 +274,7 @@ export const Tooltip = ({
         handleMouseLeave={handleMouseLeave}
         tallyType={tallyType}
         showTotal={showTotal}
+        sciteBaseUrl={sciteBaseUrl}
       />
     </Manager>
   )

@@ -97,6 +97,10 @@ export function getConfig (el) {
     config.showTotal = data.showTotal === 'true'
   }
 
+  if (data.useTestEnv) {
+    config.useTestEnv = data.useTestEnv === 'true'
+  }
+
   return config
 }
 
