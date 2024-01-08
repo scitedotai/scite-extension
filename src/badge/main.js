@@ -174,6 +174,7 @@ export function insertBadge (el, tally, notices, sectionTally) {
   const rewardfulID = config.rewardfulID || undefined
   const showLogo = config.showLogo || true
   const showTotal = typeof config.showTotal === 'boolean' ? config.showTotal : true
+  const useTestEnv = config.useTestEnv || false
 
   // Section Tally related values
   const chartType = config.chartType || null
@@ -200,7 +201,8 @@ export function insertBadge (el, tally, notices, sectionTally) {
     flip,
     slide,
     notices,
-    showTotal
+    showTotal,
+    useTestEnv
   }
 
   const tallyProps = {
@@ -218,7 +220,8 @@ export function insertBadge (el, tally, notices, sectionTally) {
     isBadge: true,
     showLogo,
     showTotal,
-    showCites
+    showCites,
+    useTestEnv
   }
 
   const sectionTallyProps = {
@@ -269,6 +272,7 @@ export function insertBadge (el, tally, notices, sectionTally) {
           flip={flip}
           slide={slide}
           tallyType='sections'
+          useTestEnv={useTestEnv}
         >
           <SectionTally {...sectionTallyProps} />
         </Tooltip>
