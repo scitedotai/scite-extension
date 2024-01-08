@@ -98,7 +98,7 @@ export function getConfig (el) {
   }
 
   if (data.useTestEnv) {
-    config.useTestEnv = data.useTestEnv == 'true'
+    config.useTestEnv = data.useTestEnv === 'true'
   }
 
   return config
