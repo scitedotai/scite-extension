@@ -40,7 +40,7 @@ const Tally = ({
   source, campaign, autologin, rewardfulID,
   tally, forceCollapse, showLabels, notices,
   small = false, horizontal = false, isBadge = false, showZero = true,
-  showLogo = true, showTotal = true, showCites = true
+  showLogo = true, showTotal = true, showCites = true, useTestEnv = false
 }) => {
   const params = {
     utm_medium: isBadge ? 'badge' : 'plugin',
@@ -55,6 +55,8 @@ const Tally = ({
   if (rewardfulID) {
     params.via = rewardfulID
   }
+
+  const sciteBaseUrl = useTestEnv ? 'https://staging.scite.ai' : 'https://scite.ai'
 
   const queryString = qs.stringify(params)
 
@@ -78,7 +80,7 @@ const Tally = ({
   const noticeCount = editorialNotices.length.toLocaleString() || 0
 
   const handleClick = () => {
-    window.open(`https://scite.ai/reports/${tally && tally.doi}?${queryString}`)
+    window.open(`${sciteBaseUrl}/reports/${tally && tally.doi}?${queryString}`)
   }
 
   return (

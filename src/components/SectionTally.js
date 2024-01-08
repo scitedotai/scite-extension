@@ -13,7 +13,7 @@ const SectionTally = ({
   source, campaign, autologin, rewardfulID,
   tally, forceCollapse, showLabels,
   small = false, horizontal = false, isBadge = false, showZero = true,
-  chartType = null, showLogo = true
+  chartType = null, showLogo = true, useTestEnv = false
 }) => {
   const params = {
     utm_medium: isBadge ? 'badge' : 'plugin',
@@ -28,6 +28,8 @@ const SectionTally = ({
   if (rewardfulID) {
     params.via = rewardfulID
   }
+
+  const sciteBaseUrl = useTestEnv ? 'https://staging.scite.ai' : 'https://scite.ai'
 
   const queryString = qs.stringify(params)
 
@@ -48,7 +50,7 @@ const SectionTally = ({
   const discussion = (tally && tally.discussion && tally.discussion.toLocaleString()) || 0
   const other = (tally && tally.other && tally.other.toLocaleString()) || 0
 
-  const reportLink = `https://scite.ai/reports/${tally && tally.doi}?${queryString}`
+  const reportLink = `${sciteBaseUrl}/reports/${tally && tally.doi}?${queryString}`
   const handleClick = () => {
     window.open(reportLink)
   }
