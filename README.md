@@ -53,6 +53,8 @@ To use simply include the Javascript bundle on your page. All elements with the 
 
 `chart-type`: What type of chart you want to show for the Section Tally widget. Must be one of `bar`, `pie`, `donut`. Defaults to `null`.
 
+`use-test-env`: Set to `'true'` if you want to point to `staging.scite.ai`. Defaults to false. This should never be used in production.
+
 To pull the target DOI from a meta tag in the document rather than setting inline, you can use the syntax `meta:my_tag_name`. For example:
 
 ```
