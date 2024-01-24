@@ -248,6 +248,8 @@ export const Tooltip = ({
     return children
   }
 
+  // This is a hack because section tallies don't return citingPublications
+  const hasZeroCites = tallyType === 'smart_citations' ? (tally && tally.total === 0 && tally.citingPublications === 0) : tally && tally.total === 0
   return (
     <Manager>
       <Reference>
@@ -263,7 +265,7 @@ export const Tooltip = ({
         )}
       </Reference>
       <TooltipPopper
-        show={showTooltip && !(tally && tally.total === 0 && !showZero)}
+        show={showTooltip && !(hasZeroCites && !showZero)}
         doi={doi}
         tally={tally}
         notices={notices}
