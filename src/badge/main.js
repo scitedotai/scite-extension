@@ -101,6 +101,10 @@ export function getConfig (el) {
     config.useTestEnv = data.useTestEnv === 'true'
   }
 
+  if (data.forceShow) {
+    config.forceShow = data.forceShow === 'true'
+  }
+
   return config
 }
 
@@ -175,6 +179,7 @@ export function insertBadge (el, tally, notices, sectionTally) {
   const showLogo = config.showLogo || true
   const showTotal = typeof config.showTotal === 'boolean' ? config.showTotal : true
   const useTestEnv = config.useTestEnv || false
+  const forceShow = config.forceShow
 
   // Section Tally related values
   const chartType = config.chartType || null
@@ -202,7 +207,8 @@ export function insertBadge (el, tally, notices, sectionTally) {
     slide,
     notices,
     showTotal,
-    useTestEnv
+    useTestEnv,
+    forceShow
   }
 
   const tallyProps = {
