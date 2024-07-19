@@ -65,7 +65,7 @@ const rows = [
   }
 ]
 
-const Badge = ({ doi, layout, showLabels, forceCollapse, placement, small, autologin, rewardfulID, chartType, tallyShow = true, sectionTallyShow = false, showLogo = true, sectionTallyLayout }) => (
+const Badge = ({ doi, layout, showLabels, forceCollapse, placement, small, autologin, rewardfulID, chartType, tallyShow = true, sectionTallyShow = false, showLogo = true, sectionTallyLayout, forceShow = false }) => (
   <div
     className='scite-badge'
     data-doi={doi}
@@ -82,10 +82,11 @@ const Badge = ({ doi, layout, showLabels, forceCollapse, placement, small, autol
     data-tally-show={tallyShow}
     data-section-tally-show={sectionTallyShow}
     data-section-tally-layout={sectionTallyLayout}
+    data-force-show={forceShow}
   />
 )
 
-const Row = ({ doi, layout, showLabels, forceCollapse, placement, small, autologin, chartType, tallyShow = true, sectionTallyShow = false, showLogo = true, sectionTallyLayout }) => (
+const Row = ({ doi, layout, showLabels, forceCollapse, placement, small, autologin, chartType, tallyShow = true, sectionTallyShow = false, showLogo = true, sectionTallyLayout, forceShow = false }) => (
   <div className='badge-row'>
     <p className='paper'>
       etsi vereor, iudices, ne turpe sit pro fortissimo viro dicere incipientem timere minimeque deceat, cum T. Annius ipse magis de rei publicae salute quam de sua perturbetur1, me ad eius causam parem animi magnitudinem adferre non posse, tamen haec novi iudici nova forma terret oculos qui, quocumque inciderunt, veterem consuetudinem fori et pristinum morem iudiciorum requirunt.
@@ -103,6 +104,7 @@ const Row = ({ doi, layout, showLabels, forceCollapse, placement, small, autolog
       chartType={chartType}
       showLogo={showLogo}
       sectionTallyLayout={sectionTallyLayout}
+      forceShow={forceShow}
     />
   </div>
 )

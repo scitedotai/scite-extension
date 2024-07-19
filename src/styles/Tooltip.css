@@ -201,6 +201,10 @@
   color: white;
 }
 
+.button:active {
+  color: white !important;
+}
+
 .logo {
   display: block;
   width: 5em;
