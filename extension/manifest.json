@@ -1,8 +1,8 @@
 {
   "name": "Scite",
   "author": "Scite Inc.",
-  "version": "1.36.2",
-  "manifest_version": 2,
+  "version": "1.36.3",
+  "manifest_version": 3,
   "description": "scite allows users to see how a publication has been cited, providing the citation context and classification",
   "icons": {
     "16": "images/icons/16.png",
@@ -27,8 +27,8 @@
       ]
     }
   ],
-  "background" : {
-    "scripts" : ["background.js"]
+  "background": {
+    "service_worker": "background.js"
   },
   "externally_connectable": {
     "matches": [
@@ -37,11 +37,21 @@
     ]
   },
   "permissions": [
-    "https://api.scite.ai/*",
     "contextMenus",
     "storage"
   ],
   "web_accessible_resources": [
-    "fonts/*"
+    {
+      "resources": [
+        "fonts/*"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "content_security_policy": {},
+  "host_permissions": [
+    "https://api.scite.ai/*"
   ]
 }
