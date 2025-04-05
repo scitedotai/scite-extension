@@ -6,7 +6,6 @@ const rows = [
   {
     // TODO: create new view for badge
     doi: '10.1186/ar2146',
-    // layout: 'vertical',
     showLabels: true,
     placement: 'none',
     verticalCompact: true
