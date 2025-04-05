@@ -3,12 +3,13 @@ import classNames from 'classnames'
 import Icon from './Icon'
 import styles from '../styles/Count.css'
 
-export const Count = ({ className, horizontal, type, count, showLabels = false, small = false }) => (
+export const Count = ({ className, horizontal, type, count, showLabels = false, small = false, verticalCompact = false }) => (
   <div
     className={
       classNames(styles.count, className, {
         [styles.horizontal]: horizontal,
-        [styles.small]: small
+        [styles.small]: small,
+        [styles.verticalContainer]: verticalCompact
       })
     }
   >
@@ -22,16 +23,35 @@ export const Count = ({ className, horizontal, type, count, showLabels = false, 
     <div
       className={
         classNames(styles.iconCountWrapper, {
-          [styles.expandedIconCount]: !showLabels
+          [styles.expandedIconCount]: !showLabels,
+          [styles.vertical]: verticalCompact
         })
       }
     >
-      <Icon type={type} small />
-      <span className={classNames(styles.number, {
-        [styles.smallNumber]: small
-      })}
-      >{count}
-      </span>
+      {!verticalCompact && (
+        <>        
+          <Icon type={type} small />
+          <span className={classNames(styles.number, {
+            [styles.smallNumber]: small
+          })}
+          >{count}
+          </span>
+        </>
+      )}
+
+      {verticalCompact && (
+        <div className={styles.countContainer}>
+          <div className={styles.iconContainer}>
+            <Icon type={type} isVerticalCompact={verticalCompact} />
+          </div>
+
+          <div className={styles.numberContainer}>
+            <span className={classNames(styles.number, styles.largueNumber)}>
+              {count}
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   </div>
 )
