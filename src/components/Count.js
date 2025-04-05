@@ -29,7 +29,7 @@ export const Count = ({ className, horizontal, type, count, showLabels = false, 
       }
     >
       {!verticalCompact && (
-        <>        
+        <>
           <Icon type={type} small />
           <span className={classNames(styles.number, {
             [styles.smallNumber]: small

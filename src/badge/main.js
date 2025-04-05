@@ -234,11 +234,11 @@ export function insertBadge (el, tally, notices, sectionTally) {
     showTotal,
     showCites,
     useTestEnv,
-    verticalCompact,
+    verticalCompact
   }
 
   if (tallyProps.verticalCompact) {
-    console.log({tallyProps})
+    console.log({ tallyProps })
   }
 
   const sectionTallyProps = {

@@ -99,20 +99,20 @@ const Tally = ({
         />
       )}
       {showCites && showTotal && <Count type='publications' count={citingPublications} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
-      
-      {verticalCompact && <div className={styles.separator} /> }
+
+      {verticalCompact && <div className={styles.separator} />}
       {showCites && <Count type='supporting' count={supporting} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
-      
-      {verticalCompact && <div className={styles.separator} /> }
+
+      {verticalCompact && <div className={styles.separator} />}
       {showCites && <Count type='mentioning' count={mentioning} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
-      
-      {verticalCompact && <div className={styles.separator} /> }
+
+      {verticalCompact && <div className={styles.separator} />}
       {showCites && <Count type='contrasting' count={contrasting} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
-      
-      {(verticalCompact && retractionsCount > 0) && <div className={styles.separator} /> }
+
+      {(verticalCompact && retractionsCount > 0) && <div className={styles.separator} />}
       {retractionsCount > 0 && <Count type='retractions' count={retractionsCount} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
-      
-      {(verticalCompact && noticeCount > 0) && <div className={styles.separator} /> }
+
+      {(verticalCompact && noticeCount > 0) && <div className={styles.separator} />}
       {noticeCount > 0 && <Count type='notices' count={noticeCount} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
     </div>
   )

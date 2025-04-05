@@ -4,6 +4,14 @@ import './styles/test.css'
 
 const rows = [
   {
+    // TODO: create new view for badge
+    doi: '10.1186/ar2146',
+    // layout: 'vertical',
+    showLabels: true,
+    placement: 'none',
+    verticalCompact: true
+  },
+  {
     doi: '10.1038/nature07404',
     layout: 'vertical',
     showLabels: true,
@@ -65,7 +73,7 @@ const rows = [
   }
 ]
 
-const Badge = ({ doi, layout, showLabels, forceCollapse, placement, small, autologin, rewardfulID, chartType, tallyShow = true, sectionTallyShow = false, showLogo = true, sectionTallyLayout, forceShow = false }) => (
+const Badge = ({ doi, layout, showLabels, forceCollapse, placement, small, autologin, rewardfulID, chartType, tallyShow = true, sectionTallyShow = false, showLogo = true, sectionTallyLayout, forceShow = false, verticalCompact = false }) => (
   <div
     className='scite-badge'
     data-doi={doi}
@@ -83,10 +91,11 @@ const Badge = ({ doi, layout, showLabels, forceCollapse, placement, small, autol
     data-section-tally-show={sectionTallyShow}
     data-section-tally-layout={sectionTallyLayout}
     data-force-show={forceShow}
+    data-vertical-compact={verticalCompact}
   />
 )
 
-const Row = ({ doi, layout, showLabels, forceCollapse, placement, small, autologin, chartType, tallyShow = true, sectionTallyShow = false, showLogo = true, sectionTallyLayout, forceShow = false }) => (
+const Row = ({ doi, layout, showLabels, forceCollapse, placement, small, autologin, chartType, tallyShow = true, sectionTallyShow = false, showLogo = true, sectionTallyLayout, forceShow = false, verticalCompact = false }) => (
   <div className='badge-row'>
     <p className='paper'>
       etsi vereor, iudices, ne turpe sit pro fortissimo viro dicere incipientem timere minimeque deceat, cum T. Annius ipse magis de rei publicae salute quam de sua perturbetur1, me ad eius causam parem animi magnitudinem adferre non posse, tamen haec novi iudici nova forma terret oculos qui, quocumque inciderunt, veterem consuetudinem fori et pristinum morem iudiciorum requirunt.
@@ -105,6 +114,7 @@ const Row = ({ doi, layout, showLabels, forceCollapse, placement, small, autolog
       showLogo={showLogo}
       sectionTallyLayout={sectionTallyLayout}
       forceShow={forceShow}
+      verticalCompact={verticalCompact}
     />
   </div>
 )
@@ -117,11 +127,15 @@ const App = () => (
     <div className='scite-badge-config' data-target-el='.special-container' data-doi='meta:article_doi' data-tooltip-placement='right' />
 
     <div className='badges'>
-      {
+      {/* {
         rows.map((props, id) => (
           <Row key={id} {...props} />
         ))
-      }
+      } */}
+
+      <Row {...rows[0]} key='sam-testing' />
+
+      <hr />
     </div>
 
     <div className='narrow'>
