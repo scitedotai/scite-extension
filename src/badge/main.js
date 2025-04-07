@@ -105,6 +105,14 @@ export function getConfig (el) {
     config.forceShow = data.forceShow === 'true'
   }
 
+  if (data.hideRetractions) {
+    config.hideRetractions = data.hideRetractions === 'true'
+  }
+
+  if (data.hideNotices) {
+    config.hideNotices = data.hideNotices === 'true'
+  }
+
   if (data.verticalCompact && data.verticalCompact === 'true') {
     config.verticalCompact = true
     config.showLogo = false
@@ -186,6 +194,8 @@ export function insertBadge (el, tally, notices, sectionTally) {
   const useTestEnv = config.useTestEnv || false
   const forceShow = config.forceShow
   const verticalCompact = config.verticalCompact || false
+  const hideRetractions = config.hideRetractions || false
+  const hideNotices = config.hideNotices || false
 
   // Section Tally related values
   const chartType = config.chartType || null
@@ -234,11 +244,9 @@ export function insertBadge (el, tally, notices, sectionTally) {
     showTotal,
     showCites,
     useTestEnv,
-    verticalCompact
-  }
-
-  if (tallyProps.verticalCompact) {
-    console.log({ tallyProps })
+    verticalCompact,
+    hideRetractions,
+    hideNotices
   }
 
   const sectionTallyProps = {

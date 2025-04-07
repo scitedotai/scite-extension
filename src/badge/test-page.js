@@ -4,13 +4,6 @@ import './styles/test.css'
 
 const rows = [
   {
-    // TODO: create new view for badge
-    doi: '10.1186/ar2146',
-    showLabels: true,
-    placement: 'none',
-    verticalCompact: true
-  },
-  {
     doi: '10.1038/nature07404',
     layout: 'vertical',
     showLabels: true,
@@ -69,6 +62,11 @@ const rows = [
     layout: 'vertical',
     placement: 'left',
     autologin: 'azure'
+  },
+  {
+    doi: '10.1038/nature07404',
+    placement: 'left',
+    verticalCompact: true
   }
 ]
 
@@ -126,15 +124,27 @@ const App = () => (
     <div className='scite-badge-config' data-target-el='.special-container' data-doi='meta:article_doi' data-tooltip-placement='right' />
 
     <div className='badges'>
-      {/* {
+      {
         rows.map((props, id) => (
           <Row key={id} {...props} />
         ))
-      } */}
+      }
 
-      <Row {...rows[0]} key='sam-testing' />
+      {/* Vertical Compact */}
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div
+          className='scite-badge'
+          data-doi='10.1038/nature07404'
+          data-tooltip-placement='none'
+          data-vertical-compact='true'
+          data-hide-retractions='true'
+          data-hide-notices='true'
+        />
 
-      <hr />
+        <p className='paper'>
+          etsi vereor, iudices, ne turpe sit pro fortissimo viro dicere incipientem timere minimeque deceat, cum T. Annius ipse magis de rei publicae salute quam de sua perturbetur1, me ad eius causam parem animi magnitudinem adferre non posse, tamen haec novi iudici nova forma terret oculos qui, quocumque inciderunt, veterem consuetudinem fori et pristinum morem iudiciorum requirunt.
+        </p>
+      </div>
     </div>
 
     <div className='narrow'>
