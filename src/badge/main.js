@@ -197,13 +197,6 @@ export function insertBadge (el, tally, notices, sectionTally) {
   const showRetractions = typeof config.showRetractions === 'boolean' ? config.showRetractions : true
   const showNotices = typeof config.showNotices === 'boolean' ? config.showNotices : true
 
-  if (verticalCompact) {
-    console.log({
-      showRetractions,
-      showNotices
-    })
-  }
-
   // Section Tally related values
   const chartType = config.chartType || null
   const horizontalSectionTally = config.horizontalSectionTally
