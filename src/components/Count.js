@@ -46,7 +46,10 @@ export const Count = ({ className, horizontal, type, count, showLabels = false, 
           </div>
 
           <div className={styles.numberContainer}>
-            <span className={classNames(styles.number, styles.largueNumber)}>
+            <span className={classNames(styles.number, styles.largueNumber,
+              { [styles.bigNumber]: Number(count) > 1000 }
+            )}
+            >
               {count}
             </span>
           </div>

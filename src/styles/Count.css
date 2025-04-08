@@ -100,12 +100,20 @@
 
 .numberContainer > .number {
   margin: 0;
+  font-size: 14px;
 }
 
 .largeNumber {
   color: #000;
   font-style: normal;
   font-weight: 400;
-  line-height: normal;
-  letter-spacing: 0.21px;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 1.5%;
+  vertical-align: bottom;
+}
+
+.bigNumber {
+  font-size: 12px !important;
+  padding: 0 2px;
 }
