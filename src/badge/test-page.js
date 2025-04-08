@@ -65,12 +65,19 @@ const rows = [
   },
   {
     doi: '10.1038/nature07404',
-    placement: 'left',
-    verticalCompact: true
+    verticalCompact: true,
+    placement: 'left'
+  },
+  {
+    doi: '10.1038/nature07404',
+    verticalCompact: true,
+    hideRetractions: true,
+    hideNotices: true,
+    placement: 'none'
   }
 ]
 
-const Badge = ({ doi, layout, showLabels, forceCollapse, placement, small, autologin, rewardfulID, chartType, tallyShow = true, sectionTallyShow = false, showLogo = true, sectionTallyLayout, forceShow = false, verticalCompact = false }) => (
+const Badge = ({ doi, layout, showLabels, forceCollapse, placement, small, autologin, rewardfulID, chartType, tallyShow = true, sectionTallyShow = false, showLogo = true, sectionTallyLayout, forceShow = false, verticalCompact = false, hideRetractions = false, hideNotices = false }) => (
   <div
     className='scite-badge'
     data-doi={doi}
@@ -89,10 +96,12 @@ const Badge = ({ doi, layout, showLabels, forceCollapse, placement, small, autol
     data-section-tally-layout={sectionTallyLayout}
     data-force-show={forceShow}
     data-vertical-compact={verticalCompact}
+    data-hide-retractions={hideRetractions}
+    data-hide-notices={hideNotices}
   />
 )
 
-const Row = ({ doi, layout, showLabels, forceCollapse, placement, small, autologin, chartType, tallyShow = true, sectionTallyShow = false, showLogo = true, sectionTallyLayout, forceShow = false, verticalCompact = false }) => (
+const Row = ({ doi, layout, showLabels, forceCollapse, placement, small, autologin, chartType, tallyShow = true, sectionTallyShow = false, showLogo = true, sectionTallyLayout, forceShow = false, verticalCompact = false, hideRetractions = false, hideNotices = false }) => (
   <div className='badge-row'>
     <p className='paper'>
       etsi vereor, iudices, ne turpe sit pro fortissimo viro dicere incipientem timere minimeque deceat, cum T. Annius ipse magis de rei publicae salute quam de sua perturbetur1, me ad eius causam parem animi magnitudinem adferre non posse, tamen haec novi iudici nova forma terret oculos qui, quocumque inciderunt, veterem consuetudinem fori et pristinum morem iudiciorum requirunt.
@@ -112,6 +121,8 @@ const Row = ({ doi, layout, showLabels, forceCollapse, placement, small, autolog
       sectionTallyLayout={sectionTallyLayout}
       forceShow={forceShow}
       verticalCompact={verticalCompact}
+      hideRetractions={hideRetractions}
+      hideNotices={hideNotices}
     />
   </div>
 )
