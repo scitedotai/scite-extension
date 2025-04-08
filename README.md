@@ -59,9 +59,9 @@ To use simply include the Javascript bundle on your page. All elements with the 
 
 `vertical-compact`: Shows the badge in vertical format without labels, only icons and numbers.
 
-`hide-retractions`: Force to hide retractions data.
+`show-retractions`: Whether to show the retractions data (default: `True`).
 
-`hide-notices`: Force to hide notices data.
+`show-notices`: Whether to show the notices data (default: `True`).
 
 To pull the target DOI from a meta tag in the document rather than setting inline, you can use the syntax `meta:my_tag_name`. For example:
 

@@ -42,8 +42,8 @@ const Tally = ({
   small = false, horizontal = false, isBadge = false, showZero = true,
   showLogo = true, showTotal = true, showCites = true, useTestEnv = false,
   verticalCompact = false,
-  hideRetractions = false,
-  hideNotices = false
+  showRetractions = true,
+  showNotices = true
 }) => {
   const params = {
     utm_medium: isBadge ? 'badge' : 'plugin',
@@ -111,11 +111,11 @@ const Tally = ({
       {verticalCompact && <div className={styles.separator} />}
       {showCites && <Count type='contrasting' count={contrasting} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
 
-      {(verticalCompact && retractionsCount > 0 && !hideRetractions) && <div className={styles.separator} />}
-      {(retractionsCount > 0 && !hideRetractions) && <Count type='retractions' count={retractionsCount} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
+      {(verticalCompact && retractionsCount > 0 && showRetractions) && <div className={styles.separator} />}
+      {(retractionsCount > 0 && showRetractions) && <Count type='retractions' count={retractionsCount} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
 
-      {(verticalCompact && noticeCount > 0 && !hideNotices) && <div className={styles.separator} />}
-      {(noticeCount > 0 && !hideNotices) && <Count type='notices' count={noticeCount} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
+      {(verticalCompact && noticeCount > 0 && showNotices) && <div className={styles.separator} />}
+      {(noticeCount > 0 && showNotices) && <Count type='notices' count={noticeCount} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
     </div>
   )
 }
