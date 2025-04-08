@@ -62,10 +62,22 @@ const rows = [
     layout: 'vertical',
     placement: 'left',
     autologin: 'azure'
+  },
+  {
+    doi: '10.1038/nature07404',
+    verticalCompact: true,
+    placement: 'left'
+  },
+  {
+    doi: '10.1038/nature07404',
+    verticalCompact: true,
+    showRetractions: true,
+    showNotices: false,
+    placement: 'none'
   }
 ]
 
-const Badge = ({ doi, layout, showLabels, forceCollapse, placement, small, autologin, rewardfulID, chartType, tallyShow = true, sectionTallyShow = false, showLogo = true, sectionTallyLayout, forceShow = false }) => (
+const Badge = ({ doi, layout, showLabels, forceCollapse, placement, small, autologin, rewardfulID, chartType, tallyShow = true, sectionTallyShow = false, showLogo = true, sectionTallyLayout, forceShow = false, verticalCompact = false, showRetractions = true, showNotices = true }) => (
   <div
     className='scite-badge'
     data-doi={doi}
@@ -83,10 +95,13 @@ const Badge = ({ doi, layout, showLabels, forceCollapse, placement, small, autol
     data-section-tally-show={sectionTallyShow}
     data-section-tally-layout={sectionTallyLayout}
     data-force-show={forceShow}
+    data-vertical-compact={verticalCompact}
+    data-show-retractions={showRetractions}
+    data-show-notices={showNotices}
   />
 )
 
-const Row = ({ doi, layout, showLabels, forceCollapse, placement, small, autologin, chartType, tallyShow = true, sectionTallyShow = false, showLogo = true, sectionTallyLayout, forceShow = false }) => (
+const Row = ({ doi, layout, showLabels, forceCollapse, placement, small, autologin, chartType, tallyShow = true, sectionTallyShow = false, showLogo = true, sectionTallyLayout, forceShow = false, verticalCompact = false, showRetractions = true, showNotices = true }) => (
   <div className='badge-row'>
     <p className='paper'>
       etsi vereor, iudices, ne turpe sit pro fortissimo viro dicere incipientem timere minimeque deceat, cum T. Annius ipse magis de rei publicae salute quam de sua perturbetur1, me ad eius causam parem animi magnitudinem adferre non posse, tamen haec novi iudici nova forma terret oculos qui, quocumque inciderunt, veterem consuetudinem fori et pristinum morem iudiciorum requirunt.
@@ -105,6 +120,9 @@ const Row = ({ doi, layout, showLabels, forceCollapse, placement, small, autolog
       showLogo={showLogo}
       sectionTallyLayout={sectionTallyLayout}
       forceShow={forceShow}
+      verticalCompact={verticalCompact}
+      showRetractions={showRetractions}
+      showNotices={showNotices}
     />
   </div>
 )
@@ -122,6 +140,22 @@ const App = () => (
           <Row key={id} {...props} />
         ))
       }
+
+      {/* Vertical Compact */}
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div
+          className='scite-badge'
+          data-doi='10.1038/nature07404'
+          data-tooltip-placement='none'
+          data-vertical-compact='true'
+          data-show-retractions='true'
+          data-show-notices='false'
+        />
+
+        <p className='paper'>
+          etsi vereor, iudices, ne turpe sit pro fortissimo viro dicere incipientem timere minimeque deceat, cum T. Annius ipse magis de rei publicae salute quam de sua perturbetur1, me ad eius causam parem animi magnitudinem adferre non posse, tamen haec novi iudici nova forma terret oculos qui, quocumque inciderunt, veterem consuetudinem fori et pristinum morem iudiciorum requirunt.
+        </p>
+      </div>
     </div>
 
     <div className='narrow'>

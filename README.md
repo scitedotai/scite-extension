@@ -57,6 +57,12 @@ To use simply include the Javascript bundle on your page. All elements with the 
 
 `force-show`: Force showing the tooltip which can be used if you are trying to implement accessability concerns such as show with keyboard. (You must put tab-index="0" on the badge div to have it selectable by keyboard)
 
+`vertical-compact`: Shows the badge in vertical format without labels, only icons and numbers.
+
+`show-retractions`: Whether to show the retractions data (default: `True`).
+
+`show-notices`: Whether to show the notices data (default: `True`).
+
 To pull the target DOI from a meta tag in the document rather than setting inline, you can use the syntax `meta:my_tag_name`. For example:
 
 ```

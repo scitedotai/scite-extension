@@ -65,3 +65,21 @@
 .forceCollapse {
   display: none;
 }
+
+.verticalTally {
+  display: flex;
+  width: 32px;
+  padding: 5px 4px;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  border-radius: 5px;
+  border: 1px solid #BFBFBF;
+  background: #FFF;
+}
+
+.separator {
+  width: 23px;
+  height: 1px;
+  background: #BFBFBF;
+}
