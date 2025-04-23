@@ -68,18 +68,83 @@
 
 .verticalTally {
   display: flex;
-  width: 32px;
+  /* width: 32px; */
   padding: 5px 4px;
   flex-direction: column;
   align-items: center;
   gap: 3px;
   border-radius: 5px;
   border: 1px solid #BFBFBF;
-  background: #FFF;
+  background: red;
 }
 
 .separator {
   width: 23px;
   height: 1px;
   background: #BFBFBF;
+}
+
+.aiBorder {
+  border: unset !important;
+  background: radial-gradient(circle at 100% 100%, #ffffff 0, #ffffff 3px, transparent 3px) 0% 0%/5px 5px no-repeat,
+            radial-gradient(circle at 0 100%, #ffffff 0, #ffffff 3px, transparent 3px) 100% 0%/5px 5px no-repeat,
+            radial-gradient(circle at 100% 0, #ffffff 0, #ffffff 3px, transparent 3px) 0% 100%/5px 5px no-repeat,
+            radial-gradient(circle at 0 0, #ffffff 0, #ffffff 3px, transparent 3px) 100% 100%/5px 5px no-repeat,
+            linear-gradient(#ffffff, #ffffff) 50% 50%/calc(100% - 4px) calc(100% - 10px) no-repeat,
+            linear-gradient(#ffffff, #ffffff) 50% 50%/calc(100% - 10px) calc(100% - 4px) no-repeat,
+            linear-gradient(0deg, #1749DB 0%, #aac5ff 25%, #eee1dc 50%, #e4b08d 75%, #ffe1ab 100%);
+  border-radius: 5px !important;
+  padding: 6px;
+  box-sizing: border-box;
+  background-repeat: no-repeat;
+  background-size:
+    5px 5px,
+    5px 5px,
+    5px 5px,
+    5px 5px,
+    calc(100% - 4px) calc(100% - 10px),
+    calc(100% - 10px) calc(100% - 4px),
+    300% 300%; /* más grande para que el movimiento sea visible */
+  background-position:
+    0% 0%,
+    100% 0%,
+    0% 100%,
+    100% 100%,
+    50% 50%,
+    50% 50%,
+    0% 0%; /* este es el que vamos a animar */
+  animation: moverGradiente 3s ease-in infinite;
+}
+
+@keyframes moverGradiente {
+  0% {
+    background-position:
+      0% 0%,
+      100% 0%,
+      0% 100%,
+      100% 100%,
+      50% 50%,
+      50% 50%,
+      0% 0%;
+  }
+  50% {
+    background-position:
+      0% 0%,
+      100% 0%,
+      0% 100%,
+      100% 100%,
+      50% 50%,
+      50% 50%,
+      100% 100%;
+  }
+  100% {
+    background-position:
+      0% 0%,
+      100% 0%,
+      0% 100%,
+      100% 100%,
+      50% 50%,
+      50% 50%,
+      0% 0%;
+  }
 }

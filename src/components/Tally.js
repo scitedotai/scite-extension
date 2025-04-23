@@ -89,7 +89,7 @@ const Tally = ({
 
   return (
     <div
-      className={classes.tally}
+      className={classNames(classes.tally, {[styles.aiBorder]: true})}
       onClick={handleClick}
     >
       {(!horizontal && showLogo && !verticalCompact) && (
