@@ -71,7 +71,14 @@ const rows = [
   {
     doi: '10.1038/nature07404',
     verticalCompact: true,
-    showRetractions: true,
+    animatedBorder: true,
+    placement: 'none'
+  },
+  {
+    doi: '10.1038/nature07404',
+    verticalCompact: true,
+    animatedBorder: true,
+    showRetractions: false,
     showNotices: false,
     placement: 'none'
   }

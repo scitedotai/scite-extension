@@ -68,14 +68,12 @@
 
 .verticalTally {
   display: flex;
-  /* width: 32px; */
   padding: 5px 4px;
   flex-direction: column;
   align-items: center;
   gap: 3px;
   border-radius: 5px;
-  border: 1px solid #BFBFBF;
-  background: red;
+  /* border: 1px solid #BFBFBF; */
 }
 
 .separator {
@@ -84,67 +82,41 @@
   background: #BFBFBF;
 }
 
-.aiBorder {
-  border: unset !important;
-  background: radial-gradient(circle at 100% 100%, #ffffff 0, #ffffff 3px, transparent 3px) 0% 0%/5px 5px no-repeat,
-            radial-gradient(circle at 0 100%, #ffffff 0, #ffffff 3px, transparent 3px) 100% 0%/5px 5px no-repeat,
-            radial-gradient(circle at 100% 0, #ffffff 0, #ffffff 3px, transparent 3px) 0% 100%/5px 5px no-repeat,
-            radial-gradient(circle at 0 0, #ffffff 0, #ffffff 3px, transparent 3px) 100% 100%/5px 5px no-repeat,
-            linear-gradient(#ffffff, #ffffff) 50% 50%/calc(100% - 4px) calc(100% - 10px) no-repeat,
-            linear-gradient(#ffffff, #ffffff) 50% 50%/calc(100% - 10px) calc(100% - 4px) no-repeat,
-            linear-gradient(0deg, #1749DB 0%, #aac5ff 25%, #eee1dc 50%, #e4b08d 75%, #ffe1ab 100%);
-  border-radius: 5px !important;
-  padding: 6px;
-  box-sizing: border-box;
-  background-repeat: no-repeat;
-  background-size:
-    5px 5px,
-    5px 5px,
-    5px 5px,
-    5px 5px,
-    calc(100% - 4px) calc(100% - 10px),
-    calc(100% - 10px) calc(100% - 4px),
-    300% 300%; /* más grande para que el movimiento sea visible */
-  background-position:
-    0% 0%,
-    100% 0%,
-    0% 100%,
-    100% 100%,
-    50% 50%,
-    50% 50%,
-    0% 0%; /* este es el que vamos a animar */
-  animation: moverGradiente 3s ease-in infinite;
+.animatedBorderContainer {
+  position: relative;
+  display: inline-flex;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 2px;
 }
 
-@keyframes moverGradiente {
+.animatedBorder {
+  position: absolute;
+  min-height: 120%;
+  min-width: 120%;
+  aspect-ratio: 1 / 1;
+  z-index: -1;
+  padding: 2px;
+  background: conic-gradient(#1749DB, #aac5ff, #eee1dc, #e4b08d, #ffe1ab, #ffe1ab, #e4b08d, #eee1dc, #aac5ff, #1749DB);
+  display: inline-flex;
+  border-radius: 50%;
+  animation: rotar 5s linear infinite;
+}
+
+@keyframes rotar {
   0% {
-    background-position:
-      0% 0%,
-      100% 0%,
-      0% 100%,
-      100% 100%,
-      50% 50%,
-      50% 50%,
-      0% 0%;
-  }
-  50% {
-    background-position:
-      0% 0%,
-      100% 0%,
-      0% 100%,
-      100% 100%,
-      50% 50%,
-      50% 50%,
-      100% 100%;
+    rotate: 0;
   }
   100% {
-    background-position:
-      0% 0%,
-      100% 0%,
-      0% 100%,
-      100% 100%,
-      50% 50%,
-      50% 50%,
-      0% 0%;
+    rotate: 360deg;
   }
+}
+
+.dataContainer {
+  background-color: white;
+  border-radius: 5px;
+  opacity: 1;
+  z-index: 2;
 }

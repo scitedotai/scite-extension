@@ -87,11 +87,29 @@ const Tally = ({
     window.open(`${sciteBaseUrl}/reports/${tally && tally.doi}?${queryString}`)
   }
 
-  return (
-    <div
-      className={classNames(classes.tally, {[styles.aiBorder]: true})}
-      onClick={handleClick}
-    >
+  const Counters = () => (
+    <>
+      {showCites && showTotal && <Count type='publications' count={citingPublications} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
+  
+      {verticalCompact && <div className={styles.separator} />}
+      {showCites && <Count type='supporting' count={supporting} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
+  
+      {verticalCompact && <div className={styles.separator} />}
+      {showCites && <Count type='mentioning' count={mentioning} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
+  
+      {verticalCompact && <div className={styles.separator} />}
+      {showCites && <Count type='contrasting' count={contrasting} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
+  
+      {(verticalCompact && retractionsCount > 0 && showRetractions) && <div className={styles.separator} />}
+      {(retractionsCount > 0 && showRetractions) && <Count type='retractions' count={retractionsCount} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
+  
+      {(verticalCompact && noticeCount > 0 && showNotices) && <div className={styles.separator} />}
+      {(noticeCount > 0 && showNotices) && <Count type='notices' count={noticeCount} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
+    </>
+  )
+
+  const TallyContent = () => (
+    <>
       {(!horizontal && showLogo && !verticalCompact) && (
         <img
           className={classNames(styles.logo, {
@@ -100,22 +118,29 @@ const Tally = ({
           src='https://cdn.scite.ai/assets/images/logo.svg'
         />
       )}
-      {showCites && showTotal && <Count type='publications' count={citingPublications} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
 
-      {verticalCompact && <div className={styles.separator} />}
-      {showCites && <Count type='supporting' count={supporting} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
+      <Counters />
+    </>
+  )
 
-      {verticalCompact && <div className={styles.separator} />}
-      {showCites && <Count type='mentioning' count={mentioning} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
+  const animatedBorder = verticalCompact;
 
-      {verticalCompact && <div className={styles.separator} />}
-      {showCites && <Count type='contrasting' count={contrasting} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
+  return (
+    <div
+      className={classNames(classes.tally, {
+        [styles.animatedBorderContainer]: animatedBorder
+      })}
+      onClick={handleClick}
+    >
+      {animatedBorder && <div className={styles.animatedBorder}/>}
 
-      {(verticalCompact && retractionsCount > 0 && showRetractions) && <div className={styles.separator} />}
-      {(retractionsCount > 0 && showRetractions) && <Count type='retractions' count={retractionsCount} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
-
-      {(verticalCompact && noticeCount > 0 && showNotices) && <div className={styles.separator} />}
-      {(noticeCount > 0 && showNotices) && <Count type='notices' count={noticeCount} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
+      {animatedBorder && (
+        <div className={styles.dataContainer}>
+          <TallyContent />
+        </div>
+      )}
+      
+      {!animatedBorder && <TallyContent />}
     </div>
   )
 }
