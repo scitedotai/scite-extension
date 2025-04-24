@@ -108,16 +108,17 @@
   background: conic-gradient(#ffe1ab, #e4b08d, #eee1dc, #aac5ff, #1749DB, #1749DB, #aac5ff, #eee1dc, #e4b08d, #ffe1ab);
   display: inline-flex;
   border-radius: 50%;
-  animation: rotar 5s linear infinite;
+  animation: rotate 3s ease-in 800ms;
+  animation-fill-mode: forwards;
 }
 
-@keyframes rotar {
+@keyframes rotate {
   0% {
-    rotate: 0;
+    rotate: 0deg;
   }
 
   100% {
-    rotate: 360deg;
+    rotate: 540deg;
   }
 }
 

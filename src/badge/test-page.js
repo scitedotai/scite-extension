@@ -66,21 +66,10 @@ const rows = [
   {
     doi: '10.1038/nature07404',
     verticalCompact: true,
-    placement: 'left'
-  },
-  {
-    doi: '10.1038/nature07404',
-    verticalCompact: true,
-    animatedBorder: true,
-    placement: 'none'
-  },
-  {
-    doi: '10.1038/nature07404',
-    verticalCompact: true,
     animatedBorder: true,
     showRetractions: false,
     showNotices: false,
-    placement: 'none'
+    placement: 'left'
   }
 ]
 
@@ -159,7 +148,7 @@ const App = () => (
           data-vertical-compact='true'
           data-show-retractions='true'
           data-show-notices='false'
-          data-animated-border='false'
+          data-animated-border='true'
         />
 
         <p className='paper'>
