@@ -73,13 +73,19 @@
   align-items: center;
   gap: 3px;
   border-radius: 5px;
+
   /* border: 1px solid #BFBFBF; */
 }
 
 .separator {
-  width: 23px;
+  width: calc(100% - 8px);
+  margin: auto;
   height: 1px;
   background: #BFBFBF;
+}
+
+.noDefaultBorder {
+  border-color: transparent !important;
 }
 
 .animatedBorderContainer {
@@ -99,7 +105,7 @@
   aspect-ratio: 1 / 1;
   z-index: -1;
   padding: 2px;
-  background: conic-gradient(#1749DB, #aac5ff, #eee1dc, #e4b08d, #ffe1ab, #ffe1ab, #e4b08d, #eee1dc, #aac5ff, #1749DB);
+  background: conic-gradient(#ffe1ab, #e4b08d, #eee1dc, #aac5ff, #1749DB, #1749DB, #aac5ff, #eee1dc, #e4b08d, #ffe1ab);
   display: inline-flex;
   border-radius: 50%;
   animation: rotar 5s linear infinite;
@@ -109,6 +115,7 @@
   0% {
     rotate: 0;
   }
+
   100% {
     rotate: 360deg;
   }
@@ -117,6 +124,7 @@
 .dataContainer {
   background-color: white;
   border-radius: 5px;
+  padding: 5px 4px;
   opacity: 1;
   z-index: 2;
 }

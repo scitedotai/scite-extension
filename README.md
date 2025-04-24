@@ -63,6 +63,8 @@ To use simply include the Javascript bundle on your page. All elements with the 
 
 `show-notices`: Whether to show the notices data (default: `True`).
 
+`animated-border`: Whether to show the animated border instead the default gray border. Only works in the `vertical-compact` mode. (default: `False`).
+
 To pull the target DOI from a meta tag in the document rather than setting inline, you can use the syntax `meta:my_tag_name`. For example:
 
 ```

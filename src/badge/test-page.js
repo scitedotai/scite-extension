@@ -84,7 +84,7 @@ const rows = [
   }
 ]
 
-const Badge = ({ doi, layout, showLabels, forceCollapse, placement, small, autologin, rewardfulID, chartType, tallyShow = true, sectionTallyShow = false, showLogo = true, sectionTallyLayout, forceShow = false, verticalCompact = false, showRetractions = true, showNotices = true }) => (
+const Badge = ({ doi, layout, showLabels, forceCollapse, placement, small, autologin, rewardfulID, chartType, tallyShow = true, sectionTallyShow = false, showLogo = true, sectionTallyLayout, forceShow = false, verticalCompact = false, showRetractions = true, showNotices = true, animatedBorder = false }) => (
   <div
     className='scite-badge'
     data-doi={doi}
@@ -105,10 +105,11 @@ const Badge = ({ doi, layout, showLabels, forceCollapse, placement, small, autol
     data-vertical-compact={verticalCompact}
     data-show-retractions={showRetractions}
     data-show-notices={showNotices}
+    data-animated-border={animatedBorder}
   />
 )
 
-const Row = ({ doi, layout, showLabels, forceCollapse, placement, small, autologin, chartType, tallyShow = true, sectionTallyShow = false, showLogo = true, sectionTallyLayout, forceShow = false, verticalCompact = false, showRetractions = true, showNotices = true }) => (
+const Row = ({ doi, layout, showLabels, forceCollapse, placement, small, autologin, chartType, tallyShow = true, sectionTallyShow = false, showLogo = true, sectionTallyLayout, forceShow = false, verticalCompact = false, showRetractions = true, showNotices = true, animatedBorder = false }) => (
   <div className='badge-row'>
     <p className='paper'>
       etsi vereor, iudices, ne turpe sit pro fortissimo viro dicere incipientem timere minimeque deceat, cum T. Annius ipse magis de rei publicae salute quam de sua perturbetur1, me ad eius causam parem animi magnitudinem adferre non posse, tamen haec novi iudici nova forma terret oculos qui, quocumque inciderunt, veterem consuetudinem fori et pristinum morem iudiciorum requirunt.
@@ -130,6 +131,7 @@ const Row = ({ doi, layout, showLabels, forceCollapse, placement, small, autolog
       verticalCompact={verticalCompact}
       showRetractions={showRetractions}
       showNotices={showNotices}
+      animatedBorder={animatedBorder}
     />
   </div>
 )
@@ -157,6 +159,7 @@ const App = () => (
           data-vertical-compact='true'
           data-show-retractions='true'
           data-show-notices='false'
+          data-animated-border='false'
         />
 
         <p className='paper'>

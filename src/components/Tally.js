@@ -43,7 +43,8 @@ const Tally = ({
   showLogo = true, showTotal = true, showCites = true, useTestEnv = false,
   verticalCompact = false,
   showRetractions = true,
-  showNotices = true
+  showNotices = true,
+  animatedBorder = false
 }) => {
   const params = {
     utm_medium: isBadge ? 'badge' : 'plugin',
@@ -90,19 +91,19 @@ const Tally = ({
   const Counters = () => (
     <>
       {showCites && showTotal && <Count type='publications' count={citingPublications} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
-  
+
       {verticalCompact && <div className={styles.separator} />}
       {showCites && <Count type='supporting' count={supporting} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
-  
+
       {verticalCompact && <div className={styles.separator} />}
       {showCites && <Count type='mentioning' count={mentioning} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
-  
+
       {verticalCompact && <div className={styles.separator} />}
       {showCites && <Count type='contrasting' count={contrasting} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
-  
+
       {(verticalCompact && retractionsCount > 0 && showRetractions) && <div className={styles.separator} />}
       {(retractionsCount > 0 && showRetractions) && <Count type='retractions' count={retractionsCount} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
-  
+
       {(verticalCompact && noticeCount > 0 && showNotices) && <div className={styles.separator} />}
       {(noticeCount > 0 && showNotices) && <Count type='notices' count={noticeCount} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
     </>
@@ -123,24 +124,25 @@ const Tally = ({
     </>
   )
 
-  const animatedBorder = verticalCompact;
-
   return (
     <div
       className={classNames(classes.tally, {
-        [styles.animatedBorderContainer]: animatedBorder
+        [styles.animatedBorderContainer]: animatedBorder,
+        [styles.noDefaultBorder]: animatedBorder
       })}
       onClick={handleClick}
     >
-      {animatedBorder && <div className={styles.animatedBorder}/>}
+      {!animatedBorder && <TallyContent />}
 
       {animatedBorder && (
-        <div className={styles.dataContainer}>
-          <TallyContent />
-        </div>
+        <>
+          <div className={styles.animatedBorder} />
+
+          <div className={styles.dataContainer}>
+            <TallyContent />
+          </div>
+        </>
       )}
-      
-      {!animatedBorder && <TallyContent />}
     </div>
   )
 }
