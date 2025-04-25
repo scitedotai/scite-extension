@@ -119,6 +119,12 @@ export function getConfig (el) {
     config.showLabels = false
   }
 
+  if (data.animatedBorder) {
+    // The animated border can be activated
+    // only if verticalCompact mode is active
+    config.animatedBorder = data.animatedBorder === 'true' && data.verticalCompact === 'true'
+  }
+
   return config
 }
 
@@ -196,6 +202,7 @@ export function insertBadge (el, tally, notices, sectionTally) {
   const verticalCompact = config.verticalCompact || false
   const showRetractions = typeof config.showRetractions === 'boolean' ? config.showRetractions : true
   const showNotices = typeof config.showNotices === 'boolean' ? config.showNotices : true
+  const animatedBorder = config.animatedBorder || false
 
   // Section Tally related values
   const chartType = config.chartType || null
@@ -246,7 +253,8 @@ export function insertBadge (el, tally, notices, sectionTally) {
     useTestEnv,
     verticalCompact,
     showRetractions,
-    showNotices
+    showNotices,
+    animatedBorder
   }
 
   const sectionTallyProps = {
