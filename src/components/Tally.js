@@ -87,19 +87,8 @@ const Tally = ({
     window.open(`${sciteBaseUrl}/reports/${tally && tally.doi}?${queryString}`)
   }
 
-  return (
-    <div
-      className={classes.tally}
-      onClick={handleClick}
-    >
-      {(!horizontal && showLogo && !verticalCompact) && (
-        <img
-          className={classNames(styles.logo, {
-            [styles.logoSmall]: small
-          })}
-          src='https://cdn.scite.ai/assets/images/logo.svg'
-        />
-      )}
+  const Counters = () => (
+    <>
       {showCites && showTotal && <Count type='publications' count={citingPublications} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
 
       {verticalCompact && <div className={styles.separator} />}
@@ -116,6 +105,37 @@ const Tally = ({
 
       {(verticalCompact && noticeCount > 0 && showNotices) && <div className={styles.separator} />}
       {(noticeCount > 0 && showNotices) && <Count type='notices' count={noticeCount} horizontal={horizontal} showLabels={showLabels} small={small} verticalCompact={verticalCompact} />}
+    </>
+  )
+
+  const TallyContent = () => (
+    <>
+      {(!horizontal && showLogo && !verticalCompact) && (
+        <img
+          className={classNames(styles.logo, {
+            [styles.logoSmall]: small
+          })}
+          src='https://cdn.scite.ai/assets/images/logo.svg'
+        />
+      )}
+
+      <Counters />
+    </>
+  )
+
+  return (
+    <div
+      id='scite-tally-container'
+      onClick={handleClick}
+    >
+      <div id='scite-inner-tally-container-styling-component' />
+
+      <div
+        id='scite-inner-tally-container'
+        className={classes.tally}
+      >
+        <TallyContent />
+      </div>
     </div>
   )
 }

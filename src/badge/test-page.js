@@ -66,11 +66,6 @@ const rows = [
   {
     doi: '10.1038/nature07404',
     verticalCompact: true,
-    placement: 'left'
-  },
-  {
-    doi: '10.1038/nature07404',
-    verticalCompact: true,
     showRetractions: true,
     showNotices: false,
     placement: 'none'
