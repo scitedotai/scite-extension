@@ -43,8 +43,7 @@ const Tally = ({
   showLogo = true, showTotal = true, showCites = true, useTestEnv = false,
   verticalCompact = false,
   showRetractions = true,
-  showNotices = true,
-  animatedBorder = false
+  showNotices = true
 }) => {
   const params = {
     utm_medium: isBadge ? 'badge' : 'plugin',
@@ -126,23 +125,17 @@ const Tally = ({
 
   return (
     <div
-      className={classNames(classes.tally, {
-        [styles.animatedBorderContainer]: animatedBorder,
-        [styles.noDefaultBorder]: animatedBorder
-      })}
+      id="scite-tally-container"
       onClick={handleClick}
     >
-      {!animatedBorder && <TallyContent />}
+      <div id="scite-inner-tally-container-styling-component"/>
 
-      {animatedBorder && (
-        <>
-          <div className={styles.animatedBorder} />
-
-          <div className={styles.dataContainer}>
-            <TallyContent />
-          </div>
-        </>
-      )}
+      <div
+        id='scite-inner-tally-container'
+        className={classes.tally}
+      >
+        <TallyContent />
+      </div>
     </div>
   )
 }
