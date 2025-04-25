@@ -125,10 +125,10 @@ const Tally = ({
 
   return (
     <div
-      id="scite-tally-container"
+      id='scite-tally-container'
       onClick={handleClick}
     >
-      <div id="scite-inner-tally-container-styling-component"/>
+      <div id='scite-inner-tally-container-styling-component' />
 
       <div
         id='scite-inner-tally-container'

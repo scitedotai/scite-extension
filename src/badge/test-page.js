@@ -66,9 +66,9 @@ const rows = [
   {
     doi: '10.1038/nature07404',
     verticalCompact: true,
-    showRetractions: false,
+    showRetractions: true,
     showNotices: false,
-    placement: 'left'
+    placement: 'none'
   }
 ]
 
