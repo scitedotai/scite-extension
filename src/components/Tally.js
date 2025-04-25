@@ -126,23 +126,15 @@ const Tally = ({
 
   return (
     <div
-      className={classNames(classes.tally, {
-        [styles.animatedBorderContainer]: animatedBorder,
-        [styles.noDefaultBorder]: animatedBorder
-      })}
+      className={classNames(classes.tally)}
+      id='scite-tally-container'
       onClick={handleClick}
     >
-      {!animatedBorder && <TallyContent />}
 
-      {animatedBorder && (
-        <>
-          <div className={styles.animatedBorder} />
-
-          <div className={styles.dataContainer}>
+<div id='scite-inner-tally-container-styling-component' />
+          <div id='scite-inner-tally-container'>
             <TallyContent />
           </div>
-        </>
-      )}
     </div>
   )
 }
