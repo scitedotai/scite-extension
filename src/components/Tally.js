@@ -63,16 +63,21 @@ const Tally = ({
 
   const queryString = qs.stringify(params)
 
+  const mainContainerClasses = classNames(styles.mainContainer, {
+    [styles.showMainContainer]: showZero ? tally : isNonZero({ tally, notices, showCites }),
+    [styles.forceCollapse]: forceCollapse && tally.total === 0 && tally.citingPublications === 0
+  })
+
   const classes = {
     tally: classNames('scite-tally', styles.tally, {
       [styles.horizontal]: horizontal,
       [styles.small]: small && horizontal,
       [styles.show]: showZero ? tally : isNonZero({ tally, notices, showCites }),
-      [styles.forceCollapse]: forceCollapse && tally.total === 0 && tally.citingPublications === 0,
       [styles.badgeTally]: isBadge,
       [styles.verticalTally]: verticalCompact
     })
   }
+
   const citingPublications = (tally && tally.citingPublications && tally.citingPublications.toLocaleString()) || 0
   const supporting = (tally && tally.supporting && tally.supporting.toLocaleString()) || 0
   const contrasting = (tally && tally.contradicting && tally.contradicting.toLocaleString()) || 0
@@ -126,6 +131,7 @@ const Tally = ({
   return (
     <div
       id='scite-tally-container'
+      className={mainContainerClasses}
       onClick={handleClick}
     >
       <div id='scite-inner-tally-container-styling-component' />

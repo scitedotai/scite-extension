@@ -63,7 +63,7 @@
 }
 
 .forceCollapse {
-  display: none;
+  display: none !important;
 }
 
 .verticalTally {
@@ -80,4 +80,14 @@
   margin: auto;
   height: 1px;
   background: #BFBFBF;
+}
+
+.mainContainer {
+  opacity: 0;
+  display: initial;
+}
+
+.showMainContainer {
+  opacity: 1;
+  pointer-events: auto;
 }
