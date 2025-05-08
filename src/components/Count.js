@@ -2,6 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import Icon from './Icon'
 import styles from '../styles/Count.css'
+import { getCountNumber } from '../util/getCountNumber'
 
 export const Count = ({ className, horizontal, type, count, showLabels = false, small = false, verticalCompact = false }) => (
   <div
@@ -48,10 +49,10 @@ export const Count = ({ className, horizontal, type, count, showLabels = false, 
           <div className={styles.numberContainer}>
             <span className={classNames(styles.number, styles.largeNumber,
               {
-                [styles.number1k]: Number(count.replaceAll(',', '')) > 1000,
-                [styles.number10k]: Number(count.replaceAll(',', '')) > 10000,
-                [styles.number100k]: Number(count.replaceAll(',', '')) > 100000,
-                [styles.number1m]: Number(count.replaceAll(',', '')) > 1000000
+                [styles.number1k]: getCountNumber(count) > 1000,
+                [styles.number10k]: getCountNumber(count) > 10000,
+                [styles.number100k]: getCountNumber(count) > 100000,
+                [styles.number1m]: getCountNumber(count) > 1000000
               }
             )}
             >
