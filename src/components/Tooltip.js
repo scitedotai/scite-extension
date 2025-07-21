@@ -105,7 +105,7 @@ const TooltipContent = ({ tally, notices, showTotal, sciteBaseUrl }) => (
     <span className={styles.slogan}>Smart Citations</span>
 
     <Tally tally={tally} notices={notices} showTotal={showTotal} />
-    {tally && <a id='view-citations-button' className={styles.button} href={`${sciteBaseUrl}/reports/${tally.doi}`} target='_blank' rel='noopener noreferrer'>View Citations</a>}
+    {tally && <a className={styles.button} href={`${sciteBaseUrl}/reports/${tally.doi}`} target='_blank' rel='noopener noreferrer'>View Citations</a>}
     <Message />
   </div>
 )
