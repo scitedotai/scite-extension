@@ -105,7 +105,7 @@ const TooltipContent = ({ tally, notices, showTotal, sciteBaseUrl }) => (
     <span className={styles.slogan}>Smart Citations</span>
 
     <Tally tally={tally} notices={notices} showTotal={showTotal} />
-    {tally && <a className={styles.button} href={`${sciteBaseUrl}/reports/${tally.doi}`} target='_blank' rel='noopener noreferrer'>View Citations</a>}
+    {tally && <a className={classNames(styles.button, 'scite-view-citations-button')} href={`${sciteBaseUrl}/reports/${tally.doi}`} target='_blank' rel='noopener noreferrer'>View Citations</a>}
     <Message />
   </div>
 )
@@ -115,7 +115,7 @@ const SectionTallyTooltipContent = ({ tally, sciteBaseUrl }) => (
     <img className={styles.logo} src='https://cdn.scite.ai/assets/images/logo.svg' />
     <span className={styles.slogan}>Cited in Sections</span>
     <SectionTally tally={tally} />
-    {tally && <a className={styles.button} href={`${sciteBaseUrl}/reports/${tally.doi}`} target='_blank' rel='noopener noreferrer'>View Citations</a>}
+    {tally && <a className={classNames(styles.button, 'scite-view-citations-button')} href={`${sciteBaseUrl}/reports/${tally.doi}`} target='_blank' rel='noopener noreferrer'>View Citations</a>}
     <Message />
   </div>
 )
