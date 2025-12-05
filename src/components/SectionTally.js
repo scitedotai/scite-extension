@@ -8,6 +8,9 @@ import BarChart from './BarChart'
 import PieChart from './PieChart'
 import DonutChart from './DonutChart'
 import { generateChartDataFromSectionTally, CHART_TYPES } from '../util/sectionTally'
+import { allowRedirection, redirectionHandler } from '../util/badgeRedirection'
+
+const allowRedirect = allowRedirection()
 
 const SectionTally = ({
   source, campaign, autologin, rewardfulID,
@@ -52,7 +55,7 @@ const SectionTally = ({
 
   const reportLink = `${sciteBaseUrl}/reports/${tally && tally.doi}?${queryString}`
   const handleClick = () => {
-    window.open(reportLink)
+    redirectionHandler(reportLink)
   }
 
   const chartData = generateChartDataFromSectionTally(tally)
@@ -104,7 +107,7 @@ const SectionTally = ({
       {showChart && (
         <div className={styles.chartSubheading}>
           <span className={styles.chartLabel}>Sections</span>
-          <a href={reportLink} target='_blank' rel='noopener noreferrer'>See more details</a>
+          {allowRedirect && <a href={reportLink} target='_blank' rel='noopener noreferrer'>See more details</a>}
         </div>
       )}
     </div>
