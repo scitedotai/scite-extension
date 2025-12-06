@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import qs from 'query-string'
 import classNames from 'classnames'
 import SectionTallyCount from './SectionTallyCount'
@@ -10,14 +10,14 @@ import DonutChart from './DonutChart'
 import { generateChartDataFromSectionTally, CHART_TYPES } from '../util/sectionTally'
 import { allowRedirection, redirectionHandler } from '../util/badgeRedirection'
 
-const allowRedirect = allowRedirection()
-
 const SectionTally = ({
   source, campaign, autologin, rewardfulID,
   tally, forceCollapse, showLabels,
   small = false, horizontal = false, isBadge = false, showZero = true,
   chartType = null, showLogo = true, useTestEnv = false
 }) => {
+  const [allowRedirect] = useState(() => allowRedirection())
+
   const params = {
     utm_medium: isBadge ? 'badge' : 'plugin',
     utm_source: source || 'generic',

@@ -119,7 +119,7 @@ const SectionTallyTooltipContent = ({ tally, sciteBaseUrl, allowRedirect }) => (
     <span className={styles.slogan}>Cited in Sections</span>
     <SectionTally tally={tally} />
     {tally && allowRedirect && <a className={styles.button} href={`${sciteBaseUrl}/reports/${tally.doi}`} target='_blank' rel='noopener noreferrer'>View Citations</a>}
-    <Message />
+    <Message allowRedirect={allowRedirect} />
   </div>
 )
 
@@ -145,10 +145,7 @@ const TooltipPopper = ({
     }
   }, [tally])
 
-  const [allowRedirect, setallowRedirect] = useState(false)
-  useEffect(() => {
-    setallowRedirect(allowRedirection())
-  }, [/* empty dependency array to execute only once on mount */])
+  const [allowRedirect] = useState(() => allowRedirection())
 
   const handleClickTooltip = () => {
     const url = `${sciteBaseUrl}/reports/${doi}`
