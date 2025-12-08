@@ -1,5 +1,11 @@
+const blockedDomains = [
+  'reprintsdesk.com'
+]
+
 export const allowRedirection = () => {
-  return !window.location.host.includes('reprintsdesk.com')
+  const currentHost = window.location.hostname
+  const isAllowed = !blockedDomains.some(domain => currentHost.endsWith(domain))
+  return isAllowed
 }
 
 export const redirectionHandler = (url) => {
