@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import Count from './Count'
 
 import styles from '../styles/Tally.css'
+import { redirectionHandler } from '../util/badgeRedirection'
 
 const RETRACTED_LEMMAS = ['retract', 'withdraw', 'remove']
 
@@ -89,7 +90,8 @@ const Tally = ({
   const noticeCount = editorialNotices.length.toLocaleString() || 0
 
   const handleClick = () => {
-    window.open(`${sciteBaseUrl}/reports/${tally && tally.doi}?${queryString}`)
+    const url = `${sciteBaseUrl}/reports/${tally && tally.doi}?${queryString}`
+    redirectionHandler(url)
   }
 
   const Counters = () => (

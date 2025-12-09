@@ -4,6 +4,7 @@ import { Manager, Reference, Popper } from 'react-popper'
 import Count from './Count'
 import SectionTallyCount from './SectionTallyCount'
 import styles from '../styles/Tooltip.css'
+import { allowRedirection, redirectionHandler } from '../util/badgeRedirection'
 
 const SectionTally = ({ className, tally }) => (
   <div className={classNames(styles.tally, className)}>
@@ -88,35 +89,37 @@ const Link = ({ className, href, children }) => (
   </a>
 )
 
-const Message = ({ className }) => (
+const Message = ({ className, allowRedirect }) => (
   <div className={className}>
-    <p>
-      See how this article has been cited at <Link href='https://scite.ai'>scite.ai</Link>
-    </p>
+    {allowRedirect && (
+      <p>
+        See how this article has been cited at <Link href='https://scite.ai'>scite.ai</Link>
+      </p>
+    )}
     <p className={styles.message}>
       scite shows how a scientific paper has been cited by providing the context of the citation, a classification describing whether it supports, mentions, or contrasts the cited claim, and a label indicating in which section the citation was made.
     </p>
   </div>
 )
 
-const TooltipContent = ({ tally, notices, showTotal, sciteBaseUrl }) => (
+const TooltipContent = ({ tally, notices, showTotal, sciteBaseUrl, allowRedirect }) => (
   <div className={styles.tooltipContent}>
     <img className={styles.logo} src='https://cdn.scite.ai/assets/images/logo.svg' />
     <span className={styles.slogan}>Smart Citations</span>
 
     <Tally tally={tally} notices={notices} showTotal={showTotal} />
-    {tally && <a className={styles.button} href={`${sciteBaseUrl}/reports/${tally.doi}`} target='_blank' rel='noopener noreferrer'>View Citations</a>}
-    <Message />
+    {tally && allowRedirect && <a className={styles.button} href={`${sciteBaseUrl}/reports/${tally.doi}`} target='_blank' rel='noopener noreferrer'>View Citations</a>}
+    <Message allowRedirect={allowRedirect} />
   </div>
 )
 
-const SectionTallyTooltipContent = ({ tally, sciteBaseUrl }) => (
+const SectionTallyTooltipContent = ({ tally, sciteBaseUrl, allowRedirect }) => (
   <div>
     <img className={styles.logo} src='https://cdn.scite.ai/assets/images/logo.svg' />
     <span className={styles.slogan}>Cited in Sections</span>
     <SectionTally tally={tally} />
-    {tally && <a className={styles.button} href={`${sciteBaseUrl}/reports/${tally.doi}`} target='_blank' rel='noopener noreferrer'>View Citations</a>}
-    <Message />
+    {tally && allowRedirect && <a className={styles.button} href={`${sciteBaseUrl}/reports/${tally.doi}`} target='_blank' rel='noopener noreferrer'>View Citations</a>}
+    <Message allowRedirect={allowRedirect} />
   </div>
 )
 
@@ -142,8 +145,11 @@ const TooltipPopper = ({
     }
   }, [tally])
 
+  const [allowRedirect] = useState(() => allowRedirection())
+
   const handleClickTooltip = () => {
-    window.open(`${sciteBaseUrl}/reports/${doi}`)
+    const url = `${sciteBaseUrl}/reports/${doi}`
+    redirectionHandler(url)
   }
 
   return (
@@ -190,8 +196,8 @@ const TooltipPopper = ({
             onMouseLeave={handleMouseLeave}
             onClick={handleClickTooltip}
           >
-            {tallyType === 'smart_citations' && (<TooltipContent tally={tally} notices={notices} showTotal={showTotal} sciteBaseUrl={sciteBaseUrl} />)}
-            {tallyType === 'sections' && (<SectionTallyTooltipContent tally={tally} sciteBaseUrl={sciteBaseUrl} />)}
+            {tallyType === 'smart_citations' && (<TooltipContent tally={tally} notices={notices} showTotal={showTotal} sciteBaseUrl={sciteBaseUrl} allowRedirect={allowRedirect} />)}
+            {tallyType === 'sections' && (<SectionTallyTooltipContent tally={tally} sciteBaseUrl={sciteBaseUrl} allowRedirect={allowRedirect} />)}
           </div>
         )
       }}
