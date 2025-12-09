@@ -4,8 +4,7 @@ const blockedDomains = [
 
 export const allowRedirection = () => {
   const currentHost = window.location.hostname
-  const isAllowed = !blockedDomains.some(domain => currentHost.endsWith(domain))
-  return isAllowed
+  return !blockedDomains.some(domain => currentHost.endsWith(domain))
 }
 
 export const redirectionHandler = (url) => {
@@ -13,5 +12,5 @@ export const redirectionHandler = (url) => {
     return
   }
 
-  window.open(url)
+  window.open(url, '_blank', 'noopener,noreferrer')
 }
