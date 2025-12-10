@@ -172,12 +172,24 @@ jobs:
         run: |
           echo "## Deployment Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Extension version ${{ steps.get_version.outputs.version }} deployed!" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Extension version ${{ steps.get_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Deployed to:" >> $GITHUB_STEP_SUMMARY
-          echo "- Chrome Web Store" >> $GITHUB_STEP_SUMMARY
-          echo "- Firefox Add-ons" >> $GITHUB_STEP_SUMMARY
-          echo "- Edge Add-ons" >> $GITHUB_STEP_SUMMARY
+          echo "### Build completed successfully" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ github.event_name }}" == "release" ] || \
+             [ "${{ github.event.inputs.target }}" == "all" ] || \
+             [ "${{ github.event.inputs.target }}" == "chrome" ]; then
+            echo "- ✅ Chrome Web Store" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ "${{ github.event_name }}" == "release" ] || \
+             [ "${{ github.event.inputs.target }}" == "all" ] || \
+             [ "${{ github.event.inputs.target }}" == "firefox" ]; then
+            echo "- ✅ Firefox Add-ons" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ "${{ github.event_name }}" == "release" ] || \
+             [ "${{ github.event.inputs.target }}" == "all" ] || \
+             [ "${{ github.event.inputs.target }}" == "edge" ]; then
+            echo "- ✅ Edge Add-ons" >> $GITHUB_STEP_SUMMARY
+          fi
 
   deploy-safari:
     name: Prepare Safari Deployment

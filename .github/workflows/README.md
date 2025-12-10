@@ -67,8 +67,6 @@ Safari deployment requires manual steps in Xcode and cannot be fully automated v
 
 ### Deployment Priority
 
-### Deployment Priority
-
 As specified in the issue, browsers are deployed in priority order:
 1. Chrome
 2. Firefox
