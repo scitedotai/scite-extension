@@ -144,6 +144,36 @@ Once you are ready to deploy you may use the build you have run to sideload into
 
 ## Releasing ##
 
+### Automated Deployment (Recommended) ###
+
+The extension is automatically deployed to all browser stores using GitHub Actions:
+
+1. Bump the version in **both** `package.json` and `extension/manifest.json` to match
+2. Commit the version changes
+3. Create and push a tag:
+
+```bash
+$ git tag v1.10.0 -m "Release v1.10.0"
+$ git push origin v1.10.0
+```
+
+The GitHub Action will automatically:
+- Build the extension
+- Run tests and linting
+- Deploy to Chrome Web Store
+- Deploy to Firefox Add-ons
+- Deploy to Edge Add-ons
+- Prepare Safari deployment artifact
+- Create a GitHub release
+
+**Prerequisites:** Repository secrets must be configured. See [.github/workflows/README.md](.github/workflows/README.md) for required secrets and setup instructions.
+
+**Manual Deployment Option:** You can also manually trigger deployment for specific browsers from the Actions tab in GitHub.
+
+### Manual Deployment (Legacy) ###
+
+If you need to deploy manually without using GitHub Actions, follow these steps:
+
 1. Bump the version in `package.json` and `manifest.json` and commit
 2. Tag the release (e.g.):
 
@@ -158,9 +188,9 @@ $ git push origin v1.10.0
 $ npm run build
 ```
 
-4. run the following:
+4. Follow browser-specific instructions below:
 
-### Chrome ###
+#### Chrome ####
 
 ```bash
 $ zip -r extension.zip extension/*
@@ -172,7 +202,7 @@ $ zip -r extension.zip extension/*
 4. Click upload new package
 5. Click submit for review
 
-### Firefox ###
+#### Firefox ####
 
 ```bash
 $ zip -r extension-full.zip . -x "node_modules/*" -x ".cache/*" -x ".git/*" -x "extension/index.*" -x "extension/background.js" -x "extension/styles.css"
@@ -186,8 +216,7 @@ $ zip -r ../extension.zip .
 4. Click `Continue`, `Yes`, `Upload source code` and select `extension-full.zip`
 5. Click `Continue`, write some release note(s) and submit!
 
-
-### Safari ###
+#### Safari ####
 
 **Note:** requires macosx+xcode+apple developer access
 
