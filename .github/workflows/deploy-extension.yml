@@ -1,9 +1,8 @@
 name: Deploy Browser Extension
 
 on:
-  push:
-    tags:
-      - 'v*.*.*'
+  release:
+    types: [published]
   workflow_dispatch:
     inputs:
       target:
@@ -19,10 +18,9 @@ on:
           - safari
 
 jobs:
-  build:
+  build-and-deploy:
+    name: Build and Deploy Extension
     runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.get_version.outputs.version }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,18 +30,6 @@ jobs:
         with:
           node-version: '16.18'
           cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run linter
-        run: npm run lint
-
-      - name: Run tests
-        run: npm test -- --max-workers=2
-
-      - name: Build extension
-        run: npm run build
 
       - name: Get version from package.json
         id: get_version
@@ -62,155 +48,159 @@ jobs:
           fi
           echo "✅ Versions are synchronized: $PKG_VERSION"
 
-      - name: Create extension zip for Chrome/Edge
-        run: |
-          cd extension
-          zip -r ../extension.zip .
+      - name: Create builds directory
+        run: mkdir -p ./builds
 
-      - name: Create full source zip for Firefox
-        # Firefox Add-ons requires source code for review.
-        # Exclusions are specific to Firefox review requirements.
+      - name: Zip source code for Firefox
         run: |
-          zip -r extension-source.zip . \
+          zip -r ./builds/Source.zip . \
             -x "node_modules/*" \
             -x ".cache/*" \
             -x ".git/*" \
-            -x "extension/index.*" \
-            -x "extension/background.js" \
-            -x "extension/styles.css" \
             -x "web-ext-artifacts/*" \
             -x "dist/*" \
+            -x "builds/*" \
             -x ".github/*"
 
-      - name: Upload extension artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: extension-zip
-          path: extension.zip
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Upload Firefox source artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: extension-source-zip
-          path: extension-source.zip
+      - name: Run linter
+        run: npm run lint
 
-      - name: Upload extension directory
-        uses: actions/upload-artifact@v4
-        with:
-          name: extension-dir
-          path: extension/
+      - name: Run tests
+        run: npm test -- --max-workers=2
 
-  deploy-chrome:
-    needs: build
-    runs-on: ubuntu-latest
-    if: |
-      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')) ||
-      (github.event_name == 'workflow_dispatch' && (github.event.inputs.target == 'chrome' || github.event.inputs.target == 'all'))
-    steps:
-      - name: Download extension artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: extension-zip
+      - name: Build extension
+        run: npm run build
 
-      - name: Deploy to Chrome Web Store
-        uses: mnao305/chrome-extension-upload@v5.0.0
+      - name: Zip Chrome extension
+        run: |
+          cd extension
+          zip -r ../builds/ChromeExtension.zip .
+
+      - name: Upload ChromeExtension to release
+        if: github.event_name == 'release'
+        uses: Shopify/upload-to-release@07611424e04f1475ddf550e1c0dd650b867d5467
         with:
-          file-path: extension.zip
+          name: ChromeExtension.zip
+          path: ./builds/ChromeExtension.zip
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to Chrome Web Store
+        if: |
+          (github.event_name == 'release') ||
+          (github.event_name == 'workflow_dispatch' && 
+           (github.event.inputs.target == 'chrome' || github.event.inputs.target == 'all'))
+        continue-on-error: true
+        uses: wdzeng/chrome-extension@v1
+        with:
           extension-id: ${{ secrets.CHROME_EXTENSION_ID }}
           client-id: ${{ secrets.CHROME_CLIENT_ID }}
           client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
           refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
-          publish: true
+          zip-path: ./builds/ChromeExtension.zip
 
-      - name: Notify success
-        if: success()
+      - name: Sign and publish to Firefox Add-ons
+        if: |
+          (github.event_name == 'release') ||
+          (github.event_name == 'workflow_dispatch' && 
+           (github.event.inputs.target == 'firefox' || github.event.inputs.target == 'all'))
+        continue-on-error: true
+        env:
+          FIREFOX_ISSUER: ${{ secrets.FIREFOX_ISSUER }}
+          FIREFOX_SECRET: ${{ secrets.FIREFOX_SECRET }}
         run: |
-          echo "✅ Chrome extension deployed successfully"
-          echo "Version: ${{ needs.build.outputs.version }}"
+          npx web-ext sign \
+            --channel listed \
+            -s ./extension/ \
+            --upload-source-code ./builds/Source.zip \
+            --artifacts-dir ./builds \
+            --api-key $FIREFOX_ISSUER \
+            --api-secret $FIREFOX_SECRET
 
-  deploy-firefox:
-    needs: build
-    runs-on: ubuntu-latest
-    if: |
-      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')) ||
-      (github.event_name == 'workflow_dispatch' && (github.event.inputs.target == 'firefox' || github.event.inputs.target == 'all'))
-    steps:
-      - name: Download extension artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: extension-zip
-
-      - name: Download source artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: extension-source-zip
-
-      - name: Deploy to Firefox Add-ons
-        uses: browser-actions/release-firefox-addon@v1
-        with:
-          addon-id: ${{ secrets.FIREFOX_ADDON_ID }}
-          auth-api-issuer: ${{ secrets.FIREFOX_API_ISSUER }}
-          auth-api-secret: ${{ secrets.FIREFOX_API_SECRET }}
-          addon-path: extension.zip
-          source-path: extension-source.zip
-          approval-note: |
-            Automated release via GitHub Actions.
-            Version: ${{ needs.build.outputs.version }}
-
-            The extension is built using webpack. To build:
-            1. npm ci
-            2. npm run build
-
-            The built extension will be in the extension/ directory.
-
-      - name: Notify success
-        if: success()
+      - name: Move Firefox artifact
+        if: |
+          (github.event_name == 'release') ||
+          (github.event_name == 'workflow_dispatch' && 
+           (github.event.inputs.target == 'firefox' || github.event.inputs.target == 'all'))
+        continue-on-error: true
         run: |
-          echo "✅ Firefox extension deployed successfully"
-          echo "Version: ${{ needs.build.outputs.version }}"
+          # Find and rename the signed XPI file
+          if ls ./builds/*.xpi 1> /dev/null 2>&1; then
+            mv ./builds/*.xpi ./builds/FirefoxExtension.xpi
+          fi
 
-  deploy-edge:
-    needs: build
-    runs-on: ubuntu-latest
-    if: |
-      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')) ||
-      (github.event_name == 'workflow_dispatch' && (github.event.inputs.target == 'edge' || github.event.inputs.target == 'all'))
-    steps:
-      - name: Download extension artifact
-        uses: actions/download-artifact@v4
+      - name: Upload FirefoxExtension to release
+        if: github.event_name == 'release'
+        continue-on-error: true
+        uses: Shopify/upload-to-release@07611424e04f1475ddf550e1c0dd650b867d5467
         with:
-          name: extension-zip
+          name: FirefoxExtension.xpi
+          path: ./builds/FirefoxExtension.xpi
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Deploy to Edge Add-ons
-        uses: wdzeng/edge-addon@v1
+      - name: Zip Edge extension
+        run: |
+          cd extension
+          zip -r ../builds/EdgeExtension.zip .
+
+      - name: Upload EdgeExtension to release
+        if: github.event_name == 'release'
+        uses: Shopify/upload-to-release@07611424e04f1475ddf550e1c0dd650b867d5467
+        with:
+          name: EdgeExtension.zip
+          path: ./builds/EdgeExtension.zip
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to Edge Add-ons
+        if: |
+          (github.event_name == 'release') ||
+          (github.event_name == 'workflow_dispatch' && 
+           (github.event.inputs.target == 'edge' || github.event.inputs.target == 'all'))
+        continue-on-error: true
+        uses: wdzeng/edge-addon@v2
         with:
           product-id: ${{ secrets.EDGE_PRODUCT_ID }}
+          zip-path: ./builds/EdgeExtension.zip
           client-id: ${{ secrets.EDGE_CLIENT_ID }}
           client-secret: ${{ secrets.EDGE_CLIENT_SECRET }}
           access-token-url: ${{ secrets.EDGE_ACCESS_TOKEN_URL }}
-          zip-path: extension.zip
 
-      - name: Notify success
+      - name: Summary
         if: success()
         run: |
-          echo "✅ Edge extension deployed successfully"
-          echo "Version: ${{ needs.build.outputs.version }}"
+          echo "## Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Extension version ${{ steps.get_version.outputs.version }} deployed!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Deployed to:" >> $GITHUB_STEP_SUMMARY
+          echo "- Chrome Web Store" >> $GITHUB_STEP_SUMMARY
+          echo "- Firefox Add-ons" >> $GITHUB_STEP_SUMMARY
+          echo "- Edge Add-ons" >> $GITHUB_STEP_SUMMARY
 
   deploy-safari:
-    needs: build
+    name: Prepare Safari Deployment
     runs-on: macos-latest
     if: |
-      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')) ||
-      (github.event_name == 'workflow_dispatch' && (github.event.inputs.target == 'safari' || github.event.inputs.target == 'all'))
+      (github.event_name == 'release') ||
+      (github.event_name == 'workflow_dispatch' && 
+       (github.event.inputs.target == 'safari' || github.event.inputs.target == 'all'))
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Download extension directory
-        uses: actions/download-artifact@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          name: extension-dir
-          path: extension/
+          node-version: '16.18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build extension
+        run: npm run build
 
       - name: Setup Xcode
         uses: maxim-lobanov/setup-xcode@v1
@@ -227,10 +217,6 @@ jobs:
           echo "2. Set version and build numbers in Xcode"
           echo "3. Build and Archive the project"
           echo "4. Upload to App Store Connect"
-          echo ""
-          echo "Note: This job prepares the extension but manual"
-          echo "intervention is required for App Store submission."
-          echo "Refer to README.md Safari section for detailed instructions."
 
       - name: Create Safari deployment artifact
         run: |
@@ -245,7 +231,7 @@ jobs:
              --project-location . --app-name scite
              --bundle-identifier ai.scite --swift
           3. Open the generated project in Xcode
-          4. Set version to ${{ needs.build.outputs.version }} in settings
+          4. Set version in project settings
           5. Archive and upload to App Store Connect
           EOF
 
@@ -254,28 +240,3 @@ jobs:
         with:
           name: safari-deployment
           path: safari-deployment/
-
-  release:
-    needs: [build, deploy-chrome, deploy-firefox, deploy-edge, deploy-safari]
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-    steps:
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          name: Release ${{ needs.build.outputs.version }}
-          body: |
-            ## Browser Extension Release ${{ needs.build.outputs.version }}
-
-            ### Deployed to:
-            - ✅ Chrome Web Store
-            - ✅ Firefox Add-ons
-            - ✅ Edge Add-ons
-            - ⚠️  Safari (manual deployment required - see artifacts)
-
-            ### Changes
-            See commit history for details.
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

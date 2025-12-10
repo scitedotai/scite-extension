@@ -146,7 +146,9 @@ Once you are ready to deploy you may use the build you have run to sideload into
 
 ### Automated Deployment (Recommended) ###
 
-The extension is automatically deployed to all browser stores using GitHub Actions:
+The extension is automatically deployed to all browser stores using GitHub Actions when you publish a GitHub release.
+
+**Steps:**
 
 1. Bump the version in **both** `package.json` and `extension/manifest.json` to match
 2. Commit the version changes
@@ -157,18 +159,27 @@ $ git tag v1.10.0 -m "Release v1.10.0"
 $ git push origin v1.10.0
 ```
 
+4. Create a GitHub Release:
+   - Go to the repository's Releases page
+   - Click "Draft a new release"
+   - Select the tag you just created (v1.10.0)
+   - Add release notes
+   - Click "Publish release"
+
 The GitHub Action will automatically:
 - Build the extension
 - Run tests and linting
 - Deploy to Chrome Web Store
-- Deploy to Firefox Add-ons
+- Deploy to Firefox Add-ons (signed XPI)
 - Deploy to Edge Add-ons
 - Prepare Safari deployment artifact
-- Create a GitHub release
+- Upload build artifacts (ChromeExtension.zip, FirefoxExtension.xpi, EdgeExtension.zip) to the release
 
 **Prerequisites:** Repository secrets must be configured. See [.github/workflows/README.md](.github/workflows/README.md) for required secrets and setup instructions.
 
 **Manual Deployment Option:** You can also manually trigger deployment for specific browsers from the Actions tab in GitHub.
+
+**Based on:** [Simplify Browser Extension Deployment with GitHub Actions](https://dev.to/jellyfith/simplify-browser-extension-deployment-with-github-actions-37ob)
 
 ### Manual Deployment (Legacy) ###
 
