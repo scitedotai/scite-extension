@@ -21,6 +21,8 @@ jobs:
   build-and-deploy:
     name: Build and Deploy Extension
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Required for uploading artifacts to releases
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -194,6 +196,8 @@ jobs:
   deploy-safari:
     name: Prepare Safari Deployment
     runs-on: macos-latest
+    permissions:
+      contents: read  # Only needs to read repository contents
     if: |
       (github.event_name == 'release') ||
       (github.event_name == 'workflow_dispatch' && 
