@@ -49,12 +49,27 @@ jobs:
         id: get_version
         run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
 
+      - name: Validate version synchronization
+        run: |
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          MANIFEST_VERSION=$(node -p "require('./extension/manifest.json').version")
+          if [ "$PKG_VERSION" != "$MANIFEST_VERSION" ]; then
+            echo "❌ Version mismatch!"
+            echo "package.json: $PKG_VERSION"
+            echo "manifest.json: $MANIFEST_VERSION"
+            echo "Please ensure both files have the same version number."
+            exit 1
+          fi
+          echo "✅ Versions are synchronized: $PKG_VERSION"
+
       - name: Create extension zip for Chrome/Edge
         run: |
           cd extension
           zip -r ../extension.zip .
 
       - name: Create full source zip for Firefox
+        # Firefox Add-ons requires source code for review.
+        # Exclusions are specific to Firefox review requirements.
         run: |
           zip -r extension-source.zip . \
             -x "node_modules/*" \
@@ -241,7 +256,7 @@ jobs:
           path: safari-deployment/
 
   release:
-    needs: [build, deploy-chrome, deploy-firefox, deploy-edge]
+    needs: [build, deploy-chrome, deploy-firefox, deploy-edge, deploy-safari]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     steps:
