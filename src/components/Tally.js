@@ -68,8 +68,7 @@ const Tally = ({
     [styles.mainContainer]: showZero || isNonZero({ tally, notices, showCites }),
     [styles.showMainContainer]: showZero ? tally : isNonZero({ tally, notices, showCites }),
     [styles.forceCollapse]: (!showZero && forceCollapse) && tally.total === 0 && tally.citingPublications === 0
-  },
-)
+  })
 
   const classes = {
     tally: classNames('scite-tally', styles.tally, {
