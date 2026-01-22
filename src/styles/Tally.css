@@ -63,7 +63,7 @@
 }
 
 .forceCollapse {
-  display: none !important;
+  display: none;
 }
 
 .verticalTally {
