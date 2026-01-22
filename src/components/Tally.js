@@ -64,9 +64,10 @@ const Tally = ({
 
   const queryString = qs.stringify(params)
 
-  const mainContainerClasses = classNames(styles.mainContainer, {
+  const mainContainerClasses = classNames({
+    [styles.mainContainer]: showZero || isNonZero({ tally, notices, showCites }),
     [styles.showMainContainer]: showZero ? tally : isNonZero({ tally, notices, showCites }),
-    [styles.forceCollapse]: forceCollapse && tally.total === 0 && tally.citingPublications === 0
+    [styles.forceCollapse]: (!showZero && forceCollapse) && tally.total === 0 && tally.citingPublications === 0
   })
 
   const classes = {
