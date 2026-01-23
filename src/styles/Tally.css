@@ -63,7 +63,7 @@
 }
 
 .forceCollapse {
-  display: none;
+  display: none !important;
 }
 
 .verticalTally {
@@ -90,4 +90,8 @@
 .showMainContainer {
   opacity: 1;
   pointer-events: auto;
+}
+
+.hideMainContainer {
+  opacity: 0;
 }
