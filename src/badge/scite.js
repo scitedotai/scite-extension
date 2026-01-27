@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react' // eslint-disable-line
 
-const { fetch } = window
-
 const NOTICE_STATUSES = ['retracted', 'has expression of concern', 'withdrawn', 'has erratum', 'has correction']
 
 export const fetchTallies = async (dois, retry = 0, maxRetries = 8) => {
@@ -11,7 +9,7 @@ export const fetchTallies = async (dois, retry = 0, maxRetries = 8) => {
 
   const fetchFailed = new Error('Failed to get Tallies')
   try {
-    const response = await fetch('https://api.scite.ai/tallies', {
+    const response = await window.fetch('https://api.scite.ai/tallies', {
       method: 'POST',
       body: JSON.stringify(dois),
       headers: {
@@ -45,7 +43,7 @@ export const fetchNotices = async (dois, retry = 0, maxRetries = 8) => {
 
   const fetchFailed = new Error('Failed to get notices')
   try {
-    const response = await fetch('https://api.scite.ai/papers', {
+    const response = await window.fetch('https://api.scite.ai/papers', {
       method: 'POST',
       body: JSON.stringify(dois),
       headers: {
@@ -89,7 +87,7 @@ export const fetchSectionTallies = async (dois, retry = 0, maxRetries = 8) => {
 
   const fetchFailed = new Error('Failed to get Section Tallies')
   try {
-    const response = await fetch('https://api.scite.ai/tallies/cited-by-sections', {
+    const response = await window.fetch('https://api.scite.ai/tallies/cited-by-sections', {
       method: 'POST',
       body: JSON.stringify(dois),
       headers: {

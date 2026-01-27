@@ -1,7 +1,7 @@
 {
   "name": "Scite",
   "author": "Scite Inc.",
-  "version": "1.36.3",
+  "version": "1.39.2",
   "manifest_version": 3,
   "description": "scite allows users to see how a publication has been cited, providing the citation context and classification",
   "icons": {
@@ -28,6 +28,9 @@
     }
   ],
   "background": {
+    "scripts": [
+      "background.js"
+    ],
     "service_worker": "background.js"
   },
   "externally_connectable": {
