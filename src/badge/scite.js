@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react' // eslint-disable-line
 
-
 const NOTICE_STATUSES = ['retracted', 'has expression of concern', 'withdrawn', 'has erratum', 'has correction']
 
 export const fetchTallies = async (dois, retry = 0, maxRetries = 8) => {

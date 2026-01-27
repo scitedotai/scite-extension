@@ -1,12 +1,11 @@
 import 'whatwg-fetch'
 import React, { useEffect, useState } from 'react' // eslint-disable-line
 
-
 const NOTICE_STATUSES = ['retracted', 'has expression of concern', 'withdrawn', 'has erratum', 'has correction']
 
 function fetchTally ({ doi, setTally, setError, retry = 0, maxRetries = 8 } = {}) {
   const fetchFailed = new Error('Failed to get Tally')
- window.fetch(`https://api.scite.ai/tallies/${doi}`)
+  window.fetch(`https://api.scite.ai/tallies/${doi}`)
     .then(response => {
       if (response.status === 404) {
         // Then we will set a 0 tally
@@ -41,7 +40,7 @@ function fetchTally ({ doi, setTally, setError, retry = 0, maxRetries = 8 } = {}
 
 function fetchNotices ({ doi, setNotices, setError, retry = 0, maxRetries = 8 } = {}) {
   const fetchFailed = new Error('Failed to get notices')
- window.fetch(`https://api.scite.ai/papers/${doi}`)
+  window.fetch(`https://api.scite.ai/papers/${doi}`)
     .then(response => {
       if (response.status === 404) {
         // Then we will set a notices to []

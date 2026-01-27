@@ -7,7 +7,7 @@ export const matchReference = async ({
   if (!title && !firstAuthor) {
     return null
   }
-  
+
   const url = new URL(`${API_URL}/search/match_reference`)
 
   const params = new URLSearchParams({
