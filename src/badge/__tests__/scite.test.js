@@ -2,7 +2,6 @@
 
 import { fetchNotices, fetchSectionTallies, fetchTallies } from '../scite'
 
-const { fetch } = window
 
 const tallyMock = { tallies: { '10.1038/nature10167': { doi: '10.1038/nature10167', total: 803, supporting: 37, contradicting: 4, mentioning: 762, unclassified: 0, citingPublications: 100 }, '10.1016/j.biopsych.2005.08.012': { doi: '10.1016/j.biopsych.2005.08.012', total: 309, supporting: 25, contradicting: 3, mentioning: 281, unclassified: 0, citingPublications: 100 }, '10.1891/0889-8391.13.2.158': { doi: '10.1891/0889-8391.13.2.158', total: 28633, supporting: 1124, contradicting: 71, mentioning: 27438, unclassified: 0, citingPublications: 100 } } }
 const talliesExpected = { tallies: { '10.1038/nature10167': { doi: '10.1038/nature10167', total: 803, supporting: 37, contradicting: 4, mentioning: 762, unclassified: 0, citingPublications: 100 }, '10.1016/j.biopsych.2005.08.012': { doi: '10.1016/j.biopsych.2005.08.012', total: 309, supporting: 25, contradicting: 3, mentioning: 281, unclassified: 0, citingPublications: 100 }, '10.1891/0889-8391.13.2.158': { doi: '10.1891/0889-8391.13.2.158', total: 28633, supporting: 1124, contradicting: 71, mentioning: 27438, unclassified: 0, citingPublications: 100 } } }

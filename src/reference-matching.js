@@ -7,8 +7,7 @@ export const matchReference = async ({
   if (!title && !firstAuthor) {
     return null
   }
-
-  const { fetch } = window
+  
   const url = new URL(`${API_URL}/search/match_reference`)
 
   const params = new URLSearchParams({
@@ -17,7 +16,7 @@ export const matchReference = async ({
   })
   url.search = params.toString()
   try {
-    const result = await fetch(url)
+    const result = await window.fetch(url)
     const data = await result.json()
     return data
   } catch (e) {
