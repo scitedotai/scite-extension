@@ -1,7 +1,5 @@
-/* global chrome, browser:true */
-if (typeof chrome !== 'undefined' && chrome) {
-  browser = chrome
-}
+/* global chrome */
+var browser = chrome
 
 browser.runtime.onInstalled.addListener(function (details) {
   if (details.reason === 'install') {
