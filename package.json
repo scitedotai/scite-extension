@@ -7,11 +7,12 @@
     "lint": "standard --verbose | snazzy && stylelint 'src/**/*.css'",
     "lint:fix": "standard --fix | snazzy && stylelint --fix 'src/**/*.css'",
     "lint:ext": "web-ext lint",
-    "dev": "concurrently \"web-ext run -s ./extension\" \"webpack --config config/webpack.dev.js\"",
-    "dev:chrome": "concurrently \"web-ext run -s ./extension -t chromium\" \"webpack --config config/webpack.dev.js\"",
+    "dev": "cp manifests/firefox.json extension/manifest.json && concurrently \"web-ext run -s ./extension\" \"webpack --config config/webpack.dev.js\"",
+    "dev:chrome": "cp manifests/chrome.json extension/manifest.json && concurrently \"web-ext run -s ./extension -t chromium\" \"webpack --config config/webpack.dev.js\"",
     "test": "jest",
     "test:watch": "jest --watch",
-    "build": "NODE_ENV=production webpack --config config/webpack.prod.js",
+    "build:chrome": "cp manifests/chrome.json extension/manifest.json && NODE_ENV=production webpack --config config/webpack.prod.js",
+    "build:firefox": "cp manifests/firefox.json extension/manifest.json && NODE_ENV=production webpack --config config/webpack.prod.js",
     "dev:badge": "webpack serve -c config/badge/webpack.dev.js",
     "build:badge": "NODE_ENV=production webpack -c config/badge/webpack.prod.js",
     "upload_badge": "node ./scripts/upload-badge.js"
@@ -65,6 +66,12 @@
     "react-popper": "^2.3.0",
     "regenerator-runtime": "^0.13.11",
     "whatwg-fetch": "^3.6.2"
+  },
+  "webExt": {
+    "run": {
+      "firefox": "/Applications/Firefox.app/Contents/MacOS/firefox",
+      "chromiumBinary": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    }
   },
   "standard": {
     "ignore": [

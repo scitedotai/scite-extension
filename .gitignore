@@ -1,4 +1,5 @@
 dist
+extension/manifest.json
 extension/index.js
 extension/index.js.LICENSE.txt
 extension/background.js
