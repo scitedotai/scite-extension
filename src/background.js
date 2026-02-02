@@ -1,5 +1,5 @@
 /* global chrome */
-var browser = chrome
+const browser = chrome
 
 browser.runtime.onInstalled.addListener(function (details) {
   if (details.reason === 'install') {
