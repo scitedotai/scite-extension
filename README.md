@@ -122,7 +122,8 @@ This will serve the application at `localhost:8001`.
 
 ```
 $ npm ci
-$ npm run build
+$ npm run build:chrome   # Chrome build (uses service_worker)
+$ npm run build:firefox  # Firefox build (uses background scripts)
 ```
 
 Then the extension is in `extension`
@@ -132,7 +133,8 @@ Then the extension is in `extension`
 For local development you can use [web-ext](https://github.com/mozilla/web-ext) which will run the extension in a browser and reload any change to the build.
 
 ```
-$ npm run dev
+$ npm run dev          # Firefox
+$ npm run dev:chrome   # Chrome
 ```
 
 Use web-ext lint to lint your changes
@@ -144,7 +146,7 @@ Once you are ready to deploy you may use the build you have run to sideload into
 
 ## Releasing ##
 
-1. Bump the version in `package.json` and `manifest.json` and commit
+1. Bump the version in `package.json`, `manifests/chrome.json`, and `manifests/firefox.json` and commit
 2. Tag the release (e.g.):
 
 ```bash
@@ -155,7 +157,8 @@ $ git push origin v1.10.0
 3. Build the extension
 
 ```bash
-$ npm run build
+$ npm run build:chrome   # for Chrome
+$ npm run build:firefox  # for Firefox
 ```
 
 4. run the following:
@@ -194,7 +197,7 @@ $ zip -r ../extension.zip .
 Build the extension if you haven't already:
 ```bash
 $ npm i
-$ npm run build
+$ npm run build:chrome
 ```
 
 ```bash
