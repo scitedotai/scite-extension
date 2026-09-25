@@ -297,7 +297,9 @@ function findDoiFromArxiv () {
   // arxiv.org only renders a citation_doi meta tag when a preprint has a
   // separate published version elsewhere. Every preprint still gets its own
   // DataCite DOI, which arxiv.org exposes via citation_arxiv_id instead.
-  if (myHost.indexOf('arxiv.org') < 0) {
+  // Kept as a last resort so a real published DOI found by any other
+  // strategy always takes priority over the arXiv-assigned one.
+  if (myHost !== 'arxiv.org' && !myHost.endsWith('.arxiv.org')) {
     return null
   }
 
@@ -317,7 +319,6 @@ async function findDoi () {
     findDoiFromSemanticScholar,
     findDoiFromJSTOR,
     findDoiFromMetaTags,
-    findDoiFromArxiv,
     findDoiFromDataDoiAttributes,
     findDoiFromScienceDirect,
     findDoiFromIeee,
@@ -326,7 +327,8 @@ async function findDoi () {
     findDoiFromPubmed,
     findDoiFromTitle,
     findDoiFromHostName,
-    findDoiFromWOS
+    findDoiFromWOS,
+    findDoiFromArxiv
   ]
 
   for (let i = 0; i < doiFinderFunctions.length; i++) {
