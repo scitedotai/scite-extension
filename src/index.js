@@ -293,6 +293,25 @@ function findDoiFromWOS () {
   }
 }
 
+function findDoiFromArxiv () {
+  // arxiv.org only renders a citation_doi meta tag when a preprint has a
+  // separate published version elsewhere. Every preprint still gets its own
+  // DataCite DOI, which arxiv.org exposes via citation_arxiv_id instead.
+  // Kept as a last resort so a real published DOI found by any other
+  // strategy always takes priority over the arXiv-assigned one.
+  if (myHost !== 'arxiv.org' && !myHost.endsWith('.arxiv.org')) {
+    return null
+  }
+
+  const meta = document.head.querySelector('meta[name="citation_arxiv_id"]')
+  const arxivId = meta?.content
+  if (!arxivId) {
+    return null
+  }
+
+  return `10.48550/arXiv.${arxivId}`
+}
+
 async function findDoi () {
   // we try each of these functions, in order, to get a DOI from the page.
   const doiFinderFunctions = [
@@ -308,7 +327,8 @@ async function findDoi () {
     findDoiFromPubmed,
     findDoiFromTitle,
     findDoiFromHostName,
-    findDoiFromWOS
+    findDoiFromWOS,
+    findDoiFromArxiv
   ]
 
   for (let i = 0; i < doiFinderFunctions.length; i++) {
