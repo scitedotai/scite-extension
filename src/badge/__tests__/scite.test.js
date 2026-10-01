@@ -69,6 +69,14 @@ describe('fetchesNotices', () => {
     expect(notices).toEqual(noticesExpected)
     expect(fetch).toHaveBeenCalledTimes(2)
   })
+
+  it('fetchesNotices returns an empty notices object when the API keeps failing', async () => {
+    fetch.mockResponse('', { status: 500, headers: { 'content-type': 'application/json' } })
+
+    const notices = await fetchNotices(['10.1891/0889-8391.13.2.158'], 0, 0)
+
+    expect(notices).toEqual({ notices: {} })
+  })
 })
 
 describe('fetchesSectionTallies', () => {
