@@ -1,0 +1,67 @@
+name: Release extension
+
+# Click "Run workflow" on the Actions tab, type the new version, click the green button.
+# It bumps the version everywhere, builds, and publishes to the Chrome Web Store + Firefox AMO.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'New version (e.g. 1.41.0)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+
+      - name: Bump version in package.json + both manifests
+        run: |
+          for f in package.json manifests/chrome.json manifests/firefox.json; do
+            node -e "const fs=require('fs');const j=require('./$f');j.version='${{ inputs.version }}';fs.writeFileSync('$f',JSON.stringify(j,null,2)+'\n')"
+          done
+
+      - name: Commit + tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -am "Bump version to ${{ inputs.version }}"
+          git tag "v${{ inputs.version }}"
+          git push origin HEAD --tags
+
+      # --- Chrome ---
+      - run: npm run build:chrome
+      - name: Zip Chrome package (manifest at root)
+        run: cd extension && zip -r ../chrome.zip . && cd ..
+      - name: Publish to Chrome Web Store
+        env:
+          EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
+          CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
+        run: npx --yes chrome-webstore-upload-cli@3 upload --source chrome.zip --auto-publish
+
+      # --- Firefox ---
+      - run: npm run build:firefox
+      - name: Sign + publish to Firefox AMO
+        # ponytail: web-ext uploads the built add-on and submits for review. If AMO still
+        # asks for source (minified code), upload it manually that one time; the build is reproducible.
+        run: >
+          npx --yes web-ext sign --source-dir ./extension --channel listed
+          --api-key "${{ secrets.AMO_JWT_ISSUER }}" --api-secret "${{ secrets.AMO_JWT_SECRET }}"
+
+      - name: Attach zips to a GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ inputs.version }}
+          files: |
+            chrome.zip
+            web-ext-artifacts/*.xpi

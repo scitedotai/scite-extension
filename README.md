@@ -146,48 +146,24 @@ Once you are ready to deploy you may use the build you have run to sideload into
 
 ## Releasing ##
 
-1. Bump the version in `package.json`, `manifests/chrome.json`, and `manifests/firefox.json` and commit
-2. Tag the release (e.g.):
+Chrome + Firefox are released with one click from GitHub:
 
-```bash
-$ git tag v1.10.0 -m "My cool new version"
-$ git push origin v1.10.0
-```
+1. Go to **Actions → Release extension → Run workflow**
+2. Enter the new version (e.g. `1.41.0`) and click the green button
 
-3. Build the extension
+The workflow bumps the version in `package.json` + both manifests, commits and
+tags it, builds both targets, and submits them to the Chrome Web Store and
+Firefox AMO for review. The built zips are also attached to the GitHub Release.
 
-```bash
-$ npm run build:chrome   # for Chrome
-$ npm run build:firefox  # for Firefox
-```
+### One-time setup: GitHub secrets ###
 
-4. run the following:
+Set these under **Settings → Secrets and variables → Actions**:
 
-### Chrome ###
-
-```bash
-$ zip -r extension.zip extension/*
-```
-
-1. Go to the [developer dashboard](https://chrome.google.com/webstore/developer/dashboard)
-2. Click on the extension (if you do not see it check you are looking at the right `scite` publisher in the top right)
-3. Click `package` on the left
-4. Click upload new package
-5. Click submit for review
-
-### Firefox ###
-
-```bash
-$ zip -r extension-full.zip . -x "node_modules/*" -x ".cache/*" -x ".git/*" -x "extension/index.*" -x "extension/background.js" -x "extension/styles.css"
-$ cd extension
-$ zip -r ../extension.zip .
-```
-
-1. Go to the [developer dashboard](https://addons.mozilla.org/en-US/developers/addons)
-2. Click `New version`
-3. Click `Select file` and select the new `extension.zip`
-4. Click `Continue`, `Yes`, `Upload source code` and select `extension-full.zip`
-5. Click `Continue`, write some release note(s) and submit!
+| Secret | Where to get it |
+| --- | --- |
+| `CHROME_EXTENSION_ID` | The extension's ID in the Chrome Web Store dashboard |
+| `CHROME_CLIENT_ID` / `CHROME_CLIENT_SECRET` / `CHROME_REFRESH_TOKEN` | Google Cloud OAuth client for the Web Store API ([guide](https://github.com/fregante/chrome-webstore-upload/blob/main/How%20to%20generate%20Google%20API%20keys.md)) |
+| `AMO_JWT_ISSUER` / `AMO_JWT_SECRET` | AMO API credentials at https://addons.mozilla.org/developers/addon/api/key/ |
 
 
 ### Safari ###
