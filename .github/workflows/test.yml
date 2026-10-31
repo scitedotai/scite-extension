@@ -1,0 +1,65 @@
+name: Test
+
+on:
+  workflow_call:
+  push:
+    branches: [master]
+  pull_request:
+
+concurrency:
+  group: test-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      # fetch-depth 0: the badge webpack config falls back to `git describe`
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test -- --max-workers=2
+
+      - name: Build badge (smoke test)
+        run: npm run build:badge
+        env:
+          RELEASE_TAG: ci-${{ github.sha }}
+
+      - name: Build and zip Chrome extension
+        run: |
+          npm run build:chrome
+          VERSION=$(jq -r .version extension/manifest.json)
+          mkdir -p builds
+          (cd extension && zip -qr "../builds/scite-extension-chrome-${VERSION}.zip" .)
+
+      - name: Build and zip Firefox extension
+        run: |
+          npm run build:firefox
+          VERSION=$(jq -r .version extension/manifest.json)
+          (cd extension && zip -qr "../builds/scite-extension-firefox-${VERSION}.zip" .)
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: extension-builds-${{ github.sha }}
+          path: |
+            builds/*.zip
+            dist/badge.bundle.js
+          retention-days: 14
+
+      - uses: ./.github/actions/notify-teams
+        if: always()
+        with:
+          webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
+          status: ${{ job.status }}
+          title: Lint & Test

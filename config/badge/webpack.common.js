@@ -3,7 +3,7 @@ const { execSync } = require('child_process')
 const { DefinePlugin } = require('webpack')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
-const TAG = execSync('git describe --abbrev=0').toString().trim()
+const TAG = process.env.RELEASE_TAG || execSync('git describe --abbrev=0').toString().trim()
 
 module.exports = {
   entry: {
