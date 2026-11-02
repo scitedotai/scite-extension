@@ -81,7 +81,7 @@ jobs:
 
       - uses: actions/upload-artifact@v7
         with:
-          name: badge-${{ github.ref_name }}
+          name: badge-${{ github.run_id }}
           path: dist/badge.bundle.js
           retention-days: 90
 

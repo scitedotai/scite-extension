@@ -80,8 +80,7 @@ TRUST_POLICY=$(cat <<EOT
                 "StringLike": {
                     "${OIDC_PROVIDER_URL}:sub": [
                         "repo:${GITHUB_ORG}/${GITHUB_REPO}:environment:production",
-                        "repo:${GITHUB_ORG}/${GITHUB_REPO}:environment:stage",
-                        "repo:${GITHUB_ORG}/${GITHUB_REPO}:ref:refs/tags/badge-v*"
+                        "repo:${GITHUB_ORG}/${GITHUB_REPO}:environment:stage"
                     ]
                 }
             }

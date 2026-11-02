@@ -14,7 +14,8 @@
     "build:chrome": "cp manifests/chrome.json extension/manifest.json && NODE_ENV=production webpack --config config/webpack.prod.js",
     "build:firefox": "cp manifests/firefox.json extension/manifest.json && NODE_ENV=production webpack --config config/webpack.prod.js",
     "dev:badge": "webpack serve -c config/badge/webpack.dev.js",
-    "build:badge": "NODE_ENV=production webpack -c config/badge/webpack.prod.js"
+    "build:badge": "NODE_ENV=production webpack -c config/badge/webpack.prod.js",
+    "upload_badge": "node ./scripts/upload-badge.js"
   },
   "keywords": [
     "webextensions",
@@ -29,6 +30,7 @@
     "@swc/core": "^1.3.52",
     "@swc/jest": "^0.2.26",
     "autoprefixer": "^10.4.14",
+    "aws-sdk": "^2.1362.0",
     "clean-webpack-plugin": "^4.0.0",
     "concurrently": "^7.6.0",
     "css-loader": "^6.7.3",
