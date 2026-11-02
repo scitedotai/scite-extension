@@ -108,9 +108,13 @@ echo ""
 # -------------------------------------------------------------------
 if [ "$REQUIRE_CHECKS" = true ]; then
     echo "--- Step 4: Required status checks on master ---"
-    # PATCH replaces the whole list, so merge with the existing checks
+    # PATCH replaces the whole list, so merge with the existing checks and
+    # keep each check's app_id (null means any app, which the API calls -1)
     gh api "repos/${REPO}/branches/master/protection/required_status_checks" \
-        --jq '{strict: true, checks: ([.checks[].context] + ["Lint & Test"] | unique | map({context: .}))}' \
+        --jq '.checks | map({context, app_id: (.app_id // -1)}) as $existing
+              | {strict: true, checks: (if any($existing[]; .context == "Lint & Test")
+                                        then $existing
+                                        else $existing + [{context: "Lint & Test"}] end)}' \
         | gh api -X PATCH "repos/${REPO}/branches/master/protection/required_status_checks" \
             --input - --silent
     echo "  Required check added: Lint & Test"
