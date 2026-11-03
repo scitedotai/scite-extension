@@ -78,6 +78,7 @@ export const fetchNotices = async (dois, retry = 0, maxRetries = 8) => {
       console.error(fetchFailed)
     }
   }
+  return { notices: {} }
 }
 
 export const fetchSectionTallies = async (dois, retry = 0, maxRetries = 8) => {
