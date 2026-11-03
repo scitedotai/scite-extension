@@ -1,0 +1,124 @@
+name: Release badge
+
+on:
+  push:
+    tags:
+      - 'badge-v*-stage'
+      - 'badge-v*-prod'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Build only, do not upload to S3 or invalidate CloudFront
+        type: boolean
+        default: true
+
+concurrency:
+  group: release-badge-${{ github.ref_name }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  AWS_REGION: us-west-2
+
+jobs:
+  test:
+    name: Lint & Test
+    uses: ./.github/workflows/test.yml
+    secrets: inherit
+
+  deploy:
+    name: Deploy badge
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: ${{ endsWith(github.ref_name, '-prod') && 'production' || 'stage' }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+
+      - name: Validate tag and resolve release target
+        id: target
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          if [[ ! "$RELEASE_TAG" =~ ^badge-(v[0-9]+\.[0-9]+\.[0-9]+)-(stage|prod)$ ]]; then
+            if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.dry_run }}" = "true" ]; then
+              echo "::notice::Dry run on '$RELEASE_TAG' (not a release tag); building only"
+              echo "version=dry-run" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            echo "::error::Tag '$RELEASE_TAG' does not match badge-vX.Y.Z-(stage|prod)"
+            exit 1
+          fi
+          VERSION="${BASH_REMATCH[1]}"
+          ENV="${BASH_REMATCH[2]}"
+          if [ "$ENV" = "prod" ]; then
+            BUCKET=scitewebassets
+            DISTRIBUTION_ID=ERIXC9NB9NEX7
+          else
+            BUCKET=scitewebassets-stage
+            DISTRIBUTION_ID=EE31527A00YNS
+          fi
+          {
+            echo "version=$VERSION"
+            echo "env=$ENV"
+            echo "bucket=$BUCKET"
+            echo "distribution_id=$DISTRIBUTION_ID"
+          } >> "$GITHUB_OUTPUT"
+
+      - run: npm run build:badge
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: badge-${{ github.run_id }}
+          path: dist/badge.bundle.js
+          retention-days: 90
+
+      - uses: aws-actions/configure-aws-credentials@v6
+        if: github.event_name == 'push' && !inputs.dry_run
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Upload to S3
+        if: github.event_name == 'push' && !inputs.dry_run
+        env:
+          BUCKET: ${{ steps.target.outputs.bucket }}
+          VERSION: ${{ steps.target.outputs.version }}
+        run: |
+          for key in "badge/scite-badge-latest.min.js" "badge/scite-badge-${VERSION}.min.js"; do
+            aws s3 cp dist/badge.bundle.js "s3://${BUCKET}/${key}" \
+              --content-type application/javascript \
+              --cache-control max-age=86400
+          done
+
+      - name: Invalidate CloudFront
+        if: github.event_name == 'push' && !inputs.dry_run
+        env:
+          DISTRIBUTION_ID: ${{ steps.target.outputs.distribution_id }}
+        run: |
+          INVALIDATION_ID=$(aws cloudfront create-invalidation \
+            --distribution-id "$DISTRIBUTION_ID" \
+            --paths /badge/scite-badge-latest.min.js \
+            --query Invalidation.Id --output text)
+          aws cloudfront wait invalidation-completed \
+            --distribution-id "$DISTRIBUTION_ID" \
+            --id "$INVALIDATION_ID"
+
+      - uses: ./.github/actions/notify-teams
+        if: always()
+        with:
+          webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
+          status: ${{ job.status }}
+          title: Deploy badge ${{ github.ref_name }}

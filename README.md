@@ -23,7 +23,7 @@ We are happy for folks to contribute to the badge and extension, just raise an i
 To use simply include the Javascript bundle on your page. All elements with the class `scite-badge` will have a badge injected into them, with the target DOI selected by the `data-doi` attribute.
 
 ```
-<script type="application/javascript" src="https://cdn.scite.ai/badge/scite-badge-full-latest.min.js"></script>
+<script type="application/javascript" src="https://cdn.scite.ai/badge/scite-badge-latest.min.js"></script>
 <div class="scite-badge" data-doi="10.1016/j.biopsych.2005.08.012"></div>
 ```
 
@@ -92,18 +92,24 @@ If `insert-before` is not set to `true` then the badge will be appended to the e
 
 ## Release ##
 
-Releases are uploaded to our CDN by Circle. The release channel is based on the tag. To release a commit to stage push the tag (e.g.):
+Releases are uploaded to our CDN by GitHub Actions (`.github/workflows/release-badge.yml`). The release channel is based on the tag, which must match `badge-vX.Y.Z-stage` or `badge-vX.Y.Z-prod`. To release a commit to stage push the tag (e.g.):
 
 ```bash
-$ git tag badge-v8.1.0-stage -m "My cool new version"
+$ git tag -a badge-v8.1.0-stage -m "My cool new version"
 $ git push origin badge-v8.1.0-stage
 ```
 
 To release to prod (e.g.):
 
 ```bash
-$ git tag badge-v8.1.0-prod -m "My cool new version"
-$ git push origin v1.2.0-prod
+$ git tag -a badge-v8.1.0-prod -m "My cool new version"
+$ git push origin badge-v8.1.0-prod
+```
+
+Each release publishes `badge/scite-badge-latest.min.js` and `badge/scite-badge-<version>.min.js` and invalidates the CloudFront cache of the `latest` file. To check a build without publishing, run the workflow manually with `dry_run` enabled:
+
+```bash
+$ gh workflow run release-badge.yml -f dry_run=true --ref master
 ```
 
 ## Local development ##
