@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import classNames from 'classnames'
 import { Manager, Reference, Popper } from 'react-popper'
 import Count from './Count'
@@ -136,7 +136,11 @@ const TooltipPopper = ({
   handleMouseLeave,
   tallyType,
   showTotal,
-  sciteBaseUrl
+  sciteBaseUrl,
+  id,
+  popperElRef,
+  handleKeyDown,
+  handleBlur
 }) => {
   let updatePosition
   // XXX: Hack to fix positioning on first load, sorry
@@ -185,7 +189,8 @@ const TooltipPopper = ({
 
         return (
           <div
-            ref={ref}
+            ref={(el) => { ref(el); popperElRef.current = el }}
+            id={id}
             className={
               classNames(styles.tooltip, {
                 [styles.tooltipShow]: show
@@ -196,6 +201,8 @@ const TooltipPopper = ({
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onClick={handleClickTooltip}
+            onKeyDown={handleKeyDown}
+            onBlur={handleBlur}
           >
             {tallyType === 'smart_citations' && (<TooltipContent tally={tally} notices={notices} showTotal={showTotal} sciteBaseUrl={sciteBaseUrl} allowRedirect={allowRedirect} />)}
             {tallyType === 'sections' && (<SectionTallyTooltipContent tally={tally} sciteBaseUrl={sciteBaseUrl} allowRedirect={allowRedirect} />)}
@@ -205,6 +212,8 @@ const TooltipPopper = ({
     </Popper>
   )
 }
+
+let tooltipCount = 0
 
 export const Tooltip = ({
   doi,
@@ -221,8 +230,18 @@ export const Tooltip = ({
   forceShow = false
 }) => {
   const [showTooltip, setShowTooltip] = useState(false)
-  let hideTooltipIntvl
-  let showTooltipIntvl
+  const [id] = useState(() => `scite-badge-tooltip-${++tooltipCount}`)
+  const referenceElRef = useRef(null)
+  const popperElRef = useRef(null)
+  // Refs so pending hover timers survive re-renders and keyboard dismissal can cancel them
+  const showTimerRef = useRef(null)
+  const hideTimerRef = useRef(null)
+
+  const setOpen = (open) => {
+    clearTimeout(showTimerRef.current)
+    clearTimeout(hideTimerRef.current)
+    setShowTooltip(open)
+  }
 
   const sciteBaseUrl = useTestEnv ? 'https://staging.scite.ai' : 'https://scite.ai'
 
@@ -231,10 +250,8 @@ export const Tooltip = ({
       return
     }
 
-    if (hideTooltipIntvl) {
-      clearTimeout(hideTooltipIntvl)
-    }
-    showTooltipIntvl = setTimeout(() => {
+    clearTimeout(hideTimerRef.current)
+    showTimerRef.current = setTimeout(() => {
       setShowTooltip(true)
     }, 500)
   }
@@ -244,10 +261,13 @@ export const Tooltip = ({
       return
     }
 
-    if (showTooltipIntvl) {
-      clearTimeout(showTooltipIntvl)
-    }
-    hideTooltipIntvl = setTimeout(() => {
+    clearTimeout(showTimerRef.current)
+    hideTimerRef.current = setTimeout(() => {
+      // Keep it open if a keyboard user has focus inside the tooltip
+      const popper = popperElRef.current
+      if (popper && popper.contains(document.activeElement)) {
+        return
+      }
       setShowTooltip(false)
     }, 300)
   }
@@ -258,22 +278,61 @@ export const Tooltip = ({
 
   // This is a hack because section tallies don't return citingPublications
   const hasZeroCites = tallyType === 'smart_citations' ? (tally && tally.total === 0 && tally.citingPublications === 0) : tally && tally.total === 0
+  const show = (showTooltip && !(hasZeroCites && !showZero)) || forceShow
+
+  // Keyboard: Enter/Space on the badge toggles the tooltip, Escape closes it
+  const handleKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      if (showTooltip) {
+        setOpen(false)
+        referenceElRef.current && referenceElRef.current.focus()
+      }
+    } else if ((e.key === 'Enter' || e.key === ' ') && e.target === referenceElRef.current) {
+      // e.target, not currentTarget: links nested in the badge keep their own Enter
+      e.preventDefault()
+      setOpen(!showTooltip)
+    }
+  }
+
+  // Screen readers activate a role=button with a click (detail 0); a real mouse click keeps
+  // its existing behavior (the badge links to the report)
+  const handleClick = (e) => {
+    if (e.detail === 0 && e.target === referenceElRef.current) {
+      setOpen(!showTooltip)
+    }
+  }
+
+  // Close once focus leaves both the badge and the tooltip
+  const handleBlur = (e) => {
+    const next = e.relatedTarget
+    const inside = (el) => el && next && el.contains(next)
+    if (!inside(referenceElRef.current) && !inside(popperElRef.current)) {
+      setShowTooltip(false)
+    }
+  }
   return (
     <Manager>
       <Reference>
         {({ ref }) => (
           <div
             className={styles.reference}
-            ref={ref}
+            ref={(el) => { ref(el); referenceElRef.current = el }}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            tabIndex={0}
+            role='button'
+            aria-expanded={show}
+            aria-controls={id}
+            onKeyDown={handleKeyDown}
+            onBlur={handleBlur}
+            onClick={handleClick}
           >
             {children}
           </div>
         )}
       </Reference>
       <TooltipPopper
-        show={(showTooltip && !(hasZeroCites && !showZero)) || forceShow}
+        show={show}
         doi={doi}
         tally={tally}
         notices={notices}
@@ -285,6 +344,10 @@ export const Tooltip = ({
         tallyType={tallyType}
         showTotal={showTotal}
         sciteBaseUrl={sciteBaseUrl}
+        id={id}
+        popperElRef={popperElRef}
+        handleKeyDown={handleKeyDown}
+        handleBlur={handleBlur}
       />
     </Manager>
   )

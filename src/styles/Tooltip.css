@@ -4,7 +4,10 @@
   opacity: 0;
   pointer-events: none;
   will-change: opacity;
-  transition: opacity 200ms ease-in-out;
+
+  /* visibility (not just opacity) keeps the closed tooltip's links out of the tab order; delayed so the fade-out still plays */
+  visibility: hidden;
+  transition: opacity 200ms ease-in-out, visibility 0s linear 200ms;
   padding: 16px;
   border: 1px solid #ebebeb;
   border-radius: 8px;
@@ -19,6 +22,8 @@
 .tooltipShow {
   opacity: 1;
   pointer-events: auto;
+  visibility: visible;
+  transition: opacity 200ms ease-in-out;
 }
 
 .tooltip[data-placement="top"]::after,
