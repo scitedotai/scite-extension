@@ -86,3 +86,36 @@ it('mouse leaving does not close the tooltip while focus is inside it', () => {
   expect(badge().getAttribute('aria-expanded')).toBe('true')
   jest.useRealTimers()
 })
+
+it('mousedown inside the tooltip does not move focus (Safari/Firefox Mac blur)', () => {
+  key(badge(), 'Enter')
+  const ev = new window.MouseEvent('mousedown', { bubbles: true, cancelable: true })
+  act(() => { popup().querySelector('a').dispatchEvent(ev) })
+  expect(ev.defaultPrevented).toBe(true)
+})
+
+it('Escape on an open tooltip does not reach the host page', () => {
+  const hostListener = jest.fn()
+  document.addEventListener('keydown', hostListener)
+  key(badge(), 'Enter')
+  act(() => { badge().dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true })) })
+  expect(badge().getAttribute('aria-expanded')).toBe('false')
+  expect(hostListener).not.toHaveBeenCalled()
+  document.removeEventListener('keydown', hostListener)
+})
+
+it('two badges get different tooltip ids', () => {
+  const other = document.createElement('div')
+  act(() => { render(<Tooltip doi='10.1/y' tally={tally}><span>b</span></Tooltip>, other) })
+  expect(other.querySelector('[role="button"]').getAttribute('aria-controls')).not.toBe(badge().getAttribute('aria-controls'))
+  unmountComponentAtNode(other)
+})
+
+it('a zero-citation badge with no tooltip is not a focusable control', () => {
+  const other = document.createElement('div')
+  act(() => { render(<Tooltip doi='10.1/z' tally={{ ...tally, total: 0, citingPublications: 0 }}><span>b</span></Tooltip>, other) })
+  const ref = other.firstChild
+  expect(ref.getAttribute('tabindex')).toBeNull()
+  expect(ref.getAttribute('role')).toBeNull()
+  unmountComponentAtNode(other)
+})

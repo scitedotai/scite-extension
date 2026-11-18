@@ -135,6 +135,13 @@
      * based on the width of the container */
 }
 
+/* Our own focus ring, so host-page styles that strip outlines don't hide it (WCAG 2.4.7) */
+.reference:focus-visible {
+  outline: 2px solid #1f5fbf;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 .tooltipContent {
   font-size: 14px;
 }
