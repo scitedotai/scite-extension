@@ -52,3 +52,37 @@ it('closes when focus leaves the badge and tooltip, but not when moving into the
   act(() => { Simulate.blur(link, { relatedTarget: document.body }) })
   expect(badge().getAttribute('aria-expanded')).toBe('false')
 })
+
+it('Escape cancels a pending hover-open', () => {
+  jest.useFakeTimers()
+  act(() => { Simulate.mouseEnter(badge()) })
+  key(badge(), 'Enter')
+  key(badge(), 'Escape')
+  act(() => { jest.advanceTimersByTime(1000) })
+  expect(badge().getAttribute('aria-expanded')).toBe('false')
+  jest.useRealTimers()
+})
+
+it('Enter on a link nested in the badge is left alone', () => {
+  const link = document.createElement('a')
+  badge().appendChild(link)
+  act(() => { link.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Enter', bubbles: true })) })
+  expect(badge().getAttribute('aria-expanded')).toBe('false')
+})
+
+it('a screen reader click (detail 0) toggles, a mouse click does not', () => {
+  act(() => { Simulate.click(badge(), { detail: 1 }) })
+  expect(badge().getAttribute('aria-expanded')).toBe('false')
+  act(() => { Simulate.click(badge(), { detail: 0 }) })
+  expect(badge().getAttribute('aria-expanded')).toBe('true')
+})
+
+it('mouse leaving does not close the tooltip while focus is inside it', () => {
+  jest.useFakeTimers()
+  key(badge(), 'Enter')
+  popup().querySelector('a').focus()
+  act(() => { Simulate.mouseLeave(popup()) })
+  act(() => { jest.advanceTimersByTime(1000) })
+  expect(badge().getAttribute('aria-expanded')).toBe('true')
+  jest.useRealTimers()
+})

@@ -233,8 +233,15 @@ export const Tooltip = ({
   const [id] = useState(() => `scite-badge-tooltip-${++tooltipCount}`)
   const referenceElRef = useRef(null)
   const popperElRef = useRef(null)
-  let hideTooltipIntvl
-  let showTooltipIntvl
+  // Refs so pending hover timers survive re-renders and keyboard dismissal can cancel them
+  const showTimerRef = useRef(null)
+  const hideTimerRef = useRef(null)
+
+  const setOpen = (open) => {
+    clearTimeout(showTimerRef.current)
+    clearTimeout(hideTimerRef.current)
+    setShowTooltip(open)
+  }
 
   const sciteBaseUrl = useTestEnv ? 'https://staging.scite.ai' : 'https://scite.ai'
 
@@ -243,10 +250,8 @@ export const Tooltip = ({
       return
     }
 
-    if (hideTooltipIntvl) {
-      clearTimeout(hideTooltipIntvl)
-    }
-    showTooltipIntvl = setTimeout(() => {
+    clearTimeout(hideTimerRef.current)
+    showTimerRef.current = setTimeout(() => {
       setShowTooltip(true)
     }, 500)
   }
@@ -256,10 +261,13 @@ export const Tooltip = ({
       return
     }
 
-    if (showTooltipIntvl) {
-      clearTimeout(showTooltipIntvl)
-    }
-    hideTooltipIntvl = setTimeout(() => {
+    clearTimeout(showTimerRef.current)
+    hideTimerRef.current = setTimeout(() => {
+      // Keep it open if a keyboard user has focus inside the tooltip
+      const popper = popperElRef.current
+      if (popper && popper.contains(document.activeElement)) {
+        return
+      }
       setShowTooltip(false)
     }, 300)
   }
@@ -276,12 +284,21 @@ export const Tooltip = ({
   const handleKeyDown = (e) => {
     if (e.key === 'Escape') {
       if (showTooltip) {
-        setShowTooltip(false)
+        setOpen(false)
         referenceElRef.current && referenceElRef.current.focus()
       }
-    } else if ((e.key === 'Enter' || e.key === ' ') && e.currentTarget === referenceElRef.current) {
+    } else if ((e.key === 'Enter' || e.key === ' ') && e.target === referenceElRef.current) {
+      // e.target, not currentTarget: links nested in the badge keep their own Enter
       e.preventDefault()
-      setShowTooltip(!showTooltip)
+      setOpen(!showTooltip)
+    }
+  }
+
+  // Screen readers activate a role=button with a click (detail 0); a real mouse click keeps
+  // its existing behavior (the badge links to the report)
+  const handleClick = (e) => {
+    if (e.detail === 0 && e.target === referenceElRef.current) {
+      setOpen(!showTooltip)
     }
   }
 
@@ -308,6 +325,7 @@ export const Tooltip = ({
             aria-controls={id}
             onKeyDown={handleKeyDown}
             onBlur={handleBlur}
+            onClick={handleClick}
           >
             {children}
           </div>
