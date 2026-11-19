@@ -201,6 +201,9 @@ const TooltipPopper = ({
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onClick={handleClickTooltip}
+            // Keep focus where it is on mousedown: Safari and Firefox on Mac don't focus a clicked
+            // link, so the badge's blur (relatedTarget null) would close the tooltip before the click
+            onMouseDown={(e) => e.preventDefault()}
             onKeyDown={handleKeyDown}
             onBlur={handleBlur}
           >
@@ -212,8 +215,6 @@ const TooltipPopper = ({
     </Popper>
   )
 }
-
-let tooltipCount = 0
 
 export const Tooltip = ({
   doi,
@@ -230,7 +231,8 @@ export const Tooltip = ({
   forceShow = false
 }) => {
   const [showTooltip, setShowTooltip] = useState(false)
-  const [id] = useState(() => `scite-badge-tooltip-${++tooltipCount}`)
+  // Random, not a counter: two badge bundles on one page would both start at 1
+  const [id] = useState(() => `scite-badge-tooltip-${Math.random().toString(36).slice(2, 10)}`)
   const referenceElRef = useRef(null)
   const popperElRef = useRef(null)
   // Refs so pending hover timers survive re-renders and keyboard dismissal can cancel them
@@ -278,12 +280,15 @@ export const Tooltip = ({
 
   // This is a hack because section tallies don't return citingPublications
   const hasZeroCites = tallyType === 'smart_citations' ? (tally && tally.total === 0 && tally.citingPublications === 0) : tally && tally.total === 0
-  const show = (showTooltip && !(hasZeroCites && !showZero)) || forceShow
+  const canShow = !(hasZeroCites && !showZero) || forceShow
+  const show = (showTooltip && canShow) || forceShow
 
   // Keyboard: Enter/Space on the badge toggles the tooltip, Escape closes it
   const handleKeyDown = (e) => {
     if (e.key === 'Escape') {
       if (showTooltip) {
+        // The badge sits on publisher pages: don't let this Escape also close their modal
+        e.stopPropagation()
         setOpen(false)
         referenceElRef.current && referenceElRef.current.focus()
       }
@@ -319,13 +324,16 @@ export const Tooltip = ({
             ref={(el) => { ref(el); referenceElRef.current = el }}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            tabIndex={0}
-            role='button'
-            aria-expanded={show}
-            aria-controls={id}
-            onKeyDown={handleKeyDown}
-            onBlur={handleBlur}
-            onClick={handleClick}
+            // A badge whose tooltip can never show isn't a control
+            {...(canShow && {
+              tabIndex: 0,
+              role: 'button',
+              'aria-expanded': show,
+              'aria-controls': id,
+              onKeyDown: handleKeyDown,
+              onBlur: handleBlur,
+              onClick: handleClick
+            })}
           >
             {children}
           </div>
