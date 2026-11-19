@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import qs from 'query-string'
 import classNames from 'classnames'
 import SectionTallyCount from './SectionTallyCount'
@@ -8,7 +8,7 @@ import BarChart from './BarChart'
 import PieChart from './PieChart'
 import DonutChart from './DonutChart'
 import { generateChartDataFromSectionTally, CHART_TYPES } from '../util/sectionTally'
-import { allowRedirection, redirectionHandler } from '../util/badgeRedirection'
+import { redirectionHandler } from '../util/badgeRedirection'
 import { logoUrl } from '../util/assets'
 
 const SectionTally = ({
@@ -17,8 +17,6 @@ const SectionTally = ({
   small = false, horizontal = false, isBadge = false, showZero = true,
   chartType = null, showLogo = true, useTestEnv = false
 }) => {
-  const [allowRedirect] = useState(() => allowRedirection())
-
   const params = {
     utm_medium: isBadge ? 'badge' : 'plugin',
     utm_source: source || 'generic',
@@ -109,7 +107,6 @@ const SectionTally = ({
       {showChart && (
         <div className={styles.chartSubheading}>
           <span className={styles.chartLabel}>Sections</span>
-          {allowRedirect && <a href={reportLink} target='_blank' rel='noopener noreferrer'>See more details</a>}
         </div>
       )}
     </div>
