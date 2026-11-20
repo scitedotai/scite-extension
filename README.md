@@ -1,5 +1,7 @@
 # Scite Badge and Extension #
 
+[![Test](https://github.com/scitedotai/scite-extension/actions/workflows/test.yml/badge.svg)](https://github.com/scitedotai/scite-extension/actions/workflows/test.yml)
+
 ## Issues or Feature Requests ##
 
 **Want to see the extension or scite badges somewhere?**
@@ -90,7 +92,7 @@ If it is more convenient to configure the badges not inline where they will be i
 
 If `insert-before` is not set to `true` then the badge will be appended to the element specified as `target-el`. If `insert-before` is `true` then the badge will be inserted before the element specified by `target-el`.
 
-## Release ##
+## Releasing the badge ##
 
 Releases are uploaded to our CDN by GitHub Actions (`.github/workflows/release-badge.yml`). The release channel is based on the tag, which must match `badge-vX.Y.Z-stage` or `badge-vX.Y.Z-prod`. To release a commit to stage push the tag (e.g.):
 
@@ -150,7 +152,7 @@ $ npm run lint
 
 Once you are ready to deploy you may use the build you have run to sideload into firefox and chrome to test the extension to check that works.
 
-## Releasing ##
+## Releasing the extension ##
 
 1. Bump the version in `package.json`, `manifests/chrome.json`, and `manifests/firefox.json` and commit
 2. Tag the release (e.g.):
